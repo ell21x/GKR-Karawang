@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gereja Katolik Kristus Raja Karawang</title>
+
+  <!-- File CSS -->
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+
+ 
+  <!-- BAGIAN JUDUL -->
+  <header class="hero-header">
+
+  <!-- LOGO KIRI ATAS -->
+  <div class="logo-paroki">
+    <img src="logoparoki.png" alt="Logo Paroki Kristus Raja">
+  </div>
+
+  <!-- TEKS TENGAH -->
+  <div class="hero-text">
+    <h1>Gereja Katolik<br>Kristus Raja<br>Karawang</h1>
+    <p>Keuskupan Bandung</p>
+  </div>
+
+</header>
+<div class="layout">
+  <div class="main-content">
+
+
+
+ <!-- Tombol Jadwal Misa -->
+<div class="tombol-section">
+  <button onclick="bukaFullscreenMisa()">Jadwal Misa</button>
+</div>
+
+<!-- FULLSCREEN JADWAL MISA -->
+<div id="fullscreen-misa" class="fullscreen hidden">
+  
+  <!-- tombol kembali -->
+  <button class="back-full" onclick="closeMisa()" aria-label="Kembali">
+    <svg viewBox="0 0 24 24">
+      <path d="M15 18l-6-6 6-6"/>
+    </svg>
+  </button>
+
+  <img src="jadwalmisagkr.jpg" alt="Jadwal Misa">
+</div>
+
+  <!-- Slideshow Pengumuman -->
+   <section class="lokasi">
+  <h2>Pengumuman</h2>
+  <div class="slideshow-wrapper">
+  <div class="slide fade">
+    <img src="pengumuman stu.jpg" alt="Pengumuman 1">
+  </div>
+
+  <div class="slide fade">
+    <img src="pengumumandua.jpg" alt="Pengumuman 2">
+  </div>
+
+  <div class="slide fade">
+    <img src="pengumumantiga.jpg" alt="Pengumuman 3">
+  </div>
+
+  <div class="slide fade">
+    <img src="pengumuman4.jpg" alt="pengumuman 4">
+  </div>
+
+  <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
+  <a class="next" onclick="plusSlides(1)">&#10095;</a>
+</div>
+
+<div class="dots-box">
+  <span class="dot" onclick="currentSlide(1)"></span>
+  <span class="dot" onclick="currentSlide(2)"></span>
+  <span class="dot" onclick="currentSlide(3)"></span>
+  <span class="dot" onclick="currentSlide(4)"></span>
+</div>
+</section>
+
+
+<div class="tombol-section">
+  <a href="ladaftarwilayah.html" class="btn-link">
+    Daftar Wilayah Paroki
+  </a>
+</div>
+
+
+  
+
+    
+
+
+
+<!-- Dokumentasi Kegiatan -->
+  <section class="kegiatan-section">
+  <h2>Dokumentasi Kegiatan</h2>
+
+  <div class="kegiatan-grid">
+
+    <a href="kegiatan1.html" class="kegiatan-card">
+      <img src="sutwkri.jpg">
+      <div class="kegiatan-overlay">
+        <h3>HUT WKRI</h3>
+        <span>29 Juni 2025</span>
+      </div>
+    </a>
+
+    <a href="lakegiatan2.html" class="kegiatan-card">
+      <img src="lhps4.jpg">
+      <div class="kegiatan-overlay">
+        <h3>HPS & Pesta Nama</h3>
+        <span>23 November 2025</span>
+      </div>
+    </a>
+
+    <a href="kegiatan3.html" class="kegiatan-card">
+      <img src="img/kegiatan3.jpg">
+      <div class="kegiatan-overlay">
+        <h3>Perayaan Tahbisan</h3>
+        <span>12 Juli 2025</span>
+      </div>
+    </a>
+
+  </div>
+</section>
+
+
+
+  <!-- TOMBOL JADWAL SEKRETARIAT -->
+<div class="btn-box">
+  <button class="full-btn" onclick="showSekretariat()">
+    Jadwal Sekretariat Paroki
+  </button>
+</div>
+
+<!-- FULLSCREEN SEKRETARIAT -->
+<div id="sekretariatFull" class="fullscreen hidden">
+
+  <!-- tombol kembali -->
+  <button class="back-full" onclick="closeSekretariat()" aria-label="Kembali">
+    <svg viewBox="0 0 24 24">
+      <path d="M15 18l-6-6 6-6"/>
+    </svg>
+  </button>
+
+  <img src="jadwalsekretariat.jpg" alt="Jadwal Sekretariat">
+</div>
+
+
+  <!-- Lokasi -->
+  <section class="lokasi">
+    <h2>Lokasi Gereja</h2>
+    <iframe 
+      src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3965.6022316222916!2d107.3089935!3d-6.315867!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e6977cc1849f835%3A0xe6396baee4295cf3!2sGereja%20Katolik%20Paroki%20Kristus%20Raja%2C%20Karawang!5e0!3m2!1sid!2sid!4v1763185216059!5m2!1sid!2sid"
+      loading="lazy">
+    </iframe>
+  </section>
+
+  
+
+  </div>
+
+  <aside class="sidebar">
+
+    <!-- ISI KOLOM KANAN  -->
+    <img src="jadwalmisagkr.jpg" style="width:100%; margin-bottom:15px">
+    <img src="jadwalsekretariat.jpg" style="width:100%; margin-bottom:15px">
+
+  </aside>
+</div>
+
+  <footer>
+    &copy; 2025 Gereja Katolik Kristus Raja Karawang - Paroki Karawang
+  </footer>
+
+  <!-- File JavaScript -->
+  <script src="script.js"></script>
+
+</body>
+</html>

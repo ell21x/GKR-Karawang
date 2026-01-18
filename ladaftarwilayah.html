@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Daftar Wilayah Paroki</title>
+
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f4f6f5;
+      color: #333;
+    }
+
+    header {
+      background: #853617;
+      color: #fff;
+      padding: 20px;
+      text-align: center;
+    }
+
+    .back-box {
+      text-align: center;
+      margin: 15px 0;
+    }
+
+    .back-box a {
+      text-decoration: none;
+      color: #7a522c;
+      font-weight: bold;
+    }
+
+    .judul {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .search-box {
+      max-width: 420px;
+      margin: 0 auto 20px;
+      padding: 0 15px;
+    }
+
+    .search-box input {
+      width: 100%;
+      padding: 12px 16px;
+      border-radius: 25px;
+      border: 1px solid #ccc;
+      font-size: 15px;
+      outline: none;
+    }
+
+    .search-box input:focus {
+      border-color: #7a4f2c;
+    }
+
+    .export-box {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.export-box button {
+  padding: 10px 16px;
+  margin: 0 5px;
+  border: none;
+  border-radius: 20px;
+  background: #7a4f2c;
+  color: white;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.export-box button:hover {
+  background: #5f3c24;
+}
+
+
+    .table-wrapper {
+      padding: 0 15px 40px;
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: #fff;
+    }
+
+    th, td {
+      border: 1px solid #ccc;
+      padding: 10px;
+      text-align: center;
+      font-size: 14px;
+    }
+
+    th {
+      background: #e8f3ec;
+    }
+
+    .wilayah-green {
+      background: #dff1e5;
+      font-weight: bold;
+    }
+
+    .wilayah-blue {
+      background: #dbe9f6;
+      font-weight: bold;
+    }
+
+    .wilayah-yellow {
+      background: #fff3cd;
+      font-weight: bold;
+    }
+
+    footer {
+      background: #7a2c2c;
+      color: white;
+      text-align: center;
+      padding: 15px;
+      font-size: 14px;
+    }
+    .back-full {
+  position: fixed;
+  top: 15px;
+  left: 15px;
+  background: rgba(122, 79, 44, 0.9);
+  border: none;
+  border-radius: 50%;
+  width: 42px;
+  height: 42px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 999;
+}
+
+.back-full svg {
+  width: 24px;
+  height: 24px;
+  fill: none;
+  stroke: white;
+  stroke-width: 2.5;
+}
+
+  </style>
+</head>
+
+<!-- LIBRARY EXPORT -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+
+<script>
+function searchWilayah() {
+  const filter = document.getElementById("searchWilayah").value.toLowerCase();
+  const rows = document.querySelectorAll(".tabel-wilayah tbody tr");
+
+  let header = null;
+
+  rows.forEach(row => {
+    if (row.cells.length === 1) {
+      header = row;
+      row.style.display = "none";
+      return;
+    }
+
+    if (row.textContent.toLowerCase().includes(filter)) {
+      row.style.display = "";
+      if (header) header.style.display = "";
+    } else {
+      row.style.display = "none";
+    }
+  });
+}
+
+function clearSearch() {
+  document.getElementById("searchWilayah").value = "";
+  searchWilayah();
+}
+
+/* EXPORT PDF */
+function exportPDF() {
+  const element = document.querySelector(".table-wrapper");
+  html2pdf().from(element).set({
+    margin: 0.5,
+    filename: 'Daftar_Wilayah_Paroki.pdf',
+    html2canvas: { scale: 2 },
+    jsPDF: { orientation: 'landscape', unit: 'cm', format: 'a4' }
+  }).save();
+}
+
+/* EXPORT EXCEL */
+function exportExcel() {
+  const table = document.querySelector(".tabel-wilayah");
+  const wb = XLSX.utils.table_to_book(table, { sheet: "Wilayah Paroki" });
+  XLSX.writeFile(wb, "Daftar_Wilayah_Paroki.xlsx");
+}
+</script>
+
+
+<body>
+    <button class="back-full" onclick="window.location.href='index.html'" aria-label="Kembali">
+  <svg viewBox="0 0 24 24">
+    <path d="M15 18l-6-6 6-6"/>
+  </svg>
+</button>
+
+
+<header>
+  <h1>Gereja Katolik Kristus Raja Karawang</h1>
+  <p>Keuskupan Bandung</p>
+</header>
+
+
+
+<div class="judul">
+  <h2>Daftar Wilayah Paroki</h2>
+  <p>Gereja Katolik Kristus Raja Karawang</p>
+</div>
+
+<!-- SEARCH -->
+<div class="search-box">
+  <input
+    type="text"
+    id="searchWilayah"
+    placeholder="Cari wilayah / lingkungan / ketua / pastor..."
+    onkeyup="searchWilayah()"
+  >
+</div>
+
+<div class="export-box">
+  <button onclick="exportPDF()">Export PDF</button>
+  <button onclick="exportExcel()">Export Excel</button>
+</div>
+
+
+<!-- TABEL -->
+<div class="table-wrapper">
+<table class="tabel-wilayah">
+  <thead>
+    <tr>
+      <th>Wilayah / Lingkungan</th>
+      <th>Nama Ketua Lingkungan</th>
+      <th>Pastor Pendamping</th>
+    </tr>
+  </thead>
+
+  <tbody>
+
+    <!-- WILAYAH ST. BENEDIKTUS -->
+    <tr class="wilayah">
+      <td colspan="3"><strong>WILAYAH ST. BENEDIKTUS</strong></td>
+    </tr>
+    <tr>
+      <td>Cengkong 1</td>
+      <td>Bpk. Eusebius Tay</td>
+      <td rowspan="8">R.P. Josaphat Judho Pramono, OSC</td>
+    </tr>
+    <tr><td>Cengkong 2</td><td>Bpk. Agustinus Suhartanto</td></tr>
+    <tr><td>Mustika Prakarsa</td><td>Ibu Kristiana Veriani</td></tr>
+    <tr><td>Terangsari</td><td>Ibu Maria Yospha</td></tr>
+    <tr><td>Griya Pesona Asri</td><td>Bpk. FX. Catur Suranto</td></tr>
+    <tr><td>Puri Kosambi</td><td>Bpk. Philippus Bambang</td></tr>
+    <tr><td>Duren</td><td>Bpk. Kenny Leonardo</td></tr>
+    <tr><td>De Keraton</td><td>Bpk. H. Desem Bristen Hutapea</td></tr>
+
+    <!-- WILAYAH ST. MIKAEL -->
+    <tr class="wilayah">
+      <td colspan="3"><strong>WILAYAH ST. MIKAEL</strong></td>
+    </tr>
+    <tr>
+      <td>Bintang Alam</td>
+      <td>Ibu Anastasia Sri Astutik</td>
+      <td rowspan="7">R.P. Setevanus B. Saptono, OSC</td>
+    </tr>
+    <tr><td>Niska</td><td>Bpk. Lukas Krismantoko</td></tr>
+    <tr><td>Bintang Timur</td><td>Bpk. Agustinus Sumidi</td></tr>
+    <tr><td>Sri Rama 324</td><td>Ibu Linda Martina Jie</td></tr>
+    <tr><td>Keruri</td><td>Bpk. Vincentius Danny Latief</td></tr>
+    <tr><td>Griya Indah</td><td>Bpk. Agustinus Aris Wijayanto</td></tr>
+    <tr><td>GV 2</td><td>Bpk. Albertus Sigit Prawoto</td></tr>
+
+    <!-- WILAYAH ST. YOSEPH -->
+    <tr class="wilayah">
+      <td colspan="3"><strong>WILAYAH ST. YOSEPH</strong></td>
+    </tr>
+    <tr>
+      <td>Binangoh</td>
+      <td>Ibu Shirley Caroline</td>
+      <td rowspan="5">R.P. Setevanus B. Saptono, OSC</td>
+    </tr>
+    <tr><td>Kedinding Elok</td><td>Bpk. Yosep Danang Eko Putranto</td></tr>
+    <tr><td>Lamatan 1</td><td>Bpk. Edmondus Takndat</td></tr>
+    <tr><td>Lamatan 2</td><td>Bpk. Alfonsus Anjar K</td></tr>
+    <tr><td>Warung Bambu</td><td>Bpk. Ignatius Tugiyo</td></tr>
+
+    <!-- WILAYAH ST. YOHANES -->
+    <tr class="wilayah">
+      <td colspan="3">WILAYAH ST. YOHANES</td>
+    </tr>
+    <tr>
+      <td>Suparev</td>
+      <td>Bpk. L. Fernando Tarigan</td>
+      <td rowspan="2">R.P. Agustinus Made, OSC</td>
+    </tr>
+    <tr><td>Niaga</td><td>Bpk. Timotius Dede S. Hidayat</td></tr>
+
+    <!-- WILAYAH ST. FRANSISKUS -->
+    <tr class="wilayah">
+      <td colspan="3"><strong>WILAYAH ST. FRANSISKUS</strong></td>
+    </tr>
+    <tr>
+      <td>Babakan Cianjur</td>
+      <td>Bpk. Suheri Wahyudo</td>
+      <td rowspan="3">R.P. Agustinus Made, OSC</td>
+    </tr>
+    <tr><td>Bumi Taruno</td><td>Bpk. Thomas Aquinas Arie B</td></tr>
+    <tr><td>Adirasa</td><td>Bpk. Matius Daryono</td></tr>
+
+    <!-- WILAYAH ST. PASKALIS -->
+    <tr class="wilayah">
+      <td colspan="3"><strong>WILAYAH ST. PASKALIS</strong></td>
+    </tr>
+    <tr>
+      <td>Anggadita</td>
+      <td>Bpk. Yohanes Riyanto</td>
+      <td rowspan="6">R.P. Josaphat Judho Pramono, OSC</td>
+    </tr>
+    <tr><td>Citra Kebun Mas 1</td><td>Bpk. F.X. Wiharno</td></tr>
+    <tr><td>Citra Kebun Mas 2</td><td>Bpk. Fransiskus Mau Mali</td></tr>
+    <tr><td>Griya Mas Lestari</td><td>Bpk. Heribertus Dias Kusuma</td></tr>
+    <tr><td>Kondang Jaya</td><td>Ibu Caecilia Eni Setyaningsih</td></tr>
+    <tr><td>Majalaya</td><td>Bpk. Martinus Budiyono</td></tr>
+
+  </tbody>
+</table>
+    
+
+</div>
+
+<footer>
+  &copy; 2025 Gereja Katolik Kristus Raja Karawang
+</footer>
+
+<script>
+function searchWilayah() {
+  const input = document.getElementById("searchWilayah");
+  const filter = input.value.toLowerCase();
+  const rows = document.querySelectorAll(".tabel-wilayah tbody tr");
+
+  let header = null;
+
+  rows.forEach(row => {
+    if (row.cells.length === 1) {
+      header = row;
+      row.style.display = "none";
+      return;
+    }
+
+    if (row.textContent.toLowerCase().includes(filter)) {
+      row.style.display = "";
+      if (header) header.style.display = "";
+    } else {
+      row.style.display = "none";
+    }
+  });
+}
+</script>
+
+</body>
+</html>
