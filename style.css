@@ -45,18 +45,58 @@ header p {
   font-size: 18px;
   opacity: 0.9;
 }
-.hero-header {
-  position: relative;
-  background: 
-    linear-gradient(rgba(92, 50, 15, 0.65), rgba(92, 50, 15, 0.65)),
-    url("gereja.jpg");
-  background-size: cover;
-  background-position: center;
-  color: white;
-  padding: 60px 20px 80px;
-  text-align: center;
-  border-radius: 0 0 30px 30px;
+.hero-header{
+  position:relative;
+  height:100vh;
+
+  background:
+    linear-gradient(135deg, rgb(100, 32, 0), rgb(116, 43, 1)),
+    url("lhps4.jpg");
+
+  background-size:cover;
+  background-position:center;
+
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  text-align:center;
+  color:white;
+
+  overflow:hidden;
 }
+.hero-text h1{
+  font-size:42px;
+  font-weight:700;
+  animation:fadeUp 1.4s ease forwards;
+}
+
+.hero-text p{
+  animation:fadeUp 1.8s ease forwards;
+}
+
+@keyframes fadeUp{
+  from{
+    opacity:0;
+    transform:translateY(40px);
+  }
+  to{
+    opacity:1;
+    transform:translateY(0);
+  }
+}
+.scroll-down{
+  position:absolute;
+  bottom:25px;
+  font-size:30px;
+  animation:bounce 1.6s infinite;
+}
+
+@keyframes bounce{
+  0%,100%{ transform:translateY(0); }
+  50%{ transform:translateY(10px); }
+}
+
+
 
 /* TEKS */
 .hero-text h1 {
@@ -1650,4 +1690,34 @@ section.show{
     opacity:1;
     transform:translateX(0);
   }
+}
+/* =========================
+   MOBILE: PENGUMUMAN LEBIH BESAR
+========================= */
+@media (max-width:768px){
+
+  .layout{
+    padding:10px; /* kurangi ruang kosong kiri kanan */
+  }
+
+  .lokasi{
+    padding:0;
+  }
+
+  .slideshow-wrapper{
+    max-width:100%;
+    width:100%;
+  }
+
+  .slide img{
+    width:100%;
+    border-radius:14px;
+  }
+
+  /* dots lebih jelas */
+  .dot{
+    width:12px;
+    height:12px;
+  }
+
 }

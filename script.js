@@ -164,3 +164,13 @@ function revealOnScroll(){
 
 window.addEventListener("scroll", revealOnScroll);
 window.addEventListener("load", revealOnScroll);
+/* =========================
+   PARALLAX HERO SMOOTH
+========================= */
+
+const hero = document.querySelector(".hero-header");
+
+window.addEventListener("scroll", ()=>{
+  let offset = window.pageYOffset;
+  hero.style.backgroundPositionY = offset * 0.5 + "px";
+});
