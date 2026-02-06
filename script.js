@@ -144,3 +144,23 @@ function showSekretariat() {
 function closeSekretariat() {
   document.getElementById("sekretariatFull").classList.add("hidden");
 }
+/* =========================
+   SCROLL REVEAL EFFECT
+========================= */
+
+const sections = document.querySelectorAll("section");
+
+function revealOnScroll(){
+  const trigger = window.innerHeight * 0.85;
+
+  sections.forEach(sec=>{
+    const top = sec.getBoundingClientRect().top;
+
+    if(top < trigger){
+      sec.classList.add("show");
+    }
+  });
+}
+
+window.addEventListener("scroll", revealOnScroll);
+window.addEventListener("load", revealOnScroll);
