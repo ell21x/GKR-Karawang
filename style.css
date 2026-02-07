@@ -2357,3 +2357,143 @@ text-shadow: 0 0 12px rgba(255, 200, 80, 0.9);
 
   }
 }
+.visitor-box {
+  text-align: center;
+  padding: 18px 10px;
+  font-size: 14px;
+  color: #555;
+  background: #fafafa;
+  border-top: 1px solid #ddd;
+}
+/* ===============================
+   VISITOR CARD
+================================ */
+.visitor-card {
+  max-width: 420px;
+  margin: 25px auto;
+  padding: 18px 22px;
+
+  display: flex;
+  align-items: center;
+  gap: 14px;
+
+  background: #ffffff;
+  border-radius: 16px;
+
+  box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+
+  animation: fadeUp 0.8s ease;
+}
+
+.visitor-icon {
+  font-size: 28px;
+}
+
+.visitor-title {
+  font-size: 13px;
+  color: #666;
+}
+
+.visitor-number {
+  font-size: 24px;
+  font-weight: bold;
+  color: #7a4f2c;
+  letter-spacing: 1px;
+}
+
+/* animasi muncul */
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(15px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+/* ===============================
+   LED VISITOR COUNTER
+================================ */
+.visitor-led {
+  text-align: center;
+  margin: 30px auto;
+  padding: 22px 16px;
+}
+
+.visitor-led-title {
+  font-size: 13px;
+  letter-spacing: 2px;
+  margin-bottom: 14px;
+  color: #7a4f2c;
+  font-weight: bold;
+}
+
+/* container angka */
+.led-counter {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+}
+
+/* satu digit */
+.led-digit {
+  width: 38px;
+  height: 52px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-size: 26px;
+  font-weight: bold;
+  font-family: 'Courier New', monospace;
+
+  color: #ffd966;
+  background: #2b1a0f;
+
+  border-radius: 8px;
+
+  box-shadow:
+    0 0 6px #ffcc66,
+    0 0 12px #ffb347,
+    inset 0 0 8px rgba(255,255,255,0.15);
+
+  animation: glowBlink 1.6s infinite alternate;
+}
+
+/* koma */
+.led-separator {
+  font-size: 26px;
+  color: #ffcc66;
+  margin: 0 4px;
+  animation: glowBlink 1.6s infinite alternate;
+}
+
+/* animasi nyala lampu */
+@keyframes glowBlink {
+  0% {
+    box-shadow:
+      0 0 4px #ffcc66,
+      0 0 8px #ffb347;
+    opacity: 0.85;
+  }
+  100% {
+    box-shadow:
+      0 0 10px #ffe39f,
+      0 0 18px #ffcc66;
+    opacity: 1;
+  }
+}
+
+/* animasi naik */
+@keyframes flipUp {
+  from {
+    transform: translateY(20px) scale(0.9);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+  }
+}

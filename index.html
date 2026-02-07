@@ -269,13 +269,69 @@
 
   </aside>
 </div>
+<!-- VISITOR LED COUNTER -->
+<div class="visitor-led">
+  <div class="visitor-led-title">KUNJUNGAN WEBSITE</div>
+  <div id="ledCounter" class="led-counter"></div>
+</div>
+
+
 
   <footer>
-    &copy; 2025 Gereja Katolik Kristus Raja Karawang - Paroki Karawang
+    &copy; 2025 Gereja Katolik Kristus Raja Karawang - Paroki Kristus Raja
   </footer>
 
   <!-- File JavaScript -->
   <script src="script.js"></script>
+
+
+     <script>
+const container = document.getElementById("ledCounter");
+
+function renderNumber(number) {
+  container.innerHTML = "";
+
+  number.toLocaleString("id-ID").split("").forEach(char => {
+
+    if (char === ",") {
+      const sep = document.createElement("div");
+      sep.className = "led-separator";
+      sep.textContent = ",";
+      container.appendChild(sep);
+    } else {
+      const digit = document.createElement("div");
+      digit.className = "led-digit";
+      digit.textContent = char;
+      digit.style.animation = "flipUp 0.4s ease, glowBlink 1.6s infinite alternate";
+      container.appendChild(digit);
+    }
+
+  });
+}
+
+/* ambil counter online */
+fetch("https://api.countapi.xyz/hit/gkr-karawang/visits")
+  .then(res => res.json())
+  .then(data => {
+    let current = 0;
+    const target = data.value;
+    const step = Math.ceil(target / 90);
+
+    const timer = setInterval(() => {
+      current += step;
+      if (current >= target) {
+        current = target;
+        clearInterval(timer);
+      }
+      renderNumber(current);
+    }, 30);
+  })
+  .catch(() => {
+    renderNumber(0);
+  });
+</script>
+
+
 
 </body>
 </html>
