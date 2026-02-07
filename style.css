@@ -1,4 +1,17 @@
 /* ========== CSS WEBSITE GEREJA ========== */
+/* ===== GLOBAL RESET (WAJIB) ===== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;   /* ← ini yang paling penting */
+}
+
 body{
   background:
     linear-gradient(180deg, #d4bb8c 0%, #91754c 100%);
@@ -49,7 +62,7 @@ header p {
 .hero-header{
   position:relative;
   height:100vh;
-
+  border-radius: 0;
   background:
     linear-gradient(135deg, rgb(100, 32, 0), rgb(116, 43, 1)),
     url("lhps4.jpg");
@@ -424,187 +437,6 @@ footer {
   font-size: 14px;
 }
 
-/* ==== HALAMAN ORGANISASI GEREJA ==== */
-
-.org-body {
-  background: #f5f5f5;
-  margin: 0;
-}
-
-.org-container {
-  width: 90%;
-  max-width: 900px;
-  margin: 50px auto;
-}
-
-.org-image-box {
-  position: relative;
-  width: 100%;
-  overflow: hidden;
-  box-shadow: 0 5px 20px rgba(0,0,0,0.25);
-}
-
-.org-image-box img {
-  width: 100%;
-  display: block;
-}
-
-.org-caption {
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-  padding: 20px;
-  background: linear-gradient(transparent, rgba(0,0,0,0.8));
-  color: white;
-}
-
-.org-caption h2 {
-  margin: 0;
-  font-size: 28px;
-}
-
-.org-caption p {
-  margin: 5px 0 0;
-  font-size: 16px;
-  opacity: 0.9;
-}
-
-/* ==== TOMBOL ORGANISASI DI INDEX ==== */
-
-.organisasi {
-  width: 90%;
-  max-width: 1000px;
-  margin: 50px auto;
-  display: flex;
-  justify-content: center;
-}
-
-.org-item {
-  position: relative;
-  width: 320px;
-  height: 220px;
-  overflow: hidden;
-  cursor: pointer;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-  transition: transform 0.3s;
-}
-
-.org-item:hover {
-  transform: scale(1.05);
-}
-
-.org-item img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-/* Caption transparan */
-.org-text {
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-  padding: 15px;
-  color: white;
-  background: linear-gradient(transparent, rgba(0,0,0,0.75));
-}
-
-.org-text h3 {
-  margin: 0;
-  font-size: 22px;
-  font-weight: bold;
-}
-
-.org-text p {
-  margin: 3px 0 0;
-  font-size: 14px;
-  opacity: 0.9;
-}
-
-/* Header khusus halaman organisasi */
-.org-header {
-  text-align: center;
-  padding: 25px 10px;
-  background: #692e00;
-  color: white;
-}
-
-/* Container halaman organisasi */
-.org-container {
-  max-width: 900px;
-  margin: 30px auto;
-  padding: 20px;
-  display: flex;
-  flex-direction: column;
-  gap: 25px;
-}
-
-/* Gambar organisasi */
-.org-image-box {
-  text-align: center;
-  width: 600px;
-}
-
-.org-image {
-  width: 250px;
-  box-shadow: 0 5px 15px rgb(125, 29, 0);
-}
-
-/* Teks organisasi */
-.org-text-box {
-  background: white;
-  padding: 20px;
-  box-shadow: 0 5px 15px rgb(105, 28, 0);
-}
-
-.org-text-box h2 {
-  margin-top: 0;
-}
-/* Header khusus halaman organisasi */
-.org-header {
-  text-align: center;
-  padding: 25px 10px;
-  background: #652f00;
-  color: white;
-}
-
-/* Container halaman organisasi */
-.org-container {
-  max-width: 900px;
-  margin: 30px auto;
-  padding: 20px;
-  display: flex;
-  flex-direction: column;
-  gap: 25px;
-}
-
-/* Gambar organisasi */
-.org-image-box {
-  text-align: center;
-}
-
-.org-image {
-  width: 250px;
-  box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-}
-
-/* Gambar kedua (sedikit lebih kecil atau berbeda style) */
-.secondary-img {
-  width: 220px;
-  opacity: 0.95;
-}
-
-/* Teks organisasi */
-.org-text-box {
-  background: white;
-  padding: 20px;
-  border-radius: 12px;
-  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-}
-
-.org-text-box h2 {
-  margin-top: 0;
-}
 
 
 
@@ -831,8 +663,7 @@ body {
 .slideshow-wrapper {
     width: 90%;
     max-width: 900px;
-    margin: auto;
-    border-radius: 15px;
+    margin: auto; 
     overflow: hidden;
 }
 
@@ -2476,4 +2307,53 @@ button:active,
 }
 html{
   scroll-behavior:smooth;
+}
+.pengumuman-container{
+  display:flex;
+  gap:16px;
+  overflow-x:auto;
+  scroll-behavior:smooth;
+}
+
+.pengumuman-container::-webkit-scrollbar{
+  display:none;
+}
+.slide {
+  display: none;
+}
+
+.slide img {
+  width: 100%;
+  border-radius: 12px;
+}
+
+.dot.active {
+  background: #333;
+}
+.welcome-text {
+  text-align: center;
+  font-size: 13px;
+  margin: 28px 18px;
+  line-height: 1.6;
+  font-weight: 500;
+
+  color: #2c3e50;
+
+  animation: glowFade 2.5s ease-in-out infinite alternate;
+}
+
+/* efek kelap-kelip lembut (bukan kedip keras) */
+@keyframes glowFade {
+  0% {
+    opacity: 0.5;
+    text-shadow: 0 0 0px rgba(0,0,0,0);
+  }
+  100% {
+    opacity: 1;
+    text-shadow: 0 0 10px rgba(100, 150, 255, 0.6);
+    animation: glowFade 4s ease-in-out infinite alternate;
+text-shadow: 0 0 18px rgba(100,150,255,0.9);
+text-shadow: 0 0 12px rgba(255, 200, 80, 0.9);
+
+  }
 }

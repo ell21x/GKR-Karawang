@@ -107,32 +107,45 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
   /* =========================================
-     SLIDESHOW AUTO
-  ========================================= */
-  let slideIndex = 0;
+   SLIDESHOW PENGUMUMAN (FIX FINAL)
+========================================= */
 
-  const slides = document.querySelectorAll(".slide");
-  const dots   = document.querySelectorAll(".dot");
+let slideIndex = 1;
 
-  function showSlide(n){
+const slides = document.querySelectorAll(".slide");
+const dots   = document.querySelectorAll(".dot");
 
-    slides.forEach(s => s.style.display = "none");
-    dots.forEach(d => d.classList.remove("active-dot"));
+function showSlides(n){
 
-    slideIndex = (n + slides.length) % slides.length;
+  if(!slides.length) return;
 
-    slides[slideIndex].style.display = "block";
-    if(dots[slideIndex]) dots[slideIndex].classList.add("active-dot");
+  if(n > slides.length) slideIndex = 1;
+  if(n < 1) slideIndex = slides.length;
+
+  slides.forEach(s => s.style.display = "none");
+  dots.forEach(d => d.classList.remove("active-dot"));
+
+  slides[slideIndex-1].style.display = "block";
+
+  if(dots[slideIndex-1]){
+    dots[slideIndex-1].classList.add("active-dot");
   }
+}
 
-  function nextSlide(){
-    showSlide(slideIndex + 1);
-  }
+window.plusSlides = (n) => {
+  showSlides(slideIndex += n);
+};
 
-  if(slides.length){
-    showSlide(0);
-    setInterval(nextSlide, 5000);
-  }
+window.currentSlide = (n) => {
+  showSlides(slideIndex = n);
+};
+
+showSlides(slideIndex);
+
+setInterval(() => {
+  plusSlides(1);
+}, 5000);
+
 
 
 
