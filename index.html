@@ -286,35 +286,33 @@
 
 
     <script>
-const container = document.getElementById("ledCounter");
+document.addEventListener("DOMContentLoaded", () => {
 
-function renderNumber(number) {
-  container.innerHTML = "";
+  const container = document.getElementById("ledCounter");
 
-  number.toLocaleString("id-ID").split("").forEach(char => {
+  function renderNumber(number) {
+    container.innerHTML = "";
 
-    if (char === ",") {
-      const sep = document.createElement("div");
-      sep.className = "led-separator";
-      sep.textContent = ",";
-      container.appendChild(sep);
-      return;
-    }
+    number.toString().padStart(6,"0").split("").forEach(char => {
+      const digit = document.createElement("div");
+      digit.className = "led-digit";
+      digit.textContent = char;
+      container.appendChild(digit);
+    });
+  }
 
-    const digit = document.createElement("div");
-    digit.className = "led-digit";
-    digit.textContent = char;
-    digit.style.animation = "flipUp 0.4s ease, glowBlink 1.6s infinite alternate";
-    container.appendChild(digit);
-  });
-}
+  /* tampil awal biar tidak kosong */
+  renderNumber(0);
 
-/* 🔥 setiap load = +1 */
-fetch("https://api.countapi.xyz/hit/gkr-karawang/visits")
-  .then(res => res.json())
-  .then(data => renderNumber(data.value))
-  .catch(() => renderNumber(0));
+  /* 🔥 hit counter */
+  fetch("https://api.countapi.xyz/hit/gkr-karawang/visits")
+    .then(res => res.json())
+    .then(data => renderNumber(data.value))
+    .catch(() => renderNumber(0));
+
+});
 </script>
+
 
 
 </body>
