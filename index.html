@@ -10,11 +10,72 @@
 </head>
 
 <body>
+<!-- TOP BAR -->
+<div class="topbar">
+  Gereja Katolik Kristus Raja Karawang – Keuskupan Bandung
+</div>
+
+
+<!-- NAVBAR -->
+<nav class="navbar">
+
+  <div class="nav-left">
+
+    <span id="hamburger" class="hamburger">☰</span>
+
+    <div class="brand">
+      <img src="logoparoki.png" alt="">
+      <span>Kristus Raja Karawang</span>
+    </div>
+
+  </div>
+
+
+  <div class="nav-right">
+    <button id="searchBtn" class="search-btn">
+      <svg viewBox="0 0 24 24" width="20">
+        <path
+          d="M21 21l-4.3-4.3m1.3-5.2a6.5 6.5 0 11-13 0 6.5 6.5 0 0113 0z"
+          fill="none"
+          stroke="black"
+          stroke-width="2"
+          stroke-linecap="round"/>
+      </svg>
+    </button>
+  </div>
+
+</nav>
+
+
+
+  <!-- kanan -->
+  <div class="nav-right">
+    
+  </div>
+
+</nav>
+
+
+<div class="side-menu" id="sideMenu">
+  <a href="#beranda">Beranda</a>
+  <a href="#pengumuman">Pengumuman</a>
+  <a href="#kegiatan">Dokumentasi Kegiatan</a>
+  <a href="ladaftarwilayah.html">Daftar Wilayah</a>
+  <a href="#lokasi">Peta Digital</a>
+</div>
+
+
+<!-- SEARCH -->
+<div class="search-box" id="searchBox">
+  <input type="text" id="searchInput" placeholder="Cari di halaman...">
+</div>
+
 
 
  
   <!-- BAGIAN JUDUL -->
-  <header class="hero-header">
+  <header class="hero-header" id="beranda">
+
 
   <!-- LOGO KIRI ATAS -->
   <div class="logo-paroki">
@@ -26,7 +87,7 @@
     <h1>Gereja Katolik<br>Kristus Raja<br>Karawang</h1>
     <p>Keuskupan Bandung</p>
   </div>
-  <div class="scroll-down">selamat datang</div>
+  
 
 
 </header>
@@ -54,7 +115,8 @@
 </div>
 
   <!-- Slideshow Pengumuman -->
-   <section class="lokasi">
+   <section class="lokasi" id="pengumuman">
+
   <h2>Pengumuman</h2>
   <div class="slideshow-wrapper">
   <div class="slide fade">
@@ -135,7 +197,8 @@
 
 
 <!-- Dokumentasi Kegiatan -->
-  <section class="kegiatan-section">
+  <section class="kegiatan-section" id="kegiatan">
+
   <h2>Dokumentasi Kegiatan</h2>
 
   <div class="kegiatan-grid">
@@ -179,7 +242,8 @@
 
 
   <!-- Lokasi -->
-  <section class="lokasi">
+  <section class="lokasi" id="lokasi">
+
     <h2>Lokasi Gereja</h2>
     <iframe 
       src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3965.6022316222916!2d107.3089935!3d-6.315867!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e6977cc1849f835%3A0xe6396baee4295cf3!2sGereja%20Katolik%20Paroki%20Kristus%20Raja%2C%20Karawang!5e0!3m2!1sid!2sid!4v1763185216059!5m2!1sid!2sid"

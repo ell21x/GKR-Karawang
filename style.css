@@ -1,9 +1,10 @@
 /* ========== CSS WEBSITE GEREJA ========== */
-body {
-  font-family: Arial, sans-serif;
-  margin: 0;
-  background-color: #f0f4ff;
+body{
+  background:
+    linear-gradient(180deg, #d4bb8c 0%, #91754c 100%);
+  color:#222;
 }
+
 
 .search-box {
   text-align: center;
@@ -1716,8 +1717,763 @@ section.show{
 
   /* dots lebih jelas */
   .dot{
-    width:12px;
-    height:12px;
+    width:7px;
+    height:7px;
   }
 
+}
+/* =========================
+   HERO KHUSUS MOBILE
+========================= */
+@media (max-width:768px){
+
+  .hero-header{
+    height:60vh;   /* 🔥 lebih pendek */
+    min-height:380px;
+  }
+
+  .hero-text h1{
+    font-size:26px;
+  }
+
+  .hero-text p{
+    font-size:14px;
+  }
+
+  .scroll-down{
+    bottom:12px;
+    font-size:26px;
+  }
+
+}
+.hero-text h1{
+  text-shadow:0 4px 18px rgba(0,0,0,.6);
+}
+
+.hero-header::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:radial-gradient(circle at center, transparent 40%, rgba(0,0,0,.55));
+}
+.hero-text h1{
+  text-shadow:0 4px 18px rgba(0,0,0,.6);
+}
+
+.hero-header::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:radial-gradient(circle at center, transparent 40%, rgba(0,0,0,.55));
+}
+section{
+  background:white;
+  padding:25px;
+  border-radius:18px;
+  box-shadow:0 10px 25px rgba(0,0,0,.08);
+}
+@media (max-width:768px){
+  section{
+    padding:18px;
+    border-radius:14px;
+  }
+}
+/* ================= TOP BAR ================= */
+.topbar{
+  background:#6b3102;
+  color:white;
+  text-align:center;
+  padding:6px;
+  font-size:13px;
+}
+
+
+/* ================= NAVBAR ================= */
+.navbar{
+  position:sticky;
+  top:0;
+  background:white;
+
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+
+  padding:10px 20px;
+
+  box-shadow:0 2px 10px rgba(0,0,0,.08);
+  z-index:1000;
+}
+
+
+/* layout */
+.nav-left,
+.nav-right{
+  width:60px;
+  font-size:22px;
+  cursor:pointer;
+}
+
+.nav-center{
+  flex:1;
+  text-align:center;
+}
+
+
+/* logo */
+.nav-logo{
+  height:45px;
+}
+
+
+/* hamburger */
+.hamburger{
+  user-select:none;
+}
+
+
+/* ================= SIDE MENU ================= */
+.side-menu{
+  position:fixed;
+  top:0;
+  left:-260px;
+
+  width:260px;
+  height:100vh;
+
+  background:rgb(236, 234, 232);
+  box-shadow:4px 0 15px rgba(0,0,0,.15);
+
+  display:flex;
+  flex-direction:column;
+  padding-top:90px;
+
+  transition:.3s;
+  z-index:999;
+}
+
+.side-menu.active{
+  left:0;
+}
+
+.side-menu a{
+  padding:14px 24px;
+  text-decoration:none;
+  color:#333;
+  font-weight:600;
+  border-bottom:1px solid #fdb377;
+}
+
+.side-menu a:hover{
+  background:#797573;
+}
+
+
+/* ================= SEARCH ================= */
+.search-box{
+  position:fixed;
+  top:80px;
+  right:20px;
+
+  background:white;
+  padding:8px 12px;
+  border-radius:8px;
+
+  box-shadow:0 8px 20px rgba(0,0,0,.15);
+
+  display:none;
+}
+
+.search-box input{
+  border:none;
+  outline:none;
+  width:200px;
+}
+/* ================= TOP BAR ================= */
+.topbar{
+  background:#817b78; /* coklat gereja */
+  color:white;
+  text-align:center;
+  padding:6px;
+  font-size:13px;
+}
+
+
+
+/* ================= NAVBAR ================= */
+.navbar{
+  position:sticky;
+  top:0;
+
+  background:white;
+
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+
+  padding:10px 20px;
+
+  box-shadow:0 2px 12px rgba(0,0,0,.08);
+
+  border-bottom:3px solid #c9a24d; /* garis emas elegan */
+
+  z-index:1000;
+}
+
+
+
+/* ================= LEFT ================= */
+.nav-left{
+  display:flex;
+  align-items:center;
+  gap:14px;
+}
+
+
+/* hamburger */
+.hamburger{
+  font-size:24px;
+  cursor:pointer;
+}
+
+
+
+/* ================= BRAND ================= */
+.brand{
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+
+.brand img{
+  height:40px;
+}
+
+.brand-text{
+  display:flex;
+  flex-direction:column;
+  line-height:1.1;
+}
+
+.brand-text strong{
+  font-size:15px;
+}
+
+.brand-text small{
+  font-size:12px;
+  color:#666;
+}
+
+
+
+/* ================= RIGHT ================= */
+.nav-right{
+  font-size:20px;
+  cursor:pointer;
+}
+
+
+
+/* ================= SIDE MENU ================= */
+.side-menu{
+  position:fixed;
+  top:0;
+  left:-260px;
+
+  width:260px;
+  height:100vh;
+
+  background:white;
+
+  box-shadow:4px 0 15px rgba(0,0,0,.15);
+
+  display:flex;
+  flex-direction:column;
+
+  padding-top:90px;
+
+  transition:.3s;
+}
+
+.side-menu.active{
+  left:0;
+}
+
+.side-menu a{
+  padding:14px 24px;
+  text-decoration:none;
+  color:#333;
+  font-weight:600;
+  border-bottom:1px solid #eee;
+}
+
+
+
+/* ================= SEARCH ================= */
+.search-box{
+  position:fixed;
+  top:80px;
+  right:20px;
+
+  background:white;
+  padding:8px 12px;
+  border-radius:8px;
+
+  box-shadow:0 8px 20px rgba(0,0,0,.15);
+
+  display:none;
+}
+/* =========================
+   NAVBAR PROFESIONAL CLEAN
+========================= */
+
+.navbar{
+  position:sticky;
+  top:0;
+
+  height:64px;
+  width:100%;
+
+  background:#ffffff;
+
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+
+  padding:0 18px;
+
+  box-shadow:0 2px 10px rgba(0,0,0,.08);
+  border-bottom:3px solid #5c2504;
+
+  z-index:999;
+}
+
+
+
+/* kiri (hamburger + logo) */
+.nav-left{
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+
+
+
+/* hamburger */
+.hamburger{
+  font-size:22px;
+  cursor:pointer;
+}
+
+
+
+/* logo + text */
+.brand{
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+
+.brand img{
+  height:36px;
+  width:auto;
+}
+
+.brand span{
+  font-size:15px;
+  font-weight:600;
+}
+
+
+
+/* kanan search */
+.search-btn{
+  background:none;
+  border:none;
+  cursor:pointer;
+  padding:6px;
+}
+
+
+
+/* mobile fix */
+@media(max-width:768px){
+  .brand span{
+    font-size:13px;
+  }
+}
+/* ===== RESET ===== */
+body{
+  margin:0;
+  padding:0;
+  font-family:sans-serif;
+}
+
+
+/* ===== TOPBAR ===== */
+.topbar{
+  width:100%;
+  background:#502b01;
+  color:white;
+  text-align:center;
+  padding:8px 12px;
+  font-size:13px;
+}
+
+
+/* ===== NAVBAR FULL WIDTH ===== */
+.navbar{
+  position:sticky;
+  top:0;
+
+  width:100vw;        /* full layar */
+  left:0;
+
+  background:#fff;
+
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+
+  padding:12px 20px;
+
+  box-shadow:0 2px 10px rgba(0,0,0,.08);
+  z-index:999;
+}
+
+
+/* kiri */
+.nav-left{
+  display:flex;
+  align-items:center;
+  gap:14px;
+}
+
+
+/* hamburger */
+.hamburger{
+  font-size:22px;
+  cursor:pointer;
+}
+
+
+/* brand */
+.brand{
+  display:flex;
+  align-items:center;
+  gap:8px;
+}
+
+.brand img{
+  height:32px;
+}
+
+
+/* search */
+.search-btn{
+  background:#f3f4f6;
+  border:none;
+  width:38px;
+  height:38px;
+  border-radius:50%;
+  cursor:pointer;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:18px;
+}
+
+
+/* ===== LAYOUT (ISI KONTEN SAJA) ===== */
+.layout{
+  max-width:1200px;
+  margin:auto;
+  padding:20px;
+}
+/* ===== SIDE MENU ===== */
+.side-menu{
+  position:fixed;
+  top:0;
+  left:-260px;
+  width:250px;
+  height:100vh;
+
+  background:#fff;
+  box-shadow:2px 0 15px rgba(0,0,0,.15);
+
+  padding-top:80px;
+
+  transition:0.3s ease;
+  z-index:998;
+}
+
+.side-menu.active{
+  left:0;
+}
+
+.side-menu a{
+  display:block;
+  padding:14px 20px;
+  text-decoration:none;
+  color:#333;
+  border-bottom:1px solid #eee;
+}
+
+
+/* ===== SEARCH BOX ===== */
+.search-box{
+  position:fixed;
+  top:70px;
+  right:20px;
+
+  transform:scale(0);
+  opacity:0;
+
+  transition:0.25s;
+  z-index:999;
+}
+
+.search-box.active{
+  transform:scale(1);
+  opacity:1;
+}
+
+.search-box input{
+  width:220px;
+  padding:10px 14px;
+  border-radius:25px;
+  border:1px solid #ddd;
+  outline:none;
+}
+/* ===== HAMBURGER ===== */
+.hamburger{
+  font-size:26px;
+  background:none;
+  border:none;
+  cursor:pointer;
+}
+
+
+/* ===== SIDE MENU ===== */
+.side-menu{
+  position:fixed;
+  top:0;
+  left:-260px;
+  width:250px;
+  height:100vh;
+  background:#fff;
+
+  padding-top:80px;
+  box-shadow:2px 0 15px rgba(0,0,0,.2);
+
+  transition:left .3s ease;
+  z-index:999;
+}
+
+.side-menu.show{
+  left:0;
+}
+
+.side-menu a{
+  display:block;
+  padding:14px 20px;
+  text-decoration:none;
+  color:#333;
+}
+
+
+/* ===== SEARCH ===== */
+.search-box{
+  position:fixed;
+  top:70px;
+  right:20px;
+
+  transform:scale(0);
+  opacity:0;
+
+  transition:.25s;
+  z-index:999;
+}
+
+.search-box.show{
+  transform:scale(1);
+  opacity:1;
+}
+
+.search-box input{
+  width:220px;
+  padding:10px 14px;
+  border-radius:25px;
+  border:1px solid #ddd;
+}
+.side-menu{
+  transform: translateX(-100%);
+  transition: 0.3s;
+}
+
+.side-menu.show{
+  transform: translateX(0);
+}
+
+.search-box{
+  display:none;
+}
+
+.search-box.show{
+  display:block;
+}
+/* NAVBAR TRANSISI */
+.navbar{
+  transition: all .3s ease;
+}
+
+/* saat discroll */
+.navbar.scrolled{
+  background: rgba(255,255,255,0.95);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 4px 15px rgba(0,0,0,.12);
+}
+.side-menu{
+  position: fixed;
+  top:0;
+  left:0;
+  height:100%;
+  width:260px;
+  background:white;
+
+  transform: translateX(-100%);
+  transition: transform .35s cubic-bezier(.4,0,.2,1);
+
+  box-shadow: 4px 0 20px rgba(0,0,0,.15);
+  padding-top:80px;
+  z-index:999;
+}
+
+.side-menu.show{
+  transform: translateX(0);
+}
+.search-box{
+  position:absolute;
+  top:70px;
+  right:20px;
+
+  opacity:0;
+  transform: translateY(-10px);
+  pointer-events:none;
+
+  transition: all .25s ease;
+}
+
+.search-box.show{
+  opacity:1;
+  transform: translateY(0);
+  pointer-events:auto;
+}
+section{
+  opacity:0;
+  transform: translateY(40px);
+  transition: all .7s ease;
+}
+
+section.show{
+  opacity:1;
+  transform: translateY(0);
+}
+section{
+  opacity:0;
+  transform: translateY(40px);
+  transition: all .7s ease;
+}
+
+section.show{
+  opacity:1;
+  transform: translateY(0);
+}
+.side-menu a{
+  position:relative;
+  transition:.25s;
+}
+
+.side-menu a::after{
+  content:"";
+  position:absolute;
+  left:0;
+  bottom:0;
+  width:0;
+  height:2px;
+  background:#777272;
+  transition:.3s;
+}
+
+.side-menu a:hover::after{
+  width:100%;
+}
+.hero-text{
+  opacity:0;
+  transform:translateY(30px);
+  animation: heroFade 1.2s ease forwards;
+  animation-delay:.3s;
+}
+
+@keyframes heroFade{
+  to{
+    opacity:1;
+    transform:translateY(0);
+  }
+}
+/* =========================
+   REMOVE BLUE CLICK EFFECT
+========================= */
+
+/* semua tombol & icon */
+button,
+.hamburger,
+.search-btn,
+a {
+  -webkit-tap-highlight-color: transparent; /* Android */
+  outline: none;
+  border: none;
+  background: none;
+}
+
+/* hilangkan focus biru */
+button:focus,
+button:active,
+.hamburger:focus,
+.search-btn:focus,
+a:focus {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+/* hilangkan warna abu/biru saat ditekan */
+button:active,
+.hamburger:active,
+.search-btn:active {
+  background: transparent !important;
+}
+/* =========================
+   HAMBURGER ONLY COLOR
+========================= */
+
+.hamburger{
+  font-size: 26px;
+  cursor: pointer;
+  color: #222;
+  transition: .25s;
+}
+
+/* warna hanya icon */
+.hamburger.active{
+  color: #adb1b6; /* biru gereja */
+}
+
+/* jangan diwariskan */
+.brand,
+.brand span,
+.brand img{
+  color: inherit;
+}
+html{
+  scroll-behavior:smooth;
 }

@@ -1,176 +1,236 @@
+/* =========================================
+   DOM READY (AMAN DARI ERROR LOAD)
+========================================= */
+document.addEventListener("DOMContentLoaded", () => {
 
-/* === FULLSCREEN JADWAL MISA === */
-function bukaFullscreenMisa() {
-  document.getElementById("fullscreen-misa").classList.remove("hidden");
-}
+  /* =========================================
+     ELEMENTS
+  ========================================= */
+  const burger      = document.getElementById("hamburger");
+  const menu        = document.getElementById("sideMenu");
 
-function tutupFullscreenMisa() {
-  document.getElementById("fullscreen-misa").classList.add("hidden");
-}
+  const searchBtn   = document.getElementById("searchBtn");
+  const searchBox   = document.getElementById("searchBox");
+  const searchInput = document.getElementById("searchInput");
+
+  const hero        = document.querySelector(".hero-header");
+  const sections    = document.querySelectorAll("section");
 
 
 
-/* ===== FULLSCREEN SEKRETARIAT ===== */
-function showSekretariat() {
-  document.getElementById("sekretariatFull").style.display = "block";
-}
+  /* =========================================
+     BURGER MENU
+  ========================================= */
+  burger.addEventListener("click", () => {
 
-function closeFullscreen() {
-  document.getElementById("sekretariatFull").style.display = "none";
-}
+    const open = menu.classList.toggle("show");
 
-/* ===== SLIDESHOW PENGUMUMAN ===== */
-let slideIndex = 1;
-showSlides(slideIndex);
+    burger.textContent = open ? "✕" : "☰";
 
-function plusSlides(n) {
-  showSlides(slideIndex += n);
-}
+    searchBox.classList.remove("show");
 
-function currentSlide(n) {
-  showSlides(slideIndex = n);
-}
+  });
 
-function showSlides(n) {
-  let slides = document.getElementsByClassName("slide");
-  let dots = document.getElementsByClassName("dot");
 
-  if (n > slides.length) { slideIndex = 1 }
-  if (n < 1) { slideIndex = slides.length }
 
-  for (let i = 0; i < slides.length; i++) slides[i].style.display = "none";
-  for (let i = 0; i < dots.length; i++) dots[i].className = dots[i].className.replace(" active", "");
+  /* =========================================
+     SEARCH TOGGLE
+  ========================================= */
+  searchBtn.addEventListener("click", () => {
 
-  slides[slideIndex - 1].style.display = "block";
-  dots[slideIndex - 1].className += " active";
-}
+    const open = searchBox.classList.toggle("show");
 
-/* ===== PANAH KIRI MENUTUP FULLSCREEN ===== */
-function handlePrevClick() {
-  const fullscreenMisa = document.getElementById("fullscreen-img");
-  const fullscreenSekretariat = document.getElementById("sekretariatFull");
+    menu.classList.remove("show");
+    burger.textContent = "☰";
 
-  if (fullscreenMisa.style.display === "block") {
-    closeFullscreenMisa();
-  } else if (fullscreenSekretariat.style.display === "block") {
-    closeFullscreen();
+    if(open) searchInput.focus();
+
+  });
+
+
+
+  /* =========================================
+     CLICK OUTSIDE (AUTO CLOSE)
+  ========================================= */
+  document.addEventListener("click", (e) => {
+
+    if(!menu.contains(e.target) && !burger.contains(e.target)){
+      menu.classList.remove("show");
+      burger.textContent = "☰";
+    }
+
+    if(!searchBox.contains(e.target) && !searchBtn.contains(e.target)){
+      searchBox.classList.remove("show");
+    }
+
+  });
+
+
+
+  /* =========================================
+     ESC CLOSE
+  ========================================= */
+  document.addEventListener("keydown", (e) => {
+
+    if(e.key === "Escape"){
+      menu.classList.remove("show");
+      searchBox.classList.remove("show");
+      burger.textContent = "☰";
+    }
+
+  });
+
+
+
+  /* =========================================
+     SEARCH FUNCTION (REAL)
+  ========================================= */
+  searchInput.addEventListener("keydown", (e) => {
+
+    if(e.key === "Enter"){
+
+      const text = searchInput.value.toLowerCase();
+
+      const elements = document.querySelectorAll("section, h1, h2, h3, p, div");
+
+      for(let el of elements){
+        if(el.innerText.toLowerCase().includes(text)){
+          el.scrollIntoView({behavior:"smooth", block:"center"});
+          break;
+        }
+      }
+
+    }
+
+  });
+
+
+
+  /* =========================================
+     SLIDESHOW AUTO
+  ========================================= */
+  let slideIndex = 0;
+
+  const slides = document.querySelectorAll(".slide");
+  const dots   = document.querySelectorAll(".dot");
+
+  function showSlide(n){
+
+    slides.forEach(s => s.style.display = "none");
+    dots.forEach(d => d.classList.remove("active-dot"));
+
+    slideIndex = (n + slides.length) % slides.length;
+
+    slides[slideIndex].style.display = "block";
+    if(dots[slideIndex]) dots[slideIndex].classList.add("active-dot");
+  }
+
+  function nextSlide(){
+    showSlide(slideIndex + 1);
+  }
+
+  if(slides.length){
+    showSlide(0);
+    setInterval(nextSlide, 5000);
+  }
+
+
+
+  /* =========================================
+     PARALLAX HERO
+  ========================================= */
+  if(hero){
+    window.addEventListener("scroll", () => {
+      hero.style.backgroundPositionY = window.pageYOffset * 0.5 + "px";
+    });
+  }
+
+
+
+  /* =========================================
+     SCROLL REVEAL
+  ========================================= */
+  function revealOnScroll(){
+
+    const trigger = window.innerHeight * 0.85;
+
+    sections.forEach(sec => {
+
+      const top = sec.getBoundingClientRect().top;
+
+      if(top < trigger){
+        sec.classList.add("show");
+      }
+
+    });
+
+  }
+
+  window.addEventListener("scroll", revealOnScroll);
+  revealOnScroll();
+
+
+
+  /* =========================================
+     FULLSCREEN JADWAL MISA
+  ========================================= */
+  window.bukaFullscreenMisa = () => {
+    document.getElementById("fullscreen-misa").classList.remove("hidden");
+  };
+
+  window.closeMisa = () => {
+    document.getElementById("fullscreen-misa").classList.add("hidden");
+  };
+
+
+
+  /* =========================================
+     FULLSCREEN SEKRETARIAT
+  ========================================= */
+  window.showSekretariat = () => {
+    document.getElementById("sekretariatFull").classList.remove("hidden");
+  };
+
+  window.closeSekretariat = () => {
+    document.getElementById("sekretariatFull").classList.add("hidden");
+  };
+
+});
+const navbar = document.querySelector(".navbar");
+
+window.addEventListener("scroll", () => {
+  if(window.scrollY > 20){
+    navbar.classList.add("scrolled");
   } else {
-    // Jika fullscreen tidak terbuka, jalankan navigasi slide
-    plusSlides(-1);
+    navbar.classList.remove("scrolled");
   }
-}
+});
+document.querySelectorAll("button").forEach(btn=>{
 
+  btn.addEventListener("click", function(e){
 
+    const circle = document.createElement("span");
+    circle.classList.add("ripple");
 
+    const rect = btn.getBoundingClientRect();
 
+    circle.style.left = e.clientX - rect.left + "px";
+    circle.style.top  = e.clientY - rect.top + "px";
 
-// Fungsi slideshow
-function showSlides(n) {
-  let i;
-  let slides = document.getElementsByClassName("slide");
-  let dots = document.getElementsByClassName("dot");
+    btn.appendChild(circle);
 
-  if (n > slides.length) { slideIndex = 1; }
-  if (n < 1) { slideIndex = slides.length; }
+    setTimeout(()=>circle.remove(),600);
 
-  for (i = 0; i < slides.length; i++) {
-    slides[i].style.display = "none";
-  }
-
-  for (i = 0; i < dots.length; i++) {
-    dots[i].classList.remove("active-dot");
-  }
-
-  slides[slideIndex - 1].style.display = "block";
-  dots[slideIndex - 1].classList.add("active-dot");
-}
-
-// Auto Slide setiap 5 detik
-setInterval(() => {
-  plusSlides(1);
-}, 5000);
-
-
-/* Buka Halaman Kegiatan */
-function bukaHalaman(halaman) {
-  window.open(halaman, "_blank");
-}
-
-/* Fullscreen Sekretariat */
-function showSekretariat() {
-  document.getElementById("sekretariatFull").style.display = "flex";
-}
-
-function hideSekretariat() {
-  document.getElementById("sekretariatFull").style.display = "none";
-}
-
-
-let startX = 0;
-let startY = 0;
-
-function enableSwipe(element, closeFn) {
-  element.addEventListener("touchstart", e => {
-    startX = e.touches[0].clientX;
-    startY = e.touches[0].clientY;
   });
 
-  element.addEventListener("touchend", e => {
-    const endX = e.changedTouches[0].clientX;
-    const endY = e.changedTouches[0].clientY;
+});
+burger.addEventListener("click", () => {
+  const open = menu.classList.toggle("show");
 
-    const diffX = endX - startX;
-    const diffY = endY - startY;
+  burger.textContent = open ? "✕" : "☰";
 
-    // swipe kanan atau bawah
-    if (diffX > 80 || diffY > 80) {
-      closeFn();
-    }
-  });
-}
+  /* tambahkan ini */
+  burger.classList.toggle("active", open);
 
-function bukaFullscreenMisa() {
-  document.getElementById("fullscreen-misa").classList.remove("hidden");
-}
-
-function closeMisa() {
-  document.getElementById("fullscreen-misa").classList.add("hidden");
-}
-
-function showSekretariat() {
-  document.getElementById("sekretariatFull").classList.remove("hidden");
-}
-
-function closeSekretariat() {
-  document.getElementById("sekretariatFull").classList.add("hidden");
-}
-/* =========================
-   SCROLL REVEAL EFFECT
-========================= */
-
-const sections = document.querySelectorAll("section");
-
-function revealOnScroll(){
-  const trigger = window.innerHeight * 0.85;
-
-  sections.forEach(sec=>{
-    const top = sec.getBoundingClientRect().top;
-
-    if(top < trigger){
-      sec.classList.add("show");
-    }
-  });
-}
-
-window.addEventListener("scroll", revealOnScroll);
-window.addEventListener("load", revealOnScroll);
-/* =========================
-   PARALLAX HERO SMOOTH
-========================= */
-
-const hero = document.querySelector(".hero-header");
-
-window.addEventListener("scroll", ()=>{
-  let offset = window.pageYOffset;
-  hero.style.backgroundPositionY = offset * 0.5 + "px";
+  searchBox.classList.remove("show");
 });
