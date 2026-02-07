@@ -290,25 +290,26 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const container = document.getElementById("ledCounter");
 
-  function renderNumber(number) {
+  function renderNumber(number){
     container.innerHTML = "";
 
-    number.toString().padStart(6,"0").split("").forEach(char => {
-      const digit = document.createElement("div");
-      digit.className = "led-digit";
-      digit.textContent = char;
-      container.appendChild(digit);
+    number.toString().padStart(6,"0").split("").forEach(n=>{
+      const d = document.createElement("div");
+      d.className = "led-digit";
+      d.textContent = n;
+      container.appendChild(d);
     });
   }
 
-  /* tampil awal biar tidak kosong */
   renderNumber(0);
 
-  /* 🔥 hit counter */
-  fetch("https://api.countapi.xyz/hit/gkr-karawang/visits")
-    .then(res => res.json())
-    .then(data => renderNumber(data.value))
-    .catch(() => renderNumber(0));
+  /* 🔥 FIX MOBILE CACHE */
+  fetch("https://api.countapi.xyz/hit/gkr-karawang/visits?t=" + Date.now(), {
+    cache: "no-store"
+  })
+  .then(r => r.json())
+  .then(data => renderNumber(data.value))
+  .catch(()=> renderNumber(0));
 
 });
 </script>
