@@ -15,6 +15,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const hero        = document.querySelector(".hero-header");
   const sections    = document.querySelectorAll("section");
+  const navbar      = document.querySelector(".navbar");
 
 
 
@@ -26,6 +27,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const open = menu.classList.toggle("show");
 
     burger.textContent = open ? "✕" : "☰";
+    burger.classList.toggle("active", open);
 
     searchBox.classList.remove("show");
 
@@ -83,7 +85,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
   /* =========================================
-     SEARCH FUNCTION (REAL)
+     SEARCH FUNCTION
   ========================================= */
   searchInput.addEventListener("keydown", (e) => {
 
@@ -107,45 +109,43 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
   /* =========================================
-   SLIDESHOW PENGUMUMAN (FIX FINAL)
-========================================= */
+     SLIDESHOW PENGUMUMAN
+  ========================================= */
+  let slideIndex = 1;
 
-let slideIndex = 1;
+  const slides = document.querySelectorAll(".slide");
+  const dots   = document.querySelectorAll(".dot");
 
-const slides = document.querySelectorAll(".slide");
-const dots   = document.querySelectorAll(".dot");
+  function showSlides(n){
 
-function showSlides(n){
+    if(!slides.length) return;
 
-  if(!slides.length) return;
+    if(n > slides.length) slideIndex = 1;
+    if(n < 1) slideIndex = slides.length;
 
-  if(n > slides.length) slideIndex = 1;
-  if(n < 1) slideIndex = slides.length;
+    slides.forEach(s => s.style.display = "none");
+    dots.forEach(d => d.classList.remove("active-dot"));
 
-  slides.forEach(s => s.style.display = "none");
-  dots.forEach(d => d.classList.remove("active-dot"));
+    slides[slideIndex-1].style.display = "block";
 
-  slides[slideIndex-1].style.display = "block";
-
-  if(dots[slideIndex-1]){
-    dots[slideIndex-1].classList.add("active-dot");
+    if(dots[slideIndex-1]){
+      dots[slideIndex-1].classList.add("active-dot");
+    }
   }
-}
 
-window.plusSlides = (n) => {
-  showSlides(slideIndex += n);
-};
+  window.plusSlides = (n) => {
+    showSlides(slideIndex += n);
+  };
 
-window.currentSlide = (n) => {
-  showSlides(slideIndex = n);
-};
+  window.currentSlide = (n) => {
+    showSlides(slideIndex = n);
+  };
 
-showSlides(slideIndex);
+  showSlides(slideIndex);
 
-setInterval(() => {
-  plusSlides(1);
-}, 5000);
-
+  setInterval(() => {
+    plusSlides(1);
+  }, 5000);
 
 
 
@@ -185,6 +185,46 @@ setInterval(() => {
 
 
   /* =========================================
+     STICKY NAVBAR EFFECT (FIX)
+  ========================================= */
+  window.addEventListener("scroll", () => {
+
+    if(window.scrollY > 20){
+      navbar.classList.add("scrolled");
+    } else {
+      navbar.classList.remove("scrolled");
+    }
+
+  });
+
+
+
+  /* =========================================
+     RIPPLE BUTTON EFFECT
+  ========================================= */
+  document.querySelectorAll("button").forEach(btn=>{
+
+    btn.addEventListener("click", function(e){
+
+      const circle = document.createElement("span");
+      circle.classList.add("ripple");
+
+      const rect = btn.getBoundingClientRect();
+
+      circle.style.left = e.clientX - rect.left + "px";
+      circle.style.top  = e.clientY - rect.top + "px";
+
+      btn.appendChild(circle);
+
+      setTimeout(()=>circle.remove(),600);
+
+    });
+
+  });
+
+
+
+  /* =========================================
      FULLSCREEN JADWAL MISA
   ========================================= */
   window.bukaFullscreenMisa = () => {
@@ -209,41 +249,18 @@ setInterval(() => {
   };
 
 });
-const navbar = document.querySelector(".navbar");
+const track = document.querySelector(".hero-track");
+const slides = document.querySelectorAll(".hero-slide");
+let idx = 0, startX = 0, auto;
 
-window.addEventListener("scroll", () => {
-  if(window.scrollY > 20){
-    navbar.classList.add("scrolled");
-  } else {
-    navbar.classList.remove("scrolled");
-  }
-});
-document.querySelectorAll("button").forEach(btn=>{
+function go(i){track.style.transform=`translateX(-${i*100}%)`;idx=i}
+function nxt(){idx=(idx+1)%slides.length;go(idx)}
+function prv(){idx=(idx-1+slides.length)%slides.length;go(idx)}
 
-  btn.addEventListener("click", function(e){
+auto=setInterval(nxt,5000);
 
-    const circle = document.createElement("span");
-    circle.classList.add("ripple");
-
-    const rect = btn.getBoundingClientRect();
-
-    circle.style.left = e.clientX - rect.left + "px";
-    circle.style.top  = e.clientY - rect.top + "px";
-
-    btn.appendChild(circle);
-
-    setTimeout(()=>circle.remove(),600);
-
-  });
-
-});
-burger.addEventListener("click", () => {
-  const open = menu.classList.toggle("show");
-
-  burger.textContent = open ? "✕" : "☰";
-
-  /* tambahkan ini */
-  burger.classList.toggle("active", open);
-
-  searchBox.classList.remove("show");
-});
+const hero=document.querySelector(".hero-header");
+hero.addEventListener("touchstart",e=>{startX=e.touches[0].clientX;clearInterval(auto)});
+hero.addEventListener("touchend",e=>{const diff=startX-e.changedTouches[0].clientX;Math.abs(diff)>50&&(diff>0?nxt():prv());auto=setInterval(nxt,5000)});
+hero.addEventListener("mousedown",e=>{startX=e.clientX;clearInterval(auto)});
+hero.addEventListener("mouseup",e=>{const diff=startX-e.clientX;Math.abs(diff)>50&&(diff>0?nxt():prv());auto=setInterval(nxt,5000)});

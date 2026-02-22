@@ -1876,6 +1876,14 @@ section{
   border-bottom:3px solid #5c2504;
 
   z-index:999;
+  .navbar {
+  position: sticky;
+  top: 0;
+  z-index: 9999;
+
+  background: #ffffff; /* pastikan putih */
+}
+
 }
 
 
@@ -2537,4 +2545,174 @@ text-shadow: 0 0 12px rgba(255, 200, 80, 0.9);
 @keyframes glowBlink{
   from{ box-shadow:0 0 4px #00ff6a; }
   to{ box-shadow:0 0 18px #00ff6a; }
+}
+.navbar.scrolled {
+  box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+}
+.topbar {
+  background: #5b3a00;
+}
+.navbar {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background: #fff;
+}
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background: #fff;
+  z-index: 1000;
+}
+body {
+  padding-top: 70px; /* sesuaikan tinggi navbar */
+}
+/* ===== FIX FINAL HEADER ===== */
+
+/* TOP BAR */
+.topbar {
+  position: relative !important;
+  background: #7a4b00 !important;
+  color: white !important;
+  text-align: center !important;
+  padding: 8px 12px !important;
+  z-index: 1 !important;
+}
+
+/* NAVBAR STICKY */
+.navbar {
+  position: sticky !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: 100% !important;
+  background: #ffffff !important;
+  z-index: 9999 !important;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08) !important;
+}
+
+/* HAPUS EFEK FIXED LAMA */
+body {
+  padding-top: 0 !important;
+}
+/* ===== FIX FINAL PALING STABIL ===== */
+
+/* TOPBAR tetap normal */
+.topbar {
+  position: relative;
+  z-index: 1;
+}
+
+/* NAVBAR jadi fixed */
+.navbar {
+  position: fixed;
+  top: 40px; /* sesuaikan dengan tinggi topbar */
+  left: 0;
+  width: 100%;
+  background: white;
+  z-index: 9999;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+/* Supaya konten tidak ketiban */
+body {
+  padding-top: 110px; /* tinggi topbar + navbar */
+}
+/* HILANGKAN CELAH ANTARA NAVBAR & HEADER */
+.hero-header,
+header,
+.layout,
+.main-content {
+  margin-top: 0 !important;
+}
+
+/* Pastikan navbar benar-benar nempel */
+.navbar {
+  margin-bottom: 0 !important;
+}
+/* ===== FINAL STABLE HEADER ===== */
+
+/* Topbar tetap normal */
+.topbar {
+  position: relative;
+  z-index: 1;
+}
+
+/* Navbar selalu nempel ke atas */
+.navbar {
+  position: fixed;
+  top: 40px; /* tinggi topbar (sesuaikan jika beda) */
+  left: 0;
+  width: 100%;
+  background: #fff;
+  z-index: 9999;
+}
+
+/* Supaya konten tidak ketiban */
+body {
+  padding-top: 110px; /* topbar + navbar */
+}
+/* ===== FIX NAVBAR FINAL ===== */
+
+.topbar {
+  position: relative;
+  z-index: 1;
+}
+
+.navbar {
+  position: fixed;
+  top: 40px;   /* tinggi topbar */
+  left: 0;
+  width: 100%;
+  background: white;
+  z-index: 9999;
+}
+
+/* Supaya konten tidak ketiban */
+body {
+  padding-top: 110px; /* tinggi topbar + navbar */
+}
+/* =========================================
+   FORCE NAVBAR STICKY ONLY
+   Tempel paling bawah
+========================================= */
+
+/* Hanya navbar */
+.navbar {
+  position: sticky !important;
+  position: -webkit-sticky !important;
+  top: 0 !important;
+  z-index: 9999 !important;
+}
+
+/* Pastikan tidak ada offset dari versi fixed lama */
+body {
+  padding-top: 0 !important;
+}
+
+/* ===== FIX STICKY NAVBAR REAL ===== */
+
+/* Hapus penghalang sticky dari semua wrapper utama */
+body,
+html,
+.wrapper,
+.container,
+.main,
+header {
+  overflow: visible !important;
+  transform: none !important;
+}
+
+/* Navbar sticky */
+.navbar {
+  position: sticky !important;
+  top: 0 !important;
+  z-index: 99999 !important;
+}
+
+/* Pastikan tidak ada fixed lama menang */
+.navbar.fixed,
+.navbar.scrolled {
+  position: sticky !important;
 }
