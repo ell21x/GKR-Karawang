@@ -264,3 +264,41 @@ hero.addEventListener("touchstart",e=>{startX=e.touches[0].clientX;clearInterval
 hero.addEventListener("touchend",e=>{const diff=startX-e.changedTouches[0].clientX;Math.abs(diff)>50&&(diff>0?nxt():prv());auto=setInterval(nxt,5000)});
 hero.addEventListener("mousedown",e=>{startX=e.clientX;clearInterval(auto)});
 hero.addEventListener("mouseup",e=>{const diff=startX-e.clientX;Math.abs(diff)>50&&(diff>0?nxt():prv());auto=setInterval(nxt,5000)});
+// Misal pakai ID pada navbar
+const navbar = document.getElementById("navbar");
+
+window.addEventListener("load", () => {
+  const currentPage = window.location.pathname; // atau gunakan class/body data-page
+  if(currentPage.includes("jadwal-misa") || currentPage.includes("sekretariat")){
+    navbar.style.display = "none";
+  } else {
+    navbar.style.display = "block";
+  }
+});
+function hideHeader(){
+  if(navbar){
+    navbar.style.opacity = "0";
+    navbar.style.visibility = "hidden";
+    navbar.style.pointerEvents = "none";
+  }
+
+  if(topbar){
+    topbar.style.opacity = "0";
+    topbar.style.visibility = "hidden";
+    topbar.style.pointerEvents = "none";
+  }
+}
+
+function showHeader(){
+  if(navbar){
+    navbar.style.opacity = "1";
+    navbar.style.visibility = "visible";
+    navbar.style.pointerEvents = "auto";
+  }
+
+  if(topbar){
+    topbar.style.opacity = "1";
+    topbar.style.visibility = "visible";
+    topbar.style.pointerEvents = "auto";
+  }
+}

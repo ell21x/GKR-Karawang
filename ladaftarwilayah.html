@@ -1,307 +1,285 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Daftar Wilayah Paroki</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Data Wilayah</title>
 
-  <style>
-    /* STOP overflow horizontal global */
-html, body {
-  max-width: 100%;
-  overflow-x: hidden;
+<style>
+
+/* RESET */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: #f4f6f5;
-      color: #333;
-    }
-
-    header {
-      background: #853617;
-      color: #fff;
-      padding: 20px;
-      text-align: center;
-    }
-
-    .back-box {
-      text-align: center;
-      margin: 15px 0;
-    }
-
-    .back-box a {
-      text-decoration: none;
-      color: #7a522c;
-      font-weight: bold;
-    }
-
-    .judul {
-      text-align: center;
-      margin-bottom: 20px;
-    }
-
-    .search-box {
-      max-width: 420px;
-      margin: 0 auto 20px;
-      padding: 0 15px;
-    }
-
-    .search-box input {
-      width: 100%;
-      padding: 12px 16px;
-      border-radius: 25px;
-      border: 1px solid #ccc;
-      font-size: 15px;
-      outline: none;
-    }
-
-    .search-box input:focus {
-      border-color: #7a4f2c;
-    }
-
-    .export-box {
-  text-align: center;
-  margin-bottom: 20px;
+body {
+  font-family: 'Segoe UI', sans-serif;
+  background: #f5f5f5;
 }
 
-.export-box button {
-  padding: 10px 16px;
-  margin: 0 5px;
-  border: none;
-  border-radius: 20px;
-  background: #7a4f2c;
-  color: white;
-  font-size: 14px;
-  cursor: pointer;
-}
-
-.export-box button:hover {
-  background: #5f3c24;
-}
-
-
-    .table-wrapper {
-      padding: 0 15px 40px;
-      overflow-x: auto;
-    }
-
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      background: #fff;
-    }
-
-    th, td {
-      border: 1px solid #ccc;
-      padding: 10px;
-      text-align: center;
-      font-size: 14px;
-    }
-
-    th {
-      background: #e8f3ec;
-    }
-
-    .wilayah-green {
-      background: #dff1e5;
-      font-weight: bold;
-    }
-
-    .wilayah-blue {
-      background: #dbe9f6;
-      font-weight: bold;
-    }
-
-    .wilayah-yellow {
-      background: #fff3cd;
-      font-weight: bold;
-    }
-
-    footer {
-      background: #7a2c2c;
-      color: white;
-      text-align: center;
-      padding: 15px;
-      font-size: 14px;
-    }
-    .back-full {
+/* ================= BACK BUTTON ================= */
+.back-floating {
   position: fixed;
-  top: 15px;
-  left: 15px;
-  background: rgba(122, 79, 44, 0.9);
-  border: none;
+  top: 20px;
+  left: 20px;
+  width: 55px;
+  height: 55px;
   border-radius: 50%;
-  width: 42px;
-  height: 42px;
+  border: none;
+  background: #5b3a29;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  z-index: 999;
+  z-index: 9999;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
 }
 
-.back-full svg {
-  width: 24px;
-  height: 24px;
-  fill: none;
+.back-floating svg {
+  width: 30px;
+  height: 30px;
   stroke: white;
-  stroke-width: 2.5;
+  stroke-width: 3;
+  fill: none;
 }
 
-  </style>
+/* ================= SEARCH & EXPORT ================= */
+.top-control {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 15px;
+  margin: 100px 15px 25px;
+}
+
+.search-input,
+.export-btn {
+  padding: 14px 18px;
+  border-radius: 30px;
+  font-size: 17px;
+}
+
+.search-input {
+  border: 1px solid #ccc;
+  min-width: 280px;
+}
+
+.export-btn {
+  background: #5b3a29;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+/* ================= TABLE ================= */
+
+/* ================= TABLE FIX FULL HP ================= */
+
+.wrapper-table {
+  width: 100%;
+  padding: 0 10px 40px;
+}
+
+.table-wilayah {
+  width: 100%;
+  border-collapse: collapse;
+  background: white;
+  table-layout: fixed; /* penting supaya pas layar */
+}
+
+.table-wilayah th,
+.table-wilayah td {
+  border: 1px solid #000;
+  padding: 12px 8px;
+  font-size: 16px;
+  line-height: 1.6;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+
+/* Header */
+.table-wilayah th {
+  background: #5b3a29;
+  color: white;
+  text-align: center;
+  font-size: 17px;
+}
+
+/* Proporsi kolom biar seimbang di HP */
+.table-wilayah th:nth-child(1),
+.table-wilayah td:nth-child(1) {
+  width: 38%;
+}
+
+.table-wilayah th:nth-child(2),
+.table-wilayah td:nth-child(2) {
+  width: 32%;
+}
+
+.table-wilayah th:nth-child(3),
+.table-wilayah td:nth-child(3) {
+  width: 30%;
+  text-align: center;
+}
+
+/* Judul Wilayah */
+.wilayah-title td {
+  background: #ffd000;
+  font-weight: bold;
+  text-align: center;
+  font-size: 18px;
+}
+
+/* Romo */
+.romo-cell {
+  vertical-align: top;
+  text-align: center;
+  font-weight: bold;
+  background: #fafafa;
+}
+
+.romo-cell {
+  vertical-align: top;
+  text-align: center;
+  font-weight: bold;
+  background: #fafafa;
+}
+
+
+</style>
 </head>
 
-<!-- LIBRARY EXPORT -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
-
-<script>
-function searchWilayah() {
-  const filter = document.getElementById("searchWilayah").value.toLowerCase();
-  const rows = document.querySelectorAll(".tabel-wilayah tbody tr");
-
-  let header = null;
-
-  rows.forEach(row => {
-    if (row.cells.length === 1) {
-      header = row;
-      row.style.display = "none";
-      return;
-    }
-
-    if (row.textContent.toLowerCase().includes(filter)) {
-      row.style.display = "";
-      if (header) header.style.display = "";
-    } else {
-      row.style.display = "none";
-    }
-  });
-}
-
-function clearSearch() {
-  document.getElementById("searchWilayah").value = "";
-  searchWilayah();
-}
-
-/* EXPORT PDF */
-function exportPDF() {
-  const element = document.querySelector(".table-wrapper");
-  html2pdf().from(element).set({
-    margin: 0.5,
-    filename: 'Daftar_Wilayah_Paroki.pdf',
-    html2canvas: { scale: 2 },
-    jsPDF: { orientation: 'landscape', unit: 'cm', format: 'a4' }
-  }).save();
-}
-
-/* EXPORT EXCEL */
-function exportExcel() {
-  const table = document.querySelector(".tabel-wilayah");
-  const wb = XLSX.utils.table_to_book(table, { sheet: "Wilayah Paroki" });
-  XLSX.writeFile(wb, "Daftar_Wilayah_Paroki.xlsx");
-}
-</script>
-
-
 <body>
-    <button class="back-full" onclick="window.location.href='index.html'" aria-label="Kembali">
+
+<!-- BACK BUTTON -->
+<button class="back-floating" onclick="window.location.href='index.html'">
   <svg viewBox="0 0 24 24">
     <path d="M15 18l-6-6 6-6"/>
   </svg>
 </button>
 
-
-<header>
-  <h1>Gereja Katolik Kristus Raja Karawang</h1>
-  <p>Keuskupan Bandung</p>
-</header>
-
-
-
-<div class="judul">
-  <h2>Daftar Wilayah Paroki</h2>
-  <p>Gereja Katolik Kristus Raja Karawang</p>
-</div>
-
 <!-- SEARCH -->
-<div class="search-box">
+<div class="top-control">
   <input
     type="text"
     id="searchWilayah"
-    placeholder="Cari wilayah / lingkungan / ketua / pastor..."
+    class="search-input"
+    placeholder="Cari wilayah / lingkungan / ketua..."
     onkeyup="searchWilayah()"
   >
+  <button class="export-btn">Export PDF</button>
+  <button class="export-btn">Export Excel</button>
 </div>
 
-<div class="export-box">
-  <button onclick="exportPDF()">Export PDF</button>
-  <button onclick="exportExcel()">Export Excel</button>
-</div>
+<!-- TABLE -->
+<div class="wrapper-table">
+<table class="table-wilayah">
+<thead>
+<tr>
+<th>Lingkungan</th>
+<th>Nama Ketua</th>
+<th>Romo Pendamping</th>
+</tr>
+</thead>
+<tbody>
 
+<!-- WILAYAH I -->
+<tr class="wilayah-title"><td colspan="3">WILAYAH ST. BENEDIKTUS</td></tr>
+<tr>
+<td>ST. YUSUP - CENGKONG 1</td>
+<td>Bpk. Eusabius Tay</td>
+<td rowspan="8" class="romo-cell">R.P. Josaphat Judho Pramono, OSC</td>
+</tr>
+<tr><td>ST. GABRIEL - CENGKONG 2</td><td>Bpk. Agustinus Suhartanto</td></tr>
+<tr><td>MUSTIKA PRAKARSA</td><td>Ibu Kristiana Veriani</td></tr>
+<tr><td>TERANGSARI</td><td>Ibu Maria Yosepha</td></tr>
+<tr><td>GRIYA PESONA ASRI</td><td>Bpk. FX. Catur Suranto</td></tr>
+<tr><td>ST. MONIKA - PURI KOSAMBI</td><td>Bpk. Philipus Bambang</td></tr>
+<tr><td>DUREN</td><td>Bpk. Kenny Leonardo</td></tr>
+<tr><td>DE KERATON</td><td>Bpk. H. Desem Bristen Hutapea</td></tr>
 
+<!-- WILAYAH II -->
+<tr class="wilayah-title"><td colspan="3">WILAYAH ST. MIKAEL</td></tr>
+<tr>
+<td>BINTANG ALAM</td>
+<td>Ibu Anastasia S. Astutik</td>
+<td rowspan="7" class="romo-cell">R.P. Setevanus B. Saptono, OSC</td>
+</tr>
+<tr><td>UNSIKA</td><td>Bpk. Lukas Krismantoko</td></tr>
+<tr><td>BINTANG TIMUR</td><td>Bpk. Agustinus Sumidi</td></tr>
+<tr><td>ASRAMA 324</td><td>Ibu Linda Martina Jie</td></tr>
+<tr><td>PERURI</td><td>Bpk. Vincentius Danny Latief</td></tr>
+<tr><td>GRIYA INDAH</td><td>Bpk. Agustinus Aris Wijayanto</td></tr>
+<tr><td>KGV 2</td><td>Bpk. Albertus Sigit Prawoto</td></tr>
 
-     
-      <table class="tabel-wilayah">
-  <thead>
-    <tr>
-      <th>No</th>
-      <th>Wilayah / Lingkungan</th>
-      <th>Nama Ketua Lingkungan</th>
-      <th>Pastor Pendamping</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>1</td>
-      <td>ST. YUSUP - CENGKONG 1</td>
-      <td>Bpk. Eusabius Tay</td>
-      <td>R.P. Josaphat</td>
-    </tr>
-    <tr>
-      <td>2</td>
-      <td>ST. GABRIEL - CENGKONG 2</td>
-      <td>Bpk. Agustinus Suhartanto</td>
-      <td></td>
-    </tr>
-    <tr>
-      <td>3</td>
-      <td>MUSTIKA PRAKARSA</td>
-      <td>Ibu Kristiana Veriani</td>
-      <td></td>
-    </tr>
-  </tbody>
+<!-- WILAYAH III -->
+<tr class="wilayah-title"><td colspan="3">WILAYAH ST. YOSEPH</td></tr>
+<tr>
+<td>ST. M. BUNDA ALLAH - CINANGOH</td>
+<td>Ibu Shirley Caroline</td>
+<td rowspan="6" class="romo-cell">R.P. Josaphat Judho Pramono, OSC</td>
+</tr>
+<tr><td>GADING ELOK</td><td>Bpk. Yosep Danang Eko Putranto</td></tr>
+<tr><td>ST. MARTA - LAMARAN 1</td><td>Bpk. Edmondus Takndar</td></tr>
+<tr><td>LAMARAN 2</td><td>Bpk. Alfonsus Anjar K</td></tr>
+<tr><td>ST. AGUSTINUS - W. BAMBU</td><td>Bpk. Ignatius Tugiyo</td></tr>
+<tr><td>ST. THERESIA - BTS</td><td>Bpk. Horlen Sitanggang</td></tr>
+
+<!-- WILAYAH IV -->
+<tr class="wilayah-title"><td colspan="3">WILAYAH ST. YOHANES</td></tr>
+<tr>
+<td>ST. KATARINA - TUPAREV</td>
+<td>Bpk. L. Fernando Tarigan</td>
+<td rowspan="2" class="romo-cell">R.P. Setevanus B. Saptono, OSC</td>
+</tr>
+<tr><td>ST. ANDREAS - NIAGA</td><td>Bpk. Timotius Dede S. Hidayat</td></tr>
+
+<!-- WILAYAH V -->
+<tr class="wilayah-title"><td colspan="3">WILAYAH ST. FRANSISKUS XAVERIUS</td></tr>
+<tr>
+<td>BABAKAN CIANJUR</td>
+<td>Ibu Rita Oyen</td>
+<td rowspan="3" class="romo-cell">R.P. Josaphat Judho Pramono, OSC</td>
+</tr>
+<tr><td>ST. ANTONIUS PADUA - TARUNO</td><td>Bpk. Thomas Aquinas Arie B</td></tr>
+<tr><td>ADIARSA</td><td>Bpk. Matius Daryono</td></tr>
+
+<!-- WILAYAH VI -->
+<tr class="wilayah-title"><td colspan="3">WILAYAH ST. PASKALIS</td></tr>
+<tr>
+<td>ST. RAFAEL - ANGGADITA</td>
+<td>Bpk. Agustinus Rudi</td>
+<td rowspan="4" class="romo-cell">R.P. Setevanus B. Saptono, OSC</td>
+</tr>
+<tr><td>ST. THOMAS - GRIYA MAS</td><td>Bpk. Luridman Gultom</td></tr>
+<tr><td>CITRA KEBUN MAS 1</td><td>Bpk. F.X. Wiharno</td></tr>
+<tr><td>ST. ANNA - KONDANG JAYA</td><td>Ibu Veronika Dyah R</td></tr>
+
+<!-- WILAYAH VII -->
+<tr class="wilayah-title"><td colspan="3">WILAYAH ST. BUNDA TERESA</td></tr>
+<tr>
+<td>ST. P. MARIA - KARTIKA</td>
+<td>Bpk. Daniel Sembiring</td>
+<td rowspan="5" class="romo-cell">R.P. Josaphat Judho Pramono, OSC</td>
+</tr>
+<tr><td>ST. PAULUS - CKM 2</td><td>Bpk. Mikael Suryo Kuncoro</td></tr>
+<tr><td>ST. STEFANUS - CKM 3</td><td>Bpk. Martinus Budiyono</td></tr>
+<tr><td>ST. YOH. BOSCO - MAJALAYA 1</td><td>Ibu Anna Dosnita Sinaga</td></tr>
+<tr><td>ST. YOSAFAT - MAJALAYA 2</td><td>Bpk. Petrus Faber Yili</td></tr>
+
+</tbody>
 </table>
-    
-
 </div>
-
-<footer>
-  &copy; 2025 Gereja Katolik Kristus Raja Karawang
-</footer>
 
 <script>
 function searchWilayah() {
-  const input = document.getElementById("searchWilayah");
-  const filter = input.value.toLowerCase();
-  const rows = document.querySelectorAll(".tabel-wilayah tbody tr");
-
-  let header = null;
+  const filter = document.getElementById("searchWilayah").value.toLowerCase();
+  const rows = document.querySelectorAll(".table-wilayah tbody tr");
 
   rows.forEach(row => {
-    if (row.cells.length === 1) {
-      header = row;
-      row.style.display = "none";
-      return;
-    }
-
-    if (row.textContent.toLowerCase().includes(filter)) {
-      row.style.display = "";
-      if (header) header.style.display = "";
-    } else {
-      row.style.display = "none";
-    }
+    row.style.display = row.textContent.toLowerCase().includes(filter) ? "" : "none";
   });
 }
 </script>

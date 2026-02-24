@@ -2716,3 +2716,55 @@ header {
 .navbar.scrolled {
   position: sticky !important;
 }
+/* =========================
+   HEADER STABIL FINAL
+========================= */
+
+/* Topbar normal */
+.topbar{
+  position: relative;
+  z-index: 1;
+}
+
+/* Navbar benar-benar sticky */
+.navbar{
+  position: sticky;
+  top: 0;
+  width: 100%;
+  background: #ffffff;
+  z-index: 9999;
+  box-shadow: 0 2px 10px rgba(0,0,0,.08);
+}
+
+/* Jangan pakai padding-top body */
+body{
+  padding-top: 0;
+}
+/* =========================
+   HEADER STABIL FINAL
+========================= */
+
+/* Topbar normal */
+.topbar{
+  position: relative;
+  z-index: 1;
+}
+
+/* Navbar benar-benar sticky */
+.navbar{
+  position: sticky;
+  top: 0;
+  width: 100%;
+  background: #ffffff;
+  z-index: 9999;
+  box-shadow: 0 2px 10px rgba(0,0,0,.08);
+}
+
+/* Jangan pakai padding-top body */
+body{
+  padding-top: 0;
+}
+.navbar,
+.topbar{
+  transition: opacity .3s ease;
+}
