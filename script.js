@@ -302,3 +302,22 @@ function showHeader(){
     topbar.style.pointerEvents = "auto";
   }
 }
+function bukaFullscreenMisa() {
+  document.getElementById("fullscreen-misa").classList.remove("hidden");
+  document.body.classList.add("fullscreen-active");
+}
+
+function closeMisa() {
+  document.getElementById("fullscreen-misa").classList.add("hidden");
+  document.body.classList.remove("fullscreen-active");
+}
+
+function showSekretariat() {
+  document.getElementById("sekretariatFull").classList.remove("hidden");
+  document.body.classList.add("fullscreen-active");
+}
+
+function closeSekretariat() {
+  document.getElementById("sekretariatFull").classList.add("hidden");
+  document.body.classList.remove("fullscreen-active");
+}

@@ -2768,3 +2768,36 @@ body{
 .topbar{
   transition: opacity .3s ease;
 }
+/* ============================= */
+/* NAVBAR AUTO HIDE SAAT FULLSCREEN */
+/* ============================= */
+
+.navbar {
+  transition: transform 0.3s ease, opacity 0.3s ease;
+  z-index: 1000;
+}
+
+/* Saat fullscreen aktif (tidak hidden) */
+.fullscreen:not(.hidden) ~ .navbar,
+body:has(.fullscreen:not(.hidden)) .navbar {
+  transform: translateY(-100%);
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Pastikan fullscreen benar-benar di atas */
+.fullscreen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  background: #fff;
+  z-index: 9999;
+  overflow-y: auto;
+}
+
+/* Hidden state */
+.hidden {
+  display: none;
+}
