@@ -7,166 +7,174 @@
   <title>Pelatihan Kamera anggota Komsos Gereja Katolik Kristus Raja Karawang</title>
 
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      background: #f6f7fb;
-    }
-
-    .container {
-      max-width: 850px;
-      margin: 20px auto;
-      background: white;
-      padding: 30px;
-      border-radius: 12px;
-      box-shadow: 0 4px 16px rgba(0,0,0,0.1);
-    }
-
-    h1 {
-      font-size: 32px;
-      margin-bottom: 10px;
-      color: #1a1a1a;
-    }
-
-    .meta {
-      color: #666;
-      font-size: 14px;
-      margin-bottom: 25px;
-    }
-
-    .artikel-img {
-      width: 100%;
-      margin: 20px 0;
-    }
-
-    p {
-      font-size: 18px;
-      line-height: 1.7;
-      color: #222;
-      margin-bottom: 18px;
-    }
-
-    h2 {
-      margin-top: 35px;
-      color: #1a1a1a;
-    }
-
-    blockquote {
-      border-left: 4px solid #4a67ff;
-      padding-left: 15px;
-      font-style: italic;
-      color: #444;
-      margin: 25px 0;
-    }
-
-    /* MODE HP — tidak tampilkan gambar besar */
-    @media (max-width: 600px) {
-      .container {
-        padding: 18px;
-      }
-
-      h1 {
-        font-size: 24px;
-      }
-
-      p {
-        font-size: 15px;
-      }
-
-      .artikel-img {
-  width: 100%;
-  display: block;
+   /* ===== RESET ===== */
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
 }
 
-.related-section {
-  margin-top: 40px;
-  padding-top: 20px;
-  border-top: 2px solid #eee;
+/* ===== BODY ===== */
+body{
+  font-family: Arial, sans-serif;
+  background:#f6f7fb;
+  line-height:1.6;
 }
 
-.related-section h3 {
-  font-size: 22px;
-  margin-bottom: 15px;
-  color: #222;
+/* ===== CONTAINER ARTIKEL ===== */
+.container{
+  max-width:850px;
+  margin:20px auto;
+  background:white;
+  padding:30px;
+  border-radius:12px;
+  box-shadow:0 4px 16px rgba(0,0,0,0.1);
 }
 
-.related-list {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
+/* ===== JUDUL ===== */
+h1{
+  font-size:32px;
+  margin-bottom:10px;
+  color:#1a1a1a;
 }
 
-.related-item {
-  text-decoration: none;
-  padding: 15px 18px;
-  background: #f5f6ff;
-  border-radius: 10px;
-  box-shadow: 0 3px 10px rgba(0,0,0,0.05);
-  transition: 0.2s;
+/* ===== META ===== */
+.meta{
+  color:#666;
+  font-size:14px;
+  margin-bottom:25px;
 }
 
-.related-item:hover {
-  background: #e7e9ff;
-  transform: translateX(3px);
+/* ===== FOTO ARTIKEL ===== */
+.artikel-img{
+  width:100%;
+  border-radius:8px;
+  margin:20px 0;
+  display:block;
 }
 
-.related-title {
-  font-size: 17px;
-  font-weight: bold;
-  color: #1a1a1a;
+/* ===== PARAGRAF ===== */
+p{
+  font-size:18px;
+  color:#222;
+  line-height:1.7;
+  margin-bottom:18px;
 }
 
-.related-date {
-  font-size: 13px;
-  color: #777;
-  margin-top: 4px;
+/* ===== SUB JUDUL ===== */
+h3{
+  margin-top:30px;
+  margin-bottom:10px;
+  color:#1a1a1a;
 }
 
-/* MODE HP */
-@media (max-width: 600px) {
-  .related-item {
-    padding: 12px 14px;
+/* ===== BLOCKQUOTE ===== */
+blockquote{
+  border-left:4px solid #4a67ff;
+  padding-left:15px;
+  font-style:italic;
+  color:#444;
+  margin:25px 0;
+}
+
+/* ===== RELATED ARTIKEL ===== */
+.related-section{
+  margin-top:40px;
+  padding-top:20px;
+  border-top:2px solid #eee;
+}
+
+.related-section h3{
+  font-size:22px;
+  margin-bottom:15px;
+}
+
+.related-list{
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+}
+
+.related-item{
+  text-decoration:none;
+  padding:15px 18px;
+  background:#f5f6ff;
+  border-radius:10px;
+  box-shadow:0 3px 10px rgba(0,0,0,0.05);
+  transition:0.2s;
+}
+
+.related-item:hover{
+  background:#e7e9ff;
+  transform:translateX(3px);
+}
+
+.related-title{
+  font-size:17px;
+  font-weight:bold;
+  color:#1a1a1a;
+}
+
+.related-date{
+  font-size:13px;
+  color:#777;
+  margin-top:4px;
+}
+
+/* ===== BACK BUTTON ===== */
+.back-full{
+  position:fixed;
+  top:20px;
+  left:20px;
+  width:46px;
+  height:46px;
+  background:#662d17;
+  border:none;
+  border-radius:50%;
+  box-shadow:0 6px 15px rgba(0,0,0,0.25);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  cursor:pointer;
+  z-index:9999;
+}
+
+.back-full svg{
+  width:22px;
+  height:22px;
+  stroke:#ffffff;
+  stroke-width:2.5;
+  fill:none;
+}
+
+.back-full:hover{
+  background:#7c371b;
+}
+
+/* ===== RESPONSIVE HP ===== */
+@media (max-width:600px){
+
+  .container{
+    padding:18px;
   }
 
-  .related-title {
-    font-size: 15px;
+  h1{
+    font-size:24px;
   }
-}
 
-/* ===== BACK BUTTON (SAMA DENGAN JADWAL MISA) ===== */
-.back-full {
-  position: fixed;
-  top: 20px;
-  left: 20px;
-  width: 46px;
-  height: 46px;
-  background: #662d17;
-  border: none;
-  border-radius: 50%;
-  box-shadow: 0 6px 15px rgba(255, 255, 255, 0.25);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  z-index: 99999;
-}
+  p{
+    font-size:15px;
+  }
 
-.back-full svg {
-  width: 22px;
-  height: 22px;
-  stroke: #f1efef;
-  stroke-width: 2.5;
-  fill: none;
-}
+  .related-item{
+    padding:12px 14px;
+  }
 
-.back-full:hover {
-  background: #7c371b;
-}
+  .related-title{
+    font-size:15px;
+  }
 
-
-      }
-
-      
+}   
     
   </style>
 </head>
@@ -186,7 +194,7 @@
     <div class="meta">28 Februari 2026 • Paroki Kristus Raja Karawang</div>
 
     <img class="artikel-img" src="pelkam.jpeg" alt="Foto Kegiatan">
- <h2>Membangun Keterampilan, Menghadirkan Pewartaan yang Berkualitas</h2>
+ <h3>Membangun Keterampilan, Menghadirkan Pewartaan yang Berkualitas</h3>
  
     <p>
 Komisi Komunikasi Sosial (Komsos) Paroki Kristus Raja Karawang menyelenggarakan Pelatihan Dasar Pengoperasian Kamera yang dilaksanakan di Aula Agustinus.
@@ -196,7 +204,7 @@ Dalam sambutannya, Pastor Paroki, Pastor Fredy, OSC, menyampaikan pesan sekaligu
  Beliau menegaskan bahwa pelayanan Komsos bukan sekadar kegiatan teknis dokumentasi, melainkan bagian dari misi Gereja dalam menghadirkan kabar sukacita dan pengharapan. Melalui keterampilan yang diasah dengan baik, setiap dokumentasi diharapkan mampu menjadi sarana evangelisasi yang membangun iman umat.
     </p>
       
-<h2> Registrasi dan Pembukaan</h2>
+<h3> Registrasi dan Pembukaan</h3>
     <p>
 Kegiatan dimulai pukul 07.30 WIB dengan registrasi dan persiapan peserta. 
 Suasana kebersamaan sudah terasa sejak awal, dengan antusiasme peserta yang datang dari berbagai lingkungan.
@@ -211,7 +219,7 @@ Dalam arahannya, beliau menekankan pentingnya kualitas visual dalam mendukung pu
       “pelatihan ini sebagai kesempatan untuk berkembang demi kemuliaan Tuhan dan pelayanan Gereja.”
     </blockquote>
 
-    <h2>Pengantar dan Perkenalan Narasumber</h2>
+    <h3>Pengantar dan Perkenalan Narasumber</h3>
 
     <img class="artikel-img" src="pelkam3.jpeg" alt="Foto Kegiatan">
 
@@ -222,7 +230,7 @@ Dalam arahannya, beliau menekankan pentingnya kualitas visual dalam mendukung pu
 Dilanjutkan dengan perkenalan narasumber yang akan memandu seluruh rangkaian pelatihan teknis sepanjang hari.
     </p>
       
-<h2>Pembahasan Materi dan Praktik</h2>
+<h3>Pembahasan Materi dan Praktik</h3>
 
     <p>
      Materi pertama membahas Dasar-dasar Pengoperasian Kamera, meliputi pengenalan fungsi tombol, pengaturan exposure, serta pemahaman dasar komposisi gambar.
@@ -235,7 +243,7 @@ Memasuki sesi siang, peserta dibagi dalam kelompok untuk praktik pemotretan. Set
 
 <img class="artikel-img" src="pelkam4.jpeg" alt="foto kegiatan">
    
-<h2>Evaluasi dan Penutup</h2>
+<h3>Evaluasi dan Penutup</h3>
 <p>
      Setelah istirahat makan siang, kegiatan dilanjutkan dengan presentasi dan evaluasi hasil pemotretan. Narasumber memberikan masukan konstruktif terhadap hasil karya peserta, sehingga setiap peserta dapat memahami kelebihan dan aspek yang perlu ditingkatkan.
 

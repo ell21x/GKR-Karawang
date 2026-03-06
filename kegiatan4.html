@@ -7,167 +7,161 @@
   <title>BERJALAN BERSAMA SEHATI SEJIWA MENJADI GEREJA YANG RELEVAN, BERDAYA, DAN MISIONER</title>
 
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      background: #f6f7fb;
-    }
-
-    .container {
-      max-width: 850px;
-      margin: 20px auto;
-      background: white;
-      padding: 30px;
-      border-radius: 12px;
-      box-shadow: 0 4px 16px rgba(0,0,0,0.1);
-    }
-
-    h1 {
-      font-size: 32px;
-      margin-bottom: 10px;
-      color: #1a1a1a;
-    }
-
-    .meta {
-      color: #666;
-      font-size: 14px;
-      margin-bottom: 25px;
-    }
-
-    .artikel-img {
-      width: 100%;
-      margin: 20px 0;
-    }
-
-    p {
-      font-size: 18px;
-      line-height: 1.7;
-      color: #222;
-      margin-bottom: 18px;
-    }
-
-    h2 {
-      margin-top: 35px;
-      color: #1a1a1a;
-    }
-
-    blockquote {
-      border-left: 4px solid #4a67ff;
-      padding-left: 15px;
-      font-style: italic;
-      color: #444;
-      margin: 25px 0;
-    }
-
-    /* MODE HP — tidak tampilkan gambar besar */
-    @media (max-width: 600px) {
-      .container {
-        padding: 18px;
-      }
-
-      h1 {
-        font-size: 24px;
-      }
-
-      p {
-        font-size: 15px;
-      }
-
-      .artikel-img {
-  width: 100%;
-  display: block;
+ body{
+  font-family: Arial, sans-serif;
+  margin:0;
+  background:#f6f7fb;
 }
 
-.related-section {
-  margin-top: 40px;
-  padding-top: 20px;
-  border-top: 2px solid #eee;
+.container{
+  max-width:850px;
+  margin:60px auto;
+  background:white;
+  padding:30px;
+  border-radius:12px;
+  box-shadow:0 4px 16px rgba(0,0,0,0.1);
 }
 
-.related-section h3 {
-  font-size: 22px;
-  margin-bottom: 15px;
-  color: #222;
+h1{
+  font-size:32px;
+  margin-bottom:10px;
+  color:#1a1a1a;
 }
 
-.related-list {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
+.meta{
+  color:#666;
+  font-size:14px;
+  margin-bottom:25px;
 }
 
-.related-item {
-  text-decoration: none;
-  padding: 15px 18px;
-  background: #f5f6ff;
-  border-radius: 10px;
-  box-shadow: 0 3px 10px rgba(0,0,0,0.05);
-  transition: 0.2s;
+.artikel-img{
+  width:100%;
+  margin:20px 0;
+  border-radius:8px;
 }
 
-.related-item:hover {
-  background: #e7e9ff;
-  transform: translateX(3px);
+p{
+  font-size:18px;
+  line-height:1.7;
+  color:#222;
+  margin-bottom:18px;
 }
 
-.related-title {
-  font-size: 17px;
-  font-weight: bold;
-  color: #1a1a1a;
+h2{
+  margin-top:35px;
+  color:#1a1a1a;
 }
 
-.related-date {
-  font-size: 13px;
-  color: #777;
-  margin-top: 4px;
+blockquote{
+  border-left:4px solid #4a67ff;
+  padding-left:15px;
+  font-style:italic;
+  color:#444;
+  margin:25px 0;
 }
 
-/* MODE HP */
-@media (max-width: 600px) {
-  .related-item {
-    padding: 12px 14px;
-  }
+/* ===== BACK BUTTON ===== */
+.back-full{
+  position:fixed;
+  top:20px;
+  left:20px;
 
-  .related-title {
-    font-size: 15px;
-  }
+  width:46px;
+  height:46px;
+
+  background:#662d17;
+  border:none;
+  border-radius:50%;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  cursor:pointer;
+
+  box-shadow:0 6px 15px rgba(0,0,0,0.25);
+  z-index:9999;
+
+  transition:0.2s;
 }
 
-/* ===== BACK BUTTON (SAMA DENGAN JADWAL MISA) ===== */
-.back-full {
-  position: fixed;
-  top: 20px;
-  left: 20px;
-  width: 46px;
-  height: 46px;
-  background: #662d17;
-  border: none;
-  border-radius: 50%;
-  box-shadow: 0 6px 15px rgba(255, 255, 255, 0.25);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  z-index: 99999;
+.back-full svg{
+  width:22px;
+  height:22px;
+  stroke:#fff;
+  stroke-width:2.5;
+  fill:none;
 }
 
-.back-full svg {
-  width: 22px;
-  height: 22px;
-  stroke: #f1efef;
-  stroke-width: 2.5;
-  fill: none;
+.back-full:hover{
+  background:#7c371b;
+  transform:scale(1.08);
 }
 
-.back-full:hover {
-  background: #7c371b;
+/* ===== RELATED ARTIKEL ===== */
+.related-section{
+  margin-top:40px;
+  padding-top:20px;
+  border-top:2px solid #eee;
 }
 
+.related-list{
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+}
 
-      }
+.related-item{
+  text-decoration:none;
+  padding:15px 18px;
+  background:#f5f6ff;
+  border-radius:10px;
+  box-shadow:0 3px 10px rgba(0,0,0,0.05);
+  transition:0.2s;
+}
 
-      
-    
+.related-item:hover{
+  background:#e7e9ff;
+  transform:translateX(3px);
+}
+
+.related-title{
+  font-size:17px;
+  font-weight:bold;
+  color:#1a1a1a;
+}
+
+.related-date{
+  font-size:13px;
+  color:#777;
+  margin-top:4px;
+}
+
+/* ===== RESPONSIVE HP ===== */
+@media (max-width:600px){
+
+.container{
+  padding:18px;
+}
+
+h1{
+  font-size:24px;
+}
+
+p{
+  font-size:15px;
+}
+
+.related-item{
+  padding:12px 14px;
+}
+
+.related-title{
+  font-size:15px;
+}
+
+}
+
   </style>
 </head>
 <body>
@@ -176,7 +170,6 @@
     <path d="M15 18l-6-6 6-6"/>
   </svg>
 </button>
-
 
   <div class="container">
     
@@ -214,19 +207,16 @@ Gereja dipanggil untuk tidak berjalan sendiri-sendiri, melainkan dalam semangat 
 
     <img class="artikel-img" src="FOKUSPAS2.jpeg" alt="Foto Kegiatan">
 
-
     <p>
       Dalam pemaparan dijelaskan lima perhatian utama yang menjadi arah gerak pastoral, yakni kaderisasi Orang Muda Katolik (OMK), penguatan Pastoral Keluarga, 
       peningkatan mutu katekese dan pewartaan, keterlibatan umat di ruang publik, serta pemberdayaan ekonomi dan pendidikan umat.
        Kelima bidang ini dirancang untuk menjawab kebutuhan konkret umat sekaligus memperkuat peran Gereja sebagai terang dan garam dunia.
     </p>
-      
 
     <p>
      Melalui sosialisasi ini, Paroki Kristus Raja Karawang menegaskan kesiapan untuk menerjemahkan Fokus Pastoral Keuskupan ke dalam program kerja yang nyata,
       terarah, dan berkesinambungan. Sinergi antara imam, biarawan-biarawati, dan kaum awam menjadi fondasi utama dalam mewujudkan cita-cita bersama tersebut.
      </p>
-
 
     <p>
      setelah zoom diakhiri, Pastor Paroki memberi sedikit pesan penutup kepada umat yang hadir.
