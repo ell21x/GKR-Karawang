@@ -7,6 +7,7 @@
 
   <!-- File CSS -->
   <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="search-highlight.css">
 </head>
 
 <body>
@@ -125,51 +126,22 @@
   <h2>Pengumuman</h2>
   <div class="slideshow-wrapper">
   <div class="slide fade">
-    <img src="umuman12.jpeg" alt="Pengumuman 1">
+ 
+     <div class="slide fade">
+    <img src="umum1.jpeg" alt="pengumuman 4">
   </div>
 
   <div class="slide fade">
-    <img src="umumann11.jpeg" alt="Pengumuman 2">
+    <img src="umum2.jpeg" alt="pengumuman 4">
+  </div>
+
+   
+  <div class="slide fade">
+    <img src="umum3.jpeg" alt="pengumuman 4">
   </div>
 
   <div class="slide fade">
-    <img src="umuman1.jpeg" alt="Pengumuman 3">
-  </div>
-
-  <div class="slide fade">
-    <img src="umuman2.jpeg" alt="pengumuman 4">
-  </div>
-
-  <div class="slide fade">
-    <img src="umuman3.jpeg" alt="pengumuman 4">
-  </div>
-
-  <div class="slide fade">
-    <img src="umuman4.jpeg" alt="pengumuman 4">
-  </div>
-
-  <div class="slide fade">
-    <img src="umuman 5.jpeg" alt="pengumuman 4">
-  </div>
-
-  <div class="slide fade">
-    <img src="umuman6.jpeg" alt="pengumuman 4">
-  </div>
-
-  <div class="slide fade">
-    <img src="umuman7.jpeg" alt="pengumuman 4">
-  </div>
-
-  <div class="slide fade">
-    <img src="umuman8.jpeg" alt="pengumuman 4">
-  </div>
-
-  <div class="slide fade">
-    <img src="umuman9.jpeg" alt="pengumuman 4">
-  </div>
-
-  <div class="slide fade">
-    <img src="umuman10.jpeg" alt="pengumuman 4">
+    <img src="umum4.jpeg" alt="pengumuman 4">
   </div>
 
   
@@ -182,14 +154,7 @@
   <span class="dot" onclick="currentSlide(2)"></span>
   <span class="dot" onclick="currentSlide(3)"></span>
   <span class="dot" onclick="currentSlide(4)"></span>
-  <span class="dot" onclick="currentSlide(5)"></span>
-  <span class="dot" onclick="currentSlide(6)"></span>
-  <span class="dot" onclick="currentSlide(7)"></span>
-  <span class="dot" onclick="currentSlide(8)"></span>
-  <span class="dot" onclick="currentSlide(9)"></span>
-  <span class="dot" onclick="currentSlide(10)"></span>
-  <span class="dot" onclick="currentSlide(11)"></span>
-  <span class="dot" onclick="currentSlide(12)"></span>
+  
 </div>
 </section>
 
@@ -319,7 +284,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  renderNumber(0);
+  renderNumber(33);
 
   /* 🔥 FIX MOBILE CACHE */
   fetch("https://api.countapi.xyz/hit/gkr-karawang/visits?t=" + Date.now(), {
@@ -327,7 +292,7 @@ document.addEventListener("DOMContentLoaded", () => {
   })
   .then(r => r.json())
   .then(data => renderNumber(data.value))
-  .catch(()=> renderNumber(0));
+  .catch(()=> renderNumber(33));
 
 });
 </script>
