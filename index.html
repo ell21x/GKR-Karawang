@@ -125,26 +125,25 @@
 
   <h2>Pengumuman</h2>
   <div class="slideshow-wrapper">
-  <div class="slide fade">
- 
+
      <div class="slide fade">
-    <img src="umum1.jpeg" alt="pengumuman 4">
+    <img src="umumm1.jpeg" alt="pengumuman 1">
   </div>
 
   <div class="slide fade">
-    <img src="umum2.jpeg" alt="pengumuman 4">
-  </div>
-
-   
-  <div class="slide fade">
-    <img src="umum3.jpeg" alt="pengumuman 4">
+    <img src="umumm2.jpeg" alt="pengumuman 2">
   </div>
 
   <div class="slide fade">
-    <img src="umum4.jpeg" alt="pengumuman 4">
+    <img src="umumm3.jpeg" alt="pengumuman 3">
+  </div>
+
+  <div class="slide fade">
+    <img src="umumm4.jpeg" alt="pengumuman 4">
   </div>
 
   
+
   <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
   <a class="next" onclick="plusSlides(1)">&#10095;</a>
 </div>
@@ -164,6 +163,7 @@
     Daftar Wilayah Paroki
   </a>
 </div>
+
 
 <!-- Dokumentasi Kegiatan -->
   <section class="kegiatan-section" id="kegiatan">
@@ -250,6 +250,7 @@
     <img src="jadwalmisagkr.jpg" style="width:100%; margin-bottom:15px">
     <img src="jadwalsekretariat.jpg" style="width:100%; margin-bottom:15px">
 
+
   </aside>
 </div>
 <!-- VISITOR LED COUNTER -->
@@ -284,7 +285,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  renderNumber(33);
+  renderNumber(34);
 
   /* 🔥 FIX MOBILE CACHE */
   fetch("https://api.countapi.xyz/hit/gkr-karawang/visits?t=" + Date.now(), {
@@ -292,7 +293,7 @@ document.addEventListener("DOMContentLoaded", () => {
   })
   .then(r => r.json())
   .then(data => renderNumber(data.value))
-  .catch(()=> renderNumber(33));
+  .catch(()=> renderNumber(34));
 
 });
 </script>
