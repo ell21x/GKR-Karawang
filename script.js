@@ -270,6 +270,51 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
+  /* KLIK LOGO → SEMUA KARTU MUNCUL */
+window.addEventListener('DOMContentLoaded', () => {
+  const logoImg  = document.querySelector('image[href="logoparoki.png"]');
+  const boxes    = document.querySelectorAll('.label-box');
+  const lines    = document.querySelectorAll('.garis-box');
+  let revealed   = false;
+
+  if(logoImg){ logoImg.style.cursor = 'pointer'; }
+
+  function toggle(){
+    revealed = !revealed;
+    boxes.forEach(b => {
+      b.style.opacity    = revealed ? '1' : '0';
+      b.style.transform  = revealed ? 'scale(1)' : 'scale(0.85)';
+    });
+    lines.forEach(l => {
+      l.style.opacity = revealed ? '1' : '0';
+    });
+  }
+
+  if(logoImg) logoImg.addEventListener('click', toggle);
+
+  /* juga bisa klik lingkaran logo */
+  const logoCircle = document.querySelector('circle[r="175"]');
+  if(logoCircle){ logoCircle.style.cursor='pointer'; logoCircle.addEventListener('click', toggle); }
+});
+/* MOBILE: ketuk logo → kartu muncul */
+(function(){
+  var logo  = document.getElementById('mob-logo');
+  var hint  = document.getElementById('mob-hint');
+  var pre   = document.getElementById('mob-pre');
+  var cards = document.querySelectorAll('.mob-card');
+  var shown = false;
+  if(!logo) return;
+  logo.addEventListener('click', function(){
+    shown = !shown;
+    hint.classList.toggle('gone', shown);
+    if(pre) pre.classList.toggle('hidden', shown);
+    cards.forEach(function(c, i){
+      if(shown){ setTimeout(function(){ c.classList.add('show'); }, i * 80); }
+      else { c.classList.remove('show'); }
+    });
+  });
+})();
+
 
   /* =========================================
      FULLSCREEN — expose ke window (DOMReady)

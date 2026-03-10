@@ -3,7 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Profil Gereja</title>
+
+<title>Sejarah Gereja</title>
 
 <style>
 
@@ -12,483 +13,15 @@
 margin:0;
 padding:0;
 box-sizing:border-box;
-font-family:Arial, Helvetica, sans-serif;
 }
-
-/* HEADER HALAMAN */
-
-.page-header{
-text-align:center;
-padding:60px 20px 30px;
-background:linear-gradient(to bottom,#ffffff,#f6f2ea);
-}
-
-.page-header h1{
-font-size:34px;
-color:#5a3a0d;
-font-weight:700;
-letter-spacing:1px;
-margin-bottom:12px;
-}
-
-.header-line{
-width:80px;
-height:3px;
-background:#d4a058;
-margin:auto;
-border-radius:2px;
-}
-
-/* CONTAINER */
-.container{
-width:90%;
-max-width:1000px;
-margin:auto;
-padding:40px 0;
-}
-
-/* JUDUL */
-h1{
-text-align:center;
-margin-bottom:30px;
-}
-
-/* SLIDESHOW */
-.slideshow{
-position:relative;
-max-width:900px;
-margin:auto;
-overflow:hidden;
-border-radius:10px;
-}
-
-.slide{
-display:none;
-}
-
-.slide img{
-width:100%;
-height:450px;
-object-fit:cover;
-}
-
-.caption{
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-  padding: 50px 20px 18px;
-  background: linear-gradient(to top, rgba(101,60,10,0.92) 0%, rgba(140,85,20,0.55) 55%, transparent 100%);
-  color: white;
-}
-.caption h3 {
-  font-family: 'DM Sans', Georgia, serif;
-  font-size: 18px;
-  font-weight: 700;
-  color: #fff5e0;
-  margin-bottom: 4px;
-  text-shadow: 0 1px 6px rgba(0,0,0,0.5);
-}
-.caption p {
-  font-family: 'DM Sans', Arial, sans-serif;
-  font-size: 12px;
-  color: rgba(255,235,190,0.72);
-  line-height: 1.5;
-}
-
-/* BUTTON */
-.prev, .next{
-cursor:pointer;
-position:absolute;
-top:50%;
-padding:10px;
-color:white;
-font-size:22px;
-background:rgba(0,0,0,0.5);
-transform:translateY(-50%);
-}
-
-.prev{ left:10px; }
-.next{ right:10px; }
 
 body{
-font-family:Arial, Helvetica, sans-serif;
-background:#f4f4f4;
+font-family: "Segoe UI", Arial, sans-serif;
+background:#f5f6f8;
+color:#333;
+line-height:1.7;
 }
 
-.mindmap-section{
-padding:80px 20px;
-background:#f4f4f4;
-text-align:center;
-}
-
-.title{
-font-size:40px;
-margin-bottom:40px;
-}
-
-.mindmap{
-position:relative;
-width:800px;
-height:600px;
-margin:auto;
-}
-
-.logo{
-width:240px;
-position:absolute;
-top:50%;
-left:50%;
-transform:translate(-50%,-50%);
-}
-
-.node{
-position:absolute;
-width:200px;
-background:white;
-padding:12px;
-border-radius:10px;
-box-shadow:0 5px 12px rgba(0,0,0,0.15);
-font-size:14px;
-}
-
-/* posisi teks */
-
-.node1{
-top:0;
-left:50%;
-transform:translateX(-50%);
-}
-
-.node2{
-top:180px;
-right:0;
-}
-
-.node3{
-bottom:150px;
-right:0;
-}
-
-.node4{
-bottom:0;
-left:50%;
-transform:translateX(-50%);
-}
-
-.node5{
-bottom:150px;
-left:0;
-}
-
-.node6{
-top:180px;
-left:0;
-}
-
-/* garis */
-
-.lines{
-position:absolute;
-width:100%;
-height:100%;
-}
-
-.lines line{
-stroke:#333;
-stroke-width:2;
-}
-
-/* =====================
-MOBILE
-===================== */
-
-@media (max-width:768px){
-
-.mindmap{
-transform:scale(0.65);
-transform-origin:top center;
-height:420px;
-}
-
-.title{
-font-size:28px;
-}
-
-/* Sembunyikan SVG desktop */
-.svg-desktop { display: none !important; }
-
-/* Tampilkan layout mobile */
-.mobile-mindmap { display: block !important; }
-
-/* Background section */
-.mindmap-section-wrap { background: #f5efe6 !important; padding: 0 !important; }
-
-/* Judul lebih kecil di mobile */
-.mindmap-section-wrap > div:first-child {
-  padding: 30px 20px 20px !important;
-  margin: 0 !important;
-}
-
-}
-
-/* ── ANIMASI KARTU ── */
-.el-card {
-  opacity: 0;
-  transform: translateY(20px);
-  transition: opacity 0.5s ease, transform 0.5s ease, box-shadow 0.3s, filter 0.3s;
-  pointer-events: none;
-}
-
-.el-card.visible {
-  opacity: 1;
-  transform: translateY(0);
-  pointer-events: all;
-}
-
-.el-card:hover {
-  box-shadow: 0 16px 40px rgba(0,0,0,0.09);
-  transform: translateY(-4px);
-}
-
-/* Logo klik efek */
-.logo-ring {
-  cursor: pointer;
-  transition: transform 0.3s, box-shadow 0.3s;
-}
-
-.logo-ring:hover {
-  transform: scale(1.04);
-  box-shadow: 0 20px 60px rgba(0,0,0,0.16);
-}
-
-.logo-ring:active {
-  transform: scale(0.97);
-}
-
-/* Pulse hint sebelum diklik */
-.logo-ring.pulse::after {
-  content: 'Klik untuk lihat makna';
-  position: absolute;
-  bottom: -36px;
-  left: 50%;
-  transform: translateX(-50%);
-  font-family: 'Plus Jakarta Sans', sans-serif;
-  font-size: 12px;
-  color: #a1a1aa;
-  white-space: nowrap;
-  animation: fade-hint 2s ease-in-out infinite;
-}
-
-@keyframes fade-hint {
-  0%, 100% { opacity: 0.4; }
-  50%       { opacity: 1; }
-}
-
-/* Ring berputar saat aktif */
-.logo-ring.active::before {
-  animation: spin-fast 4s linear infinite;
-}
-
-@keyframes spin-fast {
-  to { transform: rotate(360deg); }
-}
-
-/* SEMBUNYIKAN KARTU BY DEFAULT */
-.el-card {
-  opacity: 0 !important;
-  transform: translateY(24px) scale(0.96) !important;
-  transition: opacity 0.45s cubic-bezier(0.34, 1.56, 0.64, 1),
-              transform 0.45s cubic-bezier(0.34, 1.56, 0.64, 1),
-              box-shadow 0.3s;
-  pointer-events: none !important;
-}
-
-.el-card.visible {
-  opacity: 1 !important;
-  transform: translateY(0) scale(1) !important;
-  pointer-events: all !important;
-}
-
-.el-card.visible:hover {
-  box-shadow: 0 16px 40px rgba(0,0,0,0.09);
-  transform: translateY(-4px) scale(1) !important;
-}
-
-/* ── MOBILE MINDMAP LAYOUT ── */
-.mobile-mindmap {
-  display: none;
-  padding: 0 0 60px;
-  background: #f5efe6;
-  position: relative;
-}
-
-/* Ambient blob warm */
-.mobile-mindmap::before {
-  content: '';
-  position: absolute;
-  top: -60px; left: -60px;
-  width: 280px; height: 280px;
-  background: radial-gradient(circle, rgba(180,120,40,0.12) 0%, transparent 70%);
-  border-radius: 50%;
-  pointer-events: none;
-}
-
-/* Logo area */
-.mob-logo-wrap {
-  text-align: center;
-  padding: 36px 0 20px;
-  position: relative;
-  z-index: 1;
-}
-.mob-logo-ring {
-  display: inline-block;
-  position: relative;
-}
-.mob-logo-ring::before {
-  content: '';
-  position: absolute;
-  inset: -9px;
-  border-radius: 50%;
-  background: conic-gradient(from 0deg, #b87333, #e8c87a, #8b5e1a, #d4a058, #b87333);
-  animation: spin-ring 7s linear infinite;
-  opacity: 0.55;
-}
-.mob-logo-ring::after {
-  content: '';
-  position: absolute;
-  inset: -5px;
-  border-radius: 50%;
-  background: #f5efe6;
-}
-@keyframes spin-ring { to { transform: rotate(360deg); } }
-
-.mob-logo {
-  width: 150px; height: 150px;
-  object-fit: contain;
-  border-radius: 50%;
-  background: #fff;
-  display: block;
-  position: relative;
-  z-index: 2;
-  cursor: pointer;
-  box-shadow: 0 6px 24px rgba(120,80,20,0.18);
-}
-
-.mob-hint {
-  display: block;
-  margin-top: 14px;
-  font-family: 'DM Sans', sans-serif;
-  font-size: 11px;
-  color: rgba(120,80,30,0.45);
-  letter-spacing: 3px;
-  text-transform: uppercase;
-  animation: mob-blink 2.5s ease-in-out infinite;
-}
-.mob-hint.gone { opacity: 0; pointer-events: none; }
-@keyframes mob-blink { 0%,100%{opacity:0.2} 50%{opacity:0.85} }
-
-/* Pre-content */
-.mob-pre-content {
-  padding: 0 24px 24px;
-  text-align: center;
-  transition: opacity 0.4s ease, max-height 0.4s ease, padding 0.4s ease;
-  max-height: 220px;
-  overflow: hidden;
-}
-.mob-pre-content.hidden {
-  opacity: 0; max-height: 0;
-  padding: 0; pointer-events: none;
-}
-.mob-pre-icons {
-  display: flex; justify-content: center;
-  gap: 16px; margin-bottom: 16px;
-}
-.mob-pre-icon {
-  width: 50px; height: 50px;
-  border-radius: 15px;
-  background: rgba(160,110,40,0.1);
-  border: 1px solid rgba(160,110,40,0.22);
-  display: flex; align-items: center; justify-content: center;
-  font-size: 22px;
-}
-.mob-pre-quote {
-  font-family: 'DM Sans', sans-serif;
-  font-size: 15px; font-weight: 700;
-  color: rgba(90,55,15,0.82);
-  line-height: 1.5; margin-bottom: 8px;
-}
-.mob-pre-sub {
-  font-family: 'DM Sans', sans-serif;
-  font-size: 10px;
-  color: rgba(140,95,35,0.45);
-  letter-spacing: 2px; text-transform: uppercase;
-}
-
-/* Grid 2 kolom */
-.mob-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 13px;
-  padding: 0 16px;
-  position: relative; z-index: 1;
-}
-
-/* ── KARTU KREM POLOS — LEBIH BESAR ── */
-.mob-card {
-  border-radius: 22px;
-  padding: 22px 18px 20px;
-  position: relative;
-  overflow: hidden;
-  opacity: 0;
-  transform: translateY(32px) scale(0.88);
-  transition: opacity 0.55s cubic-bezier(0.22,1,0.36,1),
-              transform 0.55s cubic-bezier(0.22,1,0.36,1);
-  pointer-events: none;
-  background: #fffaf3;
-  border: 1px solid rgba(180,140,80,0.22);
-  box-shadow: 0 6px 24px rgba(120,80,20,0.12), inset 0 1px 0 rgba(255,255,255,0.95);
-}
-.mob-card.show {
-  opacity: 1;
-  transform: translateY(0) scale(1);
-  pointer-events: all;
-}
-.mob-card:active { transform: scale(0.97) !important; }
-
-.mob-card.c-dark,
-.mob-card.c-red,
-.mob-card.c-green,
-.mob-card.c-warm {
-  background: #fffaf3;
-  border: 1px solid rgba(180,140,80,0.22);
-  box-shadow: 0 6px 24px rgba(120,80,20,0.12), inset 0 1px 0 rgba(255,255,255,0.95);
-}
-
-/* Garis aksen atas coklat */
-.mob-card::before {
-  content: '';
-  position: absolute;
-  top: 0; left: 18px; right: 18px;
-  height: 2.5px;
-  border-radius: 0 0 3px 3px;
-  background: linear-gradient(90deg, transparent, rgba(180,130,60,0.4), transparent);
-}
-
-.mob-card-title {
-  font-family: 'DM Sans', sans-serif;
-  font-size: 15px;
-  font-weight: 700;
-  color: #3e2508;
-  line-height: 1.3;
-  margin-bottom: 8px;
-}
-.mob-card-desc {
-  font-family: 'DM Sans', sans-serif;
-  font-size: 13px;
-  color: rgba(100,65,20,0.62);
-  line-height: 1.65;
-  font-weight: 400;
-}
 /* ===== BACK BUTTON ===== */
 .back-full{
   position:fixed;
@@ -527,435 +60,174 @@ font-size:28px;
   transform:scale(1.08);
 }
 
+/* CONTAINER */
+.container{
+max-width:900px;
+margin:auto;
+padding:20px;
+}
+
+/* HERO */
+.hero{
+height:320px;
+background:url("gereja.jpg") center/cover;
+border-radius:16px;
+position:relative;
+overflow:hidden;
+margin-bottom:40px;
+}
+
+.hero::after{
+content:"";
+position:absolute;
+inset:0;
+background:linear-gradient(transparent,rgba(0,0,0,0.6));
+}
+
+.hero-text{
+position:absolute;
+bottom:30px;
+left:30px;
+color:white;
+z-index:2;
+}
+
+.hero-text h1{
+font-size:36px;
+font-weight:700;
+margin-bottom:6px;
+}
+
+.hero-text p{
+opacity:0.9;
+font-size:14px;
+}
+
+/* ARTIKEL */
+.article{
+background:white;
+padding:40px;
+border-radius:16px;
+box-shadow:0 10px 25px rgba(0,0,0,0.08);
+}
+
+/* JUDUL */
+.article h2{
+font-size:28px;
+margin-bottom:18px;
+color:#222;
+}
+
+/* PARAGRAF */
+.article p{
+margin-bottom:18px;
+font-size:17px;
+}
+
+/* GAMBAR */
+.article img{
+width:100%;
+margin:25px 0;
+}
+
+/* QUOTE */
+.quote{
+border-left:4px solid #8b5e3c;
+padding-left:18px;
+font-style:italic;
+color:#555;
+margin:25px 0;
+}
+
 </style>
 </head>
 
 <body>
-  <button class="back-full" onclick="history.back()" aria-label="Kembali">
+<button class="back-full" onclick="history.back()" aria-label="Kembali">
   <svg viewBox="0 0 24 24">
     <path d="M15 18l-6-6 6-6"/>
   </svg>
 </button>
 
-  <div class="page-header">
-  <h1>Profil Gereja</h1>
-  <div class="header-line"></div>
-</div>
-
 <div class="container">
 
 
-<!-- SLIDESHOW -->
-<div class="slideshow">
 
-<div class="slide">
-<img src="patuyesus.jpg">
-<div class="caption">
-<h3>Patung Yesus</h3>
-<p>Paroki Kristus Raja Karawang.</p>
-</div>
-</div>
+<!-- ARTIKEL -->
+<div class="article">
 
-<div class="slide">
-<img src="taman maria.jpeg">
-<div class="caption">
-<h3>Gua Maria</h3>
-<p>Paroki Kristus Raja Karawang.</p>
-</div>
-</div>
+<h2>Sejarah Gereja Katolik Kristus Raja Karawang</h2>
 
-<div class="slide">
-<img src="taman yesus.jpeg">
-<div class="caption">
-<h3></h3>
-<p>Paroki Kristus Raja Karawang.</p>
-</div>
-</div>
+<p>
+Tahun 1962 menjadi awal pelayanan bagi umat Katolik di wilayah Karawang. 
+Pelayanan ini dimulai dari Asrama TNI 324 Telukjambe. Pada tahun 1964, umat Katolik mulai menggunakan sebuah rumah di asrama tersebut sebagai tempat berkumpul dan berdoa bersama.
+ Tempat ini kemudian dikenal sebagai Kapel St. Mikael Telukjambe.
+</p>
 
-<div class="slide">
+<p>
+Setelah beberapa waktu berpindah-pindah tempat pertemuan dari rumah ke rumah, pada tahun 1968 umat Katolik di Karawang akhirnya mendapatkan tempat yang lebih tetap untuk berkumpul.
+ Sebuah gudang di Babakan Cianjur direnovasi dan dijadikan gereja sederhana sebagai tempat ibadah umat.
+</p>
+
 <img src="altar.jpeg">
-<div class="caption">
-<h3>Altar Gereja</h3>
-<p>Paroki Kristus Raja Karawang.</p>
-</div>
-</div>
 
-<!-- tombol -->
-<div class="prev" onclick="plusSlides(-1)">❮</div>
-<div class="next" onclick="plusSlides(1)">❯</div>
+<p>
+Sejak tahun 1969, umat di Karawang mulai mendapatkan pelayanan pastoral secara rutin dari J. Corstjens. Beliau merupakan Pastor Paroki Subang yang mendapat tugas untuk melayani umat di Karawang dan Purwakarta secara tetap. Berkat usaha dan perhatian beliau bersama umat, pada tahun 1974 Karawang resmi menjadi stasi dari Paroki Subang. Lima tahun kemudian,
+ bangunan Gereja Katolik di Babakan Cianjur menjadi gereja permanen setelah mengalami beberapa kali pemugaran.
+</p>
 
-</div>
-
-<!-- Ganti bagian <div class="mindmap-wrap"> di gereja.html dengan ini: -->
-<!-- MINDMAP SECTION -->
-<div style="margin-top:70px;padding:0 10px;" class="mindmap-section-wrap">
-
-  <!-- Judul -->
-  <div style="text-align:center;margin-bottom:40px;">
-    <div style="font-family:'DM Serif Display',serif;font-size:34px;color:#f89a6e;margin-bottom:8px;">Filosofi Logo Paroki</div>
-    <div style="font-family:'DM Sans',sans-serif;font-size:15px;color:#888;letter-spacing:2px;text-transform:uppercase;">makna &amp; Simbolisme</div>
-<h6>tekan logo</h6>
+<div class="quote">
+"Kristus adalah Raja yang memimpin umat-Nya dengan kasih,
+pengorbanan, dan pelayanan."
 </div>
 
-<!-- SVG desktop -->
-<div class="svg-desktop">
- <svg viewBox="0 0 1100 980" xmlns="http://www.w3.org/2000/svg"
-     style="width:100%;max-width:1100px;display:block;margin:0 auto;overflow:visible;">
-  <defs>
-    <filter id="sh" x="-30%" y="-30%" width="160%" height="160%">
-      <feDropShadow dx="0" dy="6" stdDeviation="12" flood-color="rgba(0,0,0,0.09)"/>
-    </filter>
-    <filter id="glow">
-      <feDropShadow dx="0" dy="0" stdDeviation="18" flood-color="rgba(0,0,0,0.13)"/>
-    </filter>
-    <marker id="arr" viewBox="0 0 10 10" refX="8" refY="5"
-            markerWidth="7" markerHeight="7" orient="auto">
-      <path d="M0,1 L9,5 L0,9 Z" fill="#555"/>
-    </marker>
-    <marker id="arr-red" viewBox="0 0 10 10" refX="8" refY="5"
-            markerWidth="7" markerHeight="7" orient="auto">
-      <path d="M0,1 L9,5 L0,9 Z" fill="#c0392b"/>
-    </marker>
-    <marker id="arr-green" viewBox="0 0 10 10" refX="8" refY="5"
-            markerWidth="7" markerHeight="7" orient="auto">
-      <path d="M0,1 L9,5 L0,9 Z" fill="#2d7a3a"/>
-    </marker>
-    <marker id="dot" viewBox="0 0 10 10" refX="5" refY="5"
-            markerWidth="6" markerHeight="6">
-      <circle cx="5" cy="5" r="4" fill="#555"/>
-    </marker>
-    <marker id="dot-red" viewBox="0 0 10 10" refX="5" refY="5"
-            markerWidth="6" markerHeight="6">
-      <circle cx="5" cy="5" r="4" fill="#c0392b"/>
-    </marker>
-    <marker id="dot-green" viewBox="0 0 10 10" refX="5" refY="5"
-            markerWidth="6" markerHeight="6">
-      <circle cx="5" cy="5" r="4" fill="#2d7a3a"/>
-    </marker>
+<p>
+Pada tahun 1981, pelayanan pastoral dilanjutkan oleh Hardjosoebroto 
+yang menggantikan Pastor Corstjens. Pastor Hardjo melakukan banyak penataan dan pembenahan kehidupan umat. Pada masa ini mulai dibentuk berbagai organisasi pastoral seperti Dewan Pastoral, PGAK, dan WK.
+</p>
 
-    <!-- Gradient backgrounds kartu -->
-    <linearGradient id="grad-dark" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0%" stop-color="#1a1a2e"/>
-      <stop offset="100%" stop-color="#2d2d44"/>
-    </linearGradient>
-    <linearGradient id="grad-red" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0%" stop-color="#7f1010"/>
-      <stop offset="100%" stop-color="#c0392b"/>
-    </linearGradient>
-    <linearGradient id="grad-green" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0%" stop-color="#1a4a22"/>
-      <stop offset="100%" stop-color="#2d7a3a"/>
-    </linearGradient>
+<p>Pada tahun 1982, MGR. Arntz memberikan izin kepada Pastor Hardjo untuk membeli sebuah rumah di Jl. Sedap Malam No. 10 yang kemudian dijadikan pastoran. Pada tanggal 21 November 1982, rumah tersebut secara resmi ditetapkan sebagai pastoran sekaligus menjadi momen penting bagi perkembangan Gereja di Karawang. Pada saat itu pula Stasi Karawang resmi ditingkatkan menjadi Paroki,
+   sehingga Pesta Kristus Raja Semesta Alam diperingati sebagai hari jadi Paroki Karawang.
+</p>
 
-    <!-- Subtle dot pattern -->
-    <pattern id="dots" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse">
-      <circle cx="2" cy="2" r="1.2" fill="rgba(255,255,255,0.08)"/>
-    </pattern>
-  </defs>
+<img src="kristusrajajadul.jpg">
 
-  <!-- Background halus seluruh SVG -->
-  <rect x="0" y="0" width="1100" height="980" rx="24" fill="#f8f9fc"/>
+<p>Memasuki awal tahun 1990, Gereja menghadapi masa yang cukup berat. Sebagian masyarakat sekitar gereja menyatakan keberatan terhadap keberadaan tempat ibadah Katolik tersebut. Surat protes dilayangkan,
+   dan pada masa Adven 1993 terjadi berbagai gangguan terhadap kegiatan gereja. Umat yang hendak menghadiri perayaan Ekaristi sering mengalami hambatan.</p>
 
-  <!--
-    LAYOUT:
-    Kartu kiri  : x=18,  width=305
-    Logo tengah : x=393, width=314 → center=(550,470)
-    Kartu kanan : x=777, width=305
+<p>Karena situasi yang tidak memungkinkan untuk merayakan Ekaristi di tempat tersebut, setelah Pekan Suci tahun 1994 perayaan Ekaristi
+   dipindahkan ke kompleks Sekolah Yos Sudarso, yang terletak di Jalan Belakang Pasar No. 14.</p>
 
-    y kartu: 110, 360, 610
-    Tinggi kartu: 200px
+<p>Periode 1990–1994 menjadi masa perjuangan yang berat bagi umat Gereja Katolik Kristus Raja Karawang. Masa ini diwarnai oleh berbagai kesulitan, termasuk perlakuan diskriminatif,
+   penolakan dari sebagian masyarakat sekitar, serta perjuangan umat untuk mempertahankan hak beribadah secara layak.</p>
 
-    Objek di logo (x=393,y=266,w=314,h=314):
-    - Mahkota duri    : (550, 348)
-    - Huruf P merah   : (572, 432)
-    - Huruf X hitam   : (528, 462)
-    - Daun palem kanan: (628, 530)
-    - Bingkai lingkaran tepi kanan atas: (668, 380)
-    - Persilangan PX  : (548, 500)
-  -->
 
-  <!-- LOGO TENGAH -->
-  <circle cx="550" cy="470" r="175" fill="white"
-          filter="url(#sh)" opacity="0.6"/>
-  <image href="logoparoki.png" x="393" y="296" width="314" height="314"
-         filter="url(#glow)"/>
+<p>Melalui perjalanan yang panjang dan dengan bantuan pemerintah pusat,
+   pada tahun 1994 izin mendirikan bangunan gereja akhirnya dikeluarkan oleh Bupati Karawang saat itu, Sumarno Suradi, untuk pembangunan gereja di Babakan Sananga.</p>
 
-  <!-- ══ GARIS ══ -->
+<img src="bupati.jpg">
 
-  <!-- Lingkaran Duri → mahkota duri -->
-  <line class="garis-box" style="opacity:0;transition:opacity 0.45s ease" x1="323" y1="228" x2="546" y2="330"
-        stroke="#555" stroke-width="1.8" stroke-dasharray="6 3"
-        marker-start="url(#dot)" marker-end="url(#arr)"/>
+<p>Melalui perjalanan yang panjang dan dengan bantuan pemerintah pusat, pada tahun 1994 izin mendirikan bangunan gereja
+   akhirnya dikeluarkan oleh Bupati Karawang saat itu, Sumarno Sumardi, untuk pembangunan gereja di Babakan Sananga.</p>
 
-  <!-- Warna Merah → huruf P merah -->
-  <line class="garis-box" style="opacity:0;transition:opacity 0.45s ease" x1="323" y1="478" x2="548" y2="430"
-        stroke="#c0392b" stroke-width="1.8" stroke-dasharray="6 3"
-        marker-start="url(#dot-red)" marker-end="url(#arr-red)"/>
+<p>Pembangunan gereja terus berlangsung hingga akhirnya pada tanggal 23 November 1996, bertepatan dengan Pesta Kristus Raja, bangunan gereja yang baru diresmikan oleh Sekretaris Wilayah Daerah Kabupaten Karawang.
+   Peresmian ini dihadiri oleh berbagai pejabat daerah tingkat II Kabupaten Karawang serta perwakilan dari Majelis Ulama Indonesia. Gereja ini kemudian diberkati oleh Alexander Djajasiswaja.</p>   
 
-  <!-- Warna Hitam → huruf X hitam -->
-  <line class="garis-box" style="opacity:0;transition:opacity 0.45s ease" x1="323" y1="740" x2="540" y2="464"
-        stroke="#555" stroke-width="1.8" stroke-dasharray="6 3"
-        marker-start="url(#dot)" marker-end="url(#arr)"/>
+<p>Perkembangan sarana paroki terus berlanjut. Pada Pesta Kristus Raja tahun 1998, Aula St. Agustinus dan Pastoran diberkati oleh Markus Priyo Kushardjono selaku Vikaris Jenderal Keuskupan Bandung.
+   Dengan demikian, kompleks bangunan Paroki Kristus Raja Karawang semakin lengkap.</p>
 
-  <!-- Bingkai Lingkaran → tepi kanan atas -->
-  <line class="garis-box" style="opacity:0;transition:opacity 0.45s ease" x1="777" y1="228" x2="678" y2="365"
-        stroke="#555" stroke-width="1.8" stroke-dasharray="6 3"
-        marker-start="url(#dot)" marker-end="url(#arr)"/>
+   <img src="kristusrajasejara.jpg">
 
-  <!-- Dua Tangkai Daun Palem → daun kanan -->
-  <line class="garis-box" style="opacity:0;transition:opacity 0.45s ease" x1="777" y1="478" x2="640" y2="528"
-        stroke="#2d7a3a" stroke-width="1.8" stroke-dasharray="6 3"
-        marker-start="url(#dot-green)" marker-end="url(#arr-green)"/>
+<p>Sejak tahun 1998, perkembangan umat dan sarana pastoral terus bertambah. Hingga tahun 2013, paroki ini semakin memantapkan pelayanannya dengan berbagai fasilitas yang mendukung kehidupan umat, antara lain Gedung Gereja, Gazebo, Gedung St. Agustinus, Balai Pengobatan “Kurnia Asih”, kantin, serta area parkir yang lebih luas. 
+  Seluruh sarana ini hadir sebagai wujud pelayanan Gereja dalam mewartakan Injil dan menghadirkan karya keselamatan bagi masyarakat.</p>
 
-  <!-- Huruf P dan X → persilangan -->
-  <line class="garis-box" style="opacity:0;transition:opacity 0.45s ease" x1="777" y1="728" x2="550" y2="472"
-        stroke="#555" stroke-width="1.8" stroke-dasharray="6 3"
-        marker-start="url(#dot)" marker-end="url(#arr)"/>
 
-  <!-- ══ KARTU KIRI ══ -->
 
-  <!-- ① LINGKARAN DURI -->
-  <g class="label-box" style="opacity:0;transition:opacity 0.45s cubic-bezier(0.34,1.56,0.64,1),transform 0.45s cubic-bezier(0.34,1.56,0.64,1);transform-origin:170px 210px;transform:scale(0.85)">
-    <rect x="18" y="110" width="305" height="200" rx="18" fill="url(#grad-dark)" filter="url(#sh)"/>
-    <rect x="18" y="110" width="305" height="200" rx="18" fill="url(#dots)"/>
-    <!-- nomor besar dekoratif -->
-    <text x="298" y="190" text-anchor="end"
-          font-family="'DM Serif Display',serif" font-size="72" fill="rgba(255,255,255,0.06)"></text>
-    <!-- label kecil -->
-    <rect x="36" y="128" width="90" height="22" rx="11" fill="rgba(255,255,255,0.12)"/>
-    <text x="81" y="143" text-anchor="middle"
-          font-family="'DM Sans',sans-serif" font-size="11" font-weight="600"
-          fill="rgba(255,255,255,0.7)" letter-spacing="1.5">MAKNA</text>
-    <!-- judul -->
-    <text x="36" y="182" font-family="'DM Sans',sans-serif"
-          font-size="19" font-weight="700" fill="white" letter-spacing="0.3">LINGKARAN DURI</text>
-    <!-- deskripsi -->
-    <text x="36" y="210" font-family="'DM Sans',sans-serif"
-          font-size="17" fill="rgba(255,255,255,0.75)">Lambang Mahkota Duri,</text>
-    <text x="36" y="232" font-family="'DM Sans',sans-serif"
-          font-size="17" fill="rgba(255,255,255,0.75)">simbol pengorbanan Yesus</text>
-    <!-- garis bawah dekoratif -->
-    <line x1="36" y1="285" x2="160" y2="285" stroke="rgba(255,255,255,0.2)" stroke-width="1"/>
-    <circle cx="166" cy="285" r="3" fill="rgba(255,255,255,0.3)"/>
-  </g>
 
-  <!-- ② WARNA MERAH -->
-  <g class="label-box" style="opacity:0;transition:opacity 0.45s cubic-bezier(0.34,1.56,0.64,1),transform 0.45s cubic-bezier(0.34,1.56,0.64,1);transform-origin:170px 460px;transform:scale(0.85)">
-    <rect x="18" y="360" width="305" height="200" rx="18" fill="url(#grad-red)" filter="url(#sh)"/>
-    <rect x="18" y="360" width="305" height="200" rx="18" fill="url(#dots)"/>
-    <text x="298" y="440" text-anchor="end"
-          font-family="'DM Serif Display',serif" font-size="72" fill="rgba(255,255,255,0.06)"></text>
-    <rect x="36" y="378" width="90" height="22" rx="11" fill="rgba(255,255,255,0.15)"/>
-    <text x="81" y="393" text-anchor="middle"
-          font-family="'DM Sans',sans-serif" font-size="11" font-weight="600"
-          fill="rgba(255,255,255,0.7)" letter-spacing="1.5"></text>
-    <text x="36" y="432" font-family="'DM Sans',sans-serif"
-          font-size="19" font-weight="700" fill="white" letter-spacing="0.3">WARNA MERAH</text>
-    <text x="36" y="460" font-family="'DM Sans',sans-serif"
-          font-size="17" fill="rgba(255,255,255,0.75)">Lambang darah dan</text>
-    <text x="36" y="482" font-family="'DM Sans',sans-serif"
-          font-size="17" fill="rgba(255,255,255,0.75)">keberanian Kristus</text>
-    <line x1="36" y1="535" x2="160" y2="535" stroke="rgba(255,255,255,0.2)" stroke-width="1"/>
-    <circle cx="166" cy="535" r="3" fill="rgba(255,255,255,0.3)"/>
-  </g>
-
-  <!-- ③ WARNA HITAM -->
-  <g class="label-box" style="opacity:0;transition:opacity 0.45s cubic-bezier(0.34,1.56,0.64,1),transform 0.45s cubic-bezier(0.34,1.56,0.64,1);transform-origin:170px 710px;transform:scale(0.85)">
-    <rect x="18" y="610" width="305" height="200" rx="18" fill="url(#grad-dark)" filter="url(#sh)"/>
-    <rect x="18" y="610" width="305" height="200" rx="18" fill="url(#dots)"/>
-    <text x="298" y="690" text-anchor="end"
-          font-family="'DM Serif Display',serif" font-size="72" fill="rgba(255,255,255,0.06)"></text>
-    <rect x="36" y="628" width="90" height="22" rx="11" fill="rgba(255,255,255,0.12)"/>
-    <text x="81" y="643" text-anchor="middle"
-          font-family="'DM Sans',sans-serif" font-size="11" font-weight="600"
-          fill="rgba(255,255,255,0.7)" letter-spacing="1.5"></text>
-    <text x="36" y="682" font-family="'DM Sans',sans-serif"
-          font-size="19" font-weight="700" fill="white" letter-spacing="0.3">WARNA HITAM</text>
-    <text x="36" y="710" font-family="'DM Sans',sans-serif"
-          font-size="17" fill="rgba(255,255,255,0.75)">Lambang kesederhanaan</text>
-    <text x="36" y="732" font-family="'DM Sans',sans-serif"
-          font-size="17" fill="rgba(255,255,255,0.75)">dari hati yang rendah</text>
-    <line x1="36" y1="785" x2="160" y2="785" stroke="rgba(255,255,255,0.2)" stroke-width="1"/>
-    <circle cx="166" cy="785" r="3" fill="rgba(255,255,255,0.3)"/>
-  </g>
-
-  <!-- ══ KARTU KANAN ══ -->
-
-  <!-- ④ BINGKAI LINGKARAN -->
-  <g class="label-box" style="opacity:0;transition:opacity 0.45s cubic-bezier(0.34,1.56,0.64,1),transform 0.45s cubic-bezier(0.34,1.56,0.64,1);transform-origin:929px 210px;transform:scale(0.85)">
-    <rect x="777" y="110" width="305" height="200" rx="18" fill="url(#grad-dark)" filter="url(#sh)"/>
-    <rect x="777" y="110" width="305" height="200" rx="18" fill="url(#dots)"/>
-    <text x="1057" y="190" text-anchor="end"
-          font-family="'DM Serif Display',serif" font-size="72" fill="rgba(255,255,255,0.06)"></text>
-    <rect x="795" y="128" width="90" height="22" rx="11" fill="rgba(255,255,255,0.12)"/>
-    <text x="840" y="143" text-anchor="middle"
-          font-family="'DM Sans',sans-serif" font-size="11" font-weight="600"
-          fill="rgba(255,255,255,0.7)" letter-spacing="1.5"></text>
-    <text x="795" y="182" font-family="'DM Sans',sans-serif"
-          font-size="19" font-weight="700" fill="white" letter-spacing="0.3">BINGKAI LINGKARAN</text>
-    <text x="795" y="210" font-family="'DM Sans',sans-serif"
-          font-size="17" fill="rgba(255,255,255,0.75)">Simbol kehidupan yang</text>
-    <text x="795" y="232" font-family="'DM Sans',sans-serif"
-          font-size="17" fill="rgba(255,255,255,0.75)">selalu berputar</text>
-    <line x1="795" y1="285" x2="919" y2="285" stroke="rgba(255,255,255,0.2)" stroke-width="1"/>
-    <circle cx="925" cy="285" r="3" fill="rgba(255,255,255,0.3)"/>
-  </g>
-
-  <!-- ⑤ DUA TANGKAI DAUN PALEM -->
-  <g class="label-box" style="opacity:0;transition:opacity 0.45s cubic-bezier(0.34,1.56,0.64,1),transform 0.45s cubic-bezier(0.34,1.56,0.64,1);transform-origin:929px 460px;transform:scale(0.85)">
-    <rect x="777" y="360" width="305" height="200" rx="18" fill="url(#grad-green)" filter="url(#sh)"/>
-    <rect x="777" y="360" width="305" height="200" rx="18" fill="url(#dots)"/>
-    <text x="1057" y="440" text-anchor="end"
-          font-family="'DM Serif Display',serif" font-size="72" fill="rgba(255,255,255,0.06)"></text>
-    <rect x="795" y="378" width="90" height="22" rx="11" fill="rgba(255,255,255,0.15)"/>
-    <text x="840" y="393" text-anchor="middle"
-          font-family="'DM Sans',sans-serif" font-size="11" font-weight="600"
-          fill="rgba(255,255,255,0.7)" letter-spacing="1.5"></text>
-    <text x="795" y="432" font-family="'DM Sans',sans-serif"
-          font-size="19" font-weight="700" fill="white" letter-spacing="0.3">DUA TANGKAI DAUN PALEM</text>
-    <text x="795" y="460" font-family="'DM Sans',sans-serif"
-          font-size="17" fill="rgba(255,255,255,0.75)">Simbol penyambutan dan</text>
-    <text x="795" y="482" font-family="'DM Sans',sans-serif"
-          font-size="17" fill="rgba(255,255,255,0.75)">kegembiraan umat</text>
-    <line x1="795" y1="535" x2="919" y2="535" stroke="rgba(255,255,255,0.2)" stroke-width="1"/>
-    <circle cx="925" cy="535" r="3" fill="rgba(255,255,255,0.3)"/>
-  </g>
-
-  <!-- ⑥ HURUF P DAN X -->
-  <g class="label-box" style="opacity:0;transition:opacity 0.45s cubic-bezier(0.34,1.56,0.64,1),transform 0.45s cubic-bezier(0.34,1.56,0.64,1);transform-origin:929px 710px;transform:scale(0.85)">
-    <rect x="777" y="610" width="305" height="200" rx="18" fill="url(#grad-dark)" filter="url(#sh)"/>
-    <rect x="777" y="610" width="305" height="200" rx="18" fill="url(#dots)"/>
-    <text x="1057" y="690" text-anchor="end"
-          font-family="'DM Serif Display',serif" font-size="72" fill="rgba(255,255,255,0.06)"></text>
-    <rect x="795" y="628" width="90" height="22" rx="11" fill="rgba(255,255,255,0.12)"/>
-    <text x="840" y="643" text-anchor="middle"
-          font-family="'DM Sans',sans-serif" font-size="11" font-weight="600"
-          fill="rgba(255,255,255,0.7)" letter-spacing="1.5"></text>
-    <text x="795" y="682" font-family="'DM Sans',sans-serif"
-          font-size="19" font-weight="700" fill="white" letter-spacing="0.3">HURUF P DAN X</text>
-    <text x="795" y="710" font-family="'DM Sans',sans-serif"
-          font-size="17" fill="rgba(255,255,255,0.75)">Pax Christi –</text>
-    <text x="795" y="732" font-family="'DM Sans',sans-serif"
-          font-size="17" fill="rgba(255,255,255,0.75)">Damai Kristus</text>
-    <line x1="795" y1="785" x2="919" y2="785" stroke="rgba(255,255,255,0.2)" stroke-width="1"/>
-    <circle cx="925" cy="785" r="3" fill="rgba(255,255,255,0.3)"/>
-  </g>
-
-</svg>
-</div><!-- end svg-desktop -->
-
-<!-- MOBILE LAYOUT -->
-<div class="mobile-mindmap">
-  <div class="mob-logo-wrap">
-    <div class="mob-logo-ring">
-      <img class="mob-logo" id="mob-logo" src="logoparoki.png" alt="Logo Paroki">
-    </div>
-    <span class="mob-hint" id="mob-hint">ketuk logo</span>
-  </div>
-  <div class="mob-pre-content" id="mob-pre">
-    <div class="mob-pre-icons">
-      <div class="mob-pre-icon">✝</div>
-      <div class="mob-pre-icon">☧</div>
-      <div class="mob-pre-icon">🌿</div>
-    </div>
-    <div class="mob-pre-quote">Setiap simbol menyimpan<br>makna yang dalam</div>
-    <div class="mob-pre-sub">Ketuk logo untuk mengungkap</div>
-  </div>
-  <div class="mob-grid">
-    <div class="mob-card c-dark">
-      <div class="mob-card-title">Lingkaran Duri</div>
-      <div class="mob-card-desc">Lambang Mahkota Duri, simbol pengorbanan Yesus</div>
-    </div>
-    <div class="mob-card c-dark">
-      <div class="mob-card-title">Bingkai Lingkaran</div>
-      <div class="mob-card-desc">Simbol kehidupan yang selalu berputar</div>
-    </div>
-    <div class="mob-card c-red">
-      <div class="mob-card-title">Warna Merah</div>
-      <div class="mob-card-desc">Lambang darah dan keberanian Kristus</div>
-    </div>
-    <div class="mob-card c-warm">
-      <div class="mob-card-title">Dua Tangkai Daun Palem</div>
-      <div class="mob-card-desc">Simbol penyambutan dan kegembiraan umat</div>
-    </div>
-    <div class="mob-card c-dark">
-      <div class="mob-card-title">Warna Hitam</div>
-      <div class="mob-card-desc">Lambang kesederhanaan dari hati yang rendah</div>
-    </div>
-    <div class="mob-card c-warm">
-      <div class="mob-card-title">Huruf P dan X</div>
-      <div class="mob-card-desc">Pax Christi – Damai Kristus</div>
-    </div>
-  </div>
-</div><!-- end mobile -->
 
 </div>
 
 </div>
-
-</div>
-
-</div>
-
-
-<script>
-/* SLIDESHOW */
-let slideIndex = 1;
-showSlides(slideIndex);
-function plusSlides(n){ showSlides(slideIndex += n); }
-function showSlides(n){
-  let slides = document.getElementsByClassName("slide");
-  if(n > slides.length){ slideIndex = 1; }
-  if(n < 1){ slideIndex = slides.length; }
-  for(let i = 0; i < slides.length; i++){ slides[i].style.display = "none"; }
-  slides[slideIndex - 1].style.display = "block";
-}
-
-/* KLIK LOGO → SEMUA KARTU MUNCUL */
-window.addEventListener('DOMContentLoaded', () => {
-  const logoImg  = document.querySelector('image[href="logoparoki.png"]');
-  const boxes    = document.querySelectorAll('.label-box');
-  const lines    = document.querySelectorAll('.garis-box');
-  let revealed   = false;
-
-  if(logoImg){ logoImg.style.cursor = 'pointer'; }
-
-  function toggle(){
-    revealed = !revealed;
-    boxes.forEach(b => {
-      b.style.opacity    = revealed ? '1' : '0';
-      b.style.transform  = revealed ? 'scale(1)' : 'scale(0.85)';
-    });
-    lines.forEach(l => {
-      l.style.opacity = revealed ? '1' : '0';
-    });
-  }
-
-  if(logoImg) logoImg.addEventListener('click', toggle);
-
-  /* juga bisa klik lingkaran logo */
-  const logoCircle = document.querySelector('circle[r="175"]');
-  if(logoCircle){ logoCircle.style.cursor='pointer'; logoCircle.addEventListener('click', toggle); }
-});
-/* MOBILE: ketuk logo → kartu muncul */
-(function(){
-  var logo  = document.getElementById('mob-logo');
-  var hint  = document.getElementById('mob-hint');
-  var pre   = document.getElementById('mob-pre');
-  var cards = document.querySelectorAll('.mob-card');
-  var shown = false;
-  if(!logo) return;
-  logo.addEventListener('click', function(){
-    shown = !shown;
-    hint.classList.toggle('gone', shown);
-    if(pre) pre.classList.toggle('hidden', shown);
-    cards.forEach(function(c, i){
-      if(shown){ setTimeout(function(){ c.classList.add('show'); }, i * 80); }
-      else { c.classList.remove('show'); }
-    });
-  });
-})();
-</script>
 
 </body>
 </html>
