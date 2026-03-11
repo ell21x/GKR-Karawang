@@ -1,4 +1,6 @@
 /* ========== CSS WEBSITE GEREJA ========== */
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=DM+Serif+Display&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Montserrat:wght@400;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap');
+
 /* ===== GLOBAL RESET (WAJIB) ===== */
 * {
   margin: 0;
@@ -82,6 +84,7 @@ header p {
 .hero-text h1{
   font-size:42px;
   font-weight:700;
+  font-family: 'Montserrat', sans-serif !important;
   animation:fadeUp 1.4s ease forwards;
 }
 
@@ -297,8 +300,10 @@ transform:translateY(-50%);
 .next{ right:10px; }
 
 body{
-font-family:Arial, Helvetica, sans-serif;
+font-family:'DM Sans', 'Segoe UI', Arial, Helvetica, sans-serif;
 background:#f4f4f4;
+line-height: 1.7;
+letter-spacing: 0.01em;
 }
 
 .mindmap-section{
@@ -843,8 +848,18 @@ padding-right:12px;
     height: 180px;
   }
 
+  .kegiatan-overlay {
+    padding: 8px 10px;
+  }
+
   .kegiatan-overlay h3 {
-    font-size: 14px;
+    font-size: 11px;
+    line-height: 1.3;
+    margin-bottom: 2px;
+  }
+
+  .kegiatan-overlay span {
+    font-size: 10px;
   }
 }
 
@@ -913,6 +928,15 @@ padding-right:12px;
   text-align: center;
   padding: 40px 20px;
   background-color: #e8edff;
+  font-family: 'Inter', sans-serif !important;
+}
+
+.lokasi h2,
+.lokasi h3,
+.lokasi p,
+.lokasi span,
+.lokasi a {
+  font-family: 'Inter', sans-serif !important;
 }
 
 .lokasi iframe {
@@ -1850,6 +1874,7 @@ body {
   }
 
   .hero-text h1 {
+    
     font-size: 26px;
   }
 
@@ -2879,7 +2904,6 @@ text-shadow: 0 0 12px rgba(255, 200, 80, 0.9);
   gap: 14px;
 
   background: #ffffff;
-  border-radius: 16px;
 
   box-shadow: 0 8px 20px rgba(0,0,0,0.08);
 
@@ -3313,7 +3337,6 @@ body:has(.fullscreen:not(.hidden)) .navbar {
   gap:20px;
   align-items:center;
   background:white;
-  border-radius:12px;
   overflow:hidden;
   text-decoration:none;
   color:#333;
@@ -3356,7 +3379,6 @@ color:white;
 font-size:15px;
 font-weight:600;
 
-border-radius:8px;
 text-decoration:none;
 
 transition:0.3s;
@@ -3380,7 +3402,6 @@ color:white;
 font-size:15px;
 font-weight:600;
 
-border-radius:8px;
 text-decoration:none;
 
 transition:0.3s;
@@ -3434,7 +3455,6 @@ color:white;
 font-size:15px;
 font-weight:600;
 
-border-radius:12px;
 
 border:none;
 
@@ -3615,4 +3635,1076 @@ cursor:pointer;
   .sidebar .tombol-section .btn-link:hover {
     background: #7a3a00 !important;
   }
+}
+
+
+/* ============================================================
+   OVERRIDE UTAMA — dipindah dari inline <style> di index.html
+   ============================================================ */
+
+/* ── FONT GLOBAL ── */
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=DM+Serif+Display&family=DM+Sans:wght@300;400;500;600;700&display=swap');
+
+body, p, span, div, a, li, td, th, input, label {
+  font-family: 'DM Sans', 'Segoe UI', Arial, sans-serif;
+}
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'DM Serif Display', Georgia, serif;
+}
+button {
+  font-family: 'DM Sans', Arial, sans-serif;
+}
+
+/* ── TOPBAR ── */
+.topbar {
+  background: linear-gradient(90deg, #4a2400, #7b3f00);
+  color: rgba(255,255,255,0.9);
+  text-align: center;
+  font-size: 10px;
+  letter-spacing: 0.06em;
+  padding: 8px 20px;
+  font-family: 'DM Sans', Arial, sans-serif;
+  font-weight: 500;
+  position: relative;
+  z-index: 1;
+}
+
+/* ── NAVBAR ── */
+.navbar {
+  position: sticky !important;
+  top: 0;
+  z-index: 9999;
+  background: #ffffff;
+  box-shadow: 0 3px 20px rgba(74,36,0,0.13);
+  border-bottom: 3px solid #ee9254;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 32px;
+  height: 80px !important;
+  transition: box-shadow 0.3s;
+}
+
+.nav-left {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+
+.hamburger {
+  font-size: 28px;
+  cursor: pointer;
+  color: #7b3f00;
+  background: none;
+  border: none;
+  padding: 4px 8px;
+  border-radius: 8px;
+  transition: background 0.2s;
+}
+.hamburger:hover { background: rgba(212,100,10,0.1); }
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  text-decoration: none;
+}
+.brand img {
+  height: 52px !important;
+  width: auto;
+}
+.brand span {
+  font-family: 'DM Serif Display', serif !important;
+  font-size: 19px !important;
+  font-weight: 400 !important;
+  color: #4a2400;
+  line-height: 1.25;
+  letter-spacing: 0.01em;
+}
+
+.nav-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* ── SEARCH BUTTON ── */
+.search-btn {
+  background: none;
+  border: 2px solid #66360f;
+  border-radius: 50px;
+  padding: 8px 18px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: 'DM Sans', Arial, sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  color: #7b3f00;
+  transition: background 0.2s, color 0.2s;
+}
+.search-btn:hover {
+  background: #97521a;
+  color: white;
+}
+.search-btn svg path { stroke: currentColor; }
+
+/* ── SEARCH PANEL ── */
+.search-panel {
+  display: none;
+  position: fixed;
+  top: 83px;
+  left: 0; right: 0;
+  z-index: 9998;
+  background: rgba(255,255,255,0.98);
+  backdrop-filter: blur(10px);
+  border-bottom: 3px solid #723504;
+  padding: 18px 32px 20px;
+  box-shadow: 0 8px 30px rgba(74,36,0,0.15);
+}
+.search-panel.open { display: block; }
+
+.search-panel-inner {
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+.search-input-wrap {
+  display: flex;
+  align-items: center;
+  border: 2px solid #834009;
+  border-radius: 50px;
+  overflow: hidden;
+  background: #fff;
+  box-shadow: 0 2px 12px rgba(212,100,10,0.12);
+}
+.search-input-wrap input {
+  flex: 1;
+  border: none;
+  outline: none;
+  padding: 13px 22px;
+  font-size: 16px;
+  font-family: 'DM Sans', Arial, sans-serif;
+  background: transparent;
+  color: #4a2400;
+}
+.search-input-wrap button {
+  background: #642602;
+  border: none;
+  color: white;
+  padding: 0 22px;
+  height: 50px;
+  cursor: pointer;
+  font-size: 18px;
+  transition: background 0.2s;
+}
+.search-input-wrap button:hover { background: #7b3f00; }
+
+#searchResults { margin-top: 14px; }
+
+.search-result-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  border-radius: 10px;
+  background: #fff8f0;
+  border: 1px solid rgba(212,100,10,0.15);
+  margin-bottom: 8px;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.2s;
+  text-decoration: none;
+  color: #4a2400;
+}
+.search-result-item:hover {
+  background: #ffeedd;
+  transform: translateX(4px);
+}
+.search-result-icon {
+  min-width: 52px;
+  height: 32px;
+  background: linear-gradient(135deg, #b46d33, #7b3f00);
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  font-weight: 700;
+  font-family: 'DM Sans', sans-serif;
+  letter-spacing: 0.04em;
+  color: #fff;
+  flex-shrink: 0;
+  padding: 0 8px;
+  text-transform: uppercase;
+}
+.search-result-text strong {
+  display: block;
+  font-size: 14px;
+  font-weight: 700;
+  color: #4a2400;
+}
+.search-result-text span {
+  font-size: 12px;
+  color: #7b5c40;
+}
+.search-highlight { background: #ffe08a; border-radius: 3px; padding: 0 2px; }
+.search-empty {
+  text-align: center;
+  padding: 20px;
+  color: #a07850;
+  font-size: 14px;
+}
+
+/* ── SIDE MENU ── */
+.side-menu {
+  position: fixed;
+  top: 0; left: -280px;
+  width: 280px;
+  height: 100vh;
+  background: linear-gradient(180deg, #4a2400 0%, #7b3f00 100%);
+  z-index: 99999;
+  padding: 80px 0 30px;
+  transition: left 0.35s cubic-bezier(0.4,0,0.2,1);
+  box-shadow: 4px 0 30px rgba(0,0,0,0.3);
+}
+.side-menu.open { left: 0; }
+.side-menu a {
+  display: block;
+  padding: 16px 32px;
+  color: rgba(255,255,255,0.88);
+  text-decoration: none;
+  font-family: 'DM Sans', Arial, sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+  transition: background 0.2s, color 0.2s, padding-left 0.2s;
+  letter-spacing: 0.03em;
+}
+.side-menu a:hover {
+  background: rgba(255,255,255,0.1);
+  color: #fff;
+  padding-left: 40px;
+}
+.side-menu-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.45);
+  z-index: 99998;
+}
+.side-menu-overlay.open { display: block; }
+
+/* ── SEARCH BOX LAMA — sembunyikan ── */
+.search-box { display: none !important; }
+
+/* ── LAYOUT UTAMA ── */
+.layout {
+  display: grid !important;
+  grid-template-columns: 1fr 280px !important;
+  gap: 32px !important;
+  max-width: 1280px !important;
+  margin: 36px auto !important;
+  padding: 0 28px !important;
+  align-items: start !important;
+}
+.main-content { min-width: 0; width: 100%; }
+
+/* ── SIDEBAR ── */
+.sidebar {
+  position: sticky !important;
+  top: 96px !important;
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 14px !important;
+  width: 100% !important;
+}
+.sidebar-inner {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+/* ── TOMBOL SIDEBAR ── */
+.sidebar .tombol-section,
+.sidebar .btn-box {
+  margin: 0 !important;
+  width: 100% !important;
+  text-align: center !important;
+}
+.sidebar .tombol-section button,
+.sidebar .btn-box .full-btn,
+.sidebar .tombol-section .btn-link {
+  width: 100% !important;
+  min-height: 64px !important;
+  height: auto !important;
+  line-height: normal !important;
+  font-size: 16px !important;
+  font-weight: 700 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  padding: 16px 20px !important;
+  box-sizing: border-box !important;
+  text-align: center !important;
+  cursor: pointer !important;
+  text-decoration: none !important;
+  font-family: 'DM Sans', Arial, sans-serif !important;
+  letter-spacing: 0.03em !important;
+  transition: transform 0.2s, box-shadow 0.2s, background 0.2s !important;
+  box-shadow: 0 4px 16px rgba(74,36,0,0.18) !important;
+  background: linear-gradient(135deg, #5a2100, #8b4000) !important;
+  color: white !important;
+  border: none !important;
+}
+.sidebar .tombol-section button:hover,
+.sidebar .btn-box .full-btn:hover,
+.sidebar .tombol-section .btn-link:hover {
+  transform: translateY(-3px) !important;
+  box-shadow: 0 8px 24px rgba(74,36,0,0.3) !important;
+  background: linear-gradient(135deg, #7a3200, #a85500) !important;
+}
+
+/* ── SIDEBAR DIVIDER ── */
+.sidebar-divider {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 10px;
+  font-weight: 700;
+  color: #7b3f00;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  padding: 8px 0 6px;
+  border-bottom: 2px solid rgba(212,100,10,0.2);
+  margin-bottom: 6px;
+}
+
+/* ── WELCOME TEXT ── */
+.welcome-text {
+  font-family: 'DM Sans', sans-serif !important;
+  font-size: 13px !important;
+  color: #9a6a40 !important;
+  padding: 16px 0 12px !important;
+  font-weight: 400 !important;
+  letter-spacing: 0.04em !important;
+  font-style: italic;
+}
+
+/* ── VISITOR COUNTER ── */
+.visitor-led {
+  background: linear-gradient(135deg, #4a2400, rgb(151,90,40));
+  padding: 30px;
+  text-align: center;
+}
+.visitor-led-title {
+  color: rgba(255,255,255,0.8);
+  font-family: 'DM Sans', Arial, sans-serif;
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  margin-bottom: 12px;
+  font-weight: 700;
+}
+.led-digit {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 56px;
+  background: #1a0900;
+  color: #ff9a4a;
+  font-size: 30px;
+  font-weight: 700;
+  font-family: 'Courier New', monospace;
+  border-radius: 8px;
+  margin: 0 3px;
+  box-shadow: 0 0 12px rgba(255,154,74,0.35), inset 0 0 8px rgba(0,0,0,0.5);
+  border: 1px solid rgba(255,154,74,0.2);
+}
+
+/* ── ARTIKEL HOME PROFESSIONAL ── */
+.artikel-home {
+  padding: 80px 5%;
+  background: #f7f3ee;
+  text-align: center;
+}
+.artikel-header { margin-bottom: 48px; }
+.artikel-kap {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: #9a6034;
+  margin-bottom: 10px;
+}
+.artikel-judul {
+  font-family: 'DM Serif Display', serif;
+  font-size: 38px;
+  font-weight: 400;
+  color: #2c1400;
+  margin-bottom: 14px;
+  line-height: 1.2;
+}
+.artikel-divider {
+  width: 48px;
+  height: 2px;
+  background: linear-gradient(90deg, #94480a, #c9a84c);
+  border-radius: 2px;
+  margin: 0 auto 20px;
+}
+.artikel-sub {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 15px;
+  color: #7a5535;
+  max-width: 520px;
+  margin: 0 auto;
+  line-height: 1.75;
+}
+.artikel-grid {
+  max-width: 820px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+/* -- Tambah artikel baru: cukup salin blok .artikel-card-pro di HTML -- */
+.artikel-card-pro {
+  display: flex;
+  background: #fff;
+  border-radius: 18px;
+  overflow: hidden;
+  text-decoration: none;
+  color: #2c1400;
+  box-shadow: 0 4px 28px rgba(74,36,0,0.09);
+  border: 1px solid rgba(212,100,10,0.08);
+  transition: transform 0.3s, box-shadow 0.3s;
+  text-align: left;
+}
+.artikel-card-pro:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 16px 48px rgba(74,36,0,0.16);
+}
+.artikel-img-wrap {
+  position: relative;
+  flex-shrink: 0;
+  width: 280px;
+}
+.artikel-img-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.artikel-badge {
+  position: absolute;
+  top: 14px; left: 14px;
+  background: #5a2100;
+  color: #fff;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  padding: 4px 12px;
+}
+.artikel-info-pro {
+  padding: 32px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 10px;
+}
+.artikel-meta {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #a07040;
+}
+.artikel-info-pro h3 {
+  font-family: 'DM Serif Display', serif;
+  font-size: 22px;
+  font-weight: 400;
+  color: #2c1400;
+  line-height: 1.35;
+  margin: 0;
+}
+.artikel-info-pro p {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 14px;
+  color: #7a5535;
+  line-height: 1.75;
+  margin: 0;
+}
+.artikel-baca-btn {
+  display: inline-block;
+  margin-top: 6px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #5a2100;
+  border-bottom: 2px solid #c9884c;
+  padding-bottom: 2px;
+  width: fit-content;
+  transition: color 0.2s, border-color 0.2s;
+}
+.artikel-card-pro:hover .artikel-baca-btn {
+  color: #8b4000;
+  border-color: #8b4000;
+}
+
+/* ── FOOTER ── */
+footer {
+  background: linear-gradient(135deg, #4a2400, #7b3f00);
+  color: rgba(255,255,255,0.85);
+  text-align: center;
+  padding: 22px;
+  font-family: 'DM Sans', Arial, sans-serif;
+  font-size: 13px;
+}
+
+/* ── KATEGORI GRID (Sidebar) ── */
+.kategori-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-top: 8px;
+}
+.kategori-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: white;
+  border-radius: 14px;
+  padding: 14px 8px;
+  text-decoration: none;
+  color: #4a2400;
+  box-shadow: 0 3px 14px rgba(74,36,0,0.12);
+  border: 1.5px solid rgba(212,100,10,0.1);
+  transition: transform 0.22s, box-shadow 0.22s, border-color 0.22s;
+  gap: 5px;
+  text-align: center;
+}
+.kategori-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 28px rgba(74,36,0,0.2);
+  border-color: rgba(212,100,10,0.35);
+}
+.kategori-icon-text {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 10px;
+  font-weight: 800;
+  color: #fff;
+  background: linear-gradient(135deg, #5a2100, #8b4000);
+  border-radius: 6px;
+  padding: 4px 9px;
+  letter-spacing: 0.1em;
+  line-height: 1;
+  margin-bottom: 2px;
+  text-transform: uppercase;
+}
+.kategori-sub {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 10px;
+  color: #9a6a40;
+  line-height: 1.3;
+}
+
+/* ── KALENDER LITURGI ── */
+.liturgi-card {
+  background: linear-gradient(135deg, #fff8f0, #fff2e2);
+  border-radius: 16px;
+  padding: 18px 16px;
+  box-shadow: 0 4px 18px rgba(74,36,0,0.12);
+  border: 1.5px solid rgba(212,100,10,0.15);
+  margin-top: 4px;
+}
+.liturgi-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+.liturgi-dot {
+  width: 14px; height: 14px;
+  border-radius: 50%;
+  display: inline-block;
+  flex-shrink: 0;
+  box-shadow: 0 0 8px rgba(0,0,0,0.2);
+}
+.liturgi-musim-label {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: #7b4a1a;
+  background: rgba(212,100,10,0.1);
+  padding: 3px 10px;
+  border-radius: 20px;
+}
+.liturgi-tanggal {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  color: #4a2400;
+  margin-bottom: 4px;
+}
+.liturgi-nama {
+  font-family: 'DM Serif Display', serif;
+  font-size: 15px;
+  font-weight: 700;
+  color: #3a1800;
+  margin-bottom: 6px;
+  line-height: 1.4;
+}
+.liturgi-desc {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 11.5px;
+  color: #7b5c40;
+  line-height: 1.6;
+  font-style: italic;
+}
+
+/* ── SCROLL REVEAL ── */
+.reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.65s ease, transform 0.65s ease; }
+.reveal.visible { opacity: 1; transform: none; }
+
+/* ── MOBILE ── */
+@media (max-width: 900px) {
+  .layout {
+    display: block !important;
+    padding: 0 16px !important;
+    margin: 20px auto !important;
+  }
+  .sidebar {
+    position: relative !important;
+    top: auto !important;
+    margin-top: 20px !important;
+  }
+  .navbar { padding: 0 16px !important; height: 66px !important; }
+  .brand span { font-size: 15px !important; }
+  .search-panel { top: 69px; padding: 14px 16px 16px; }
+  .artikel-card-pro { flex-direction: column; }
+  .artikel-img-wrap { width: 100%; height: 200px; }
+  .artikel-info-pro { padding: 22px 20px; }
+  .artikel-judul { font-size: 28px; }
+}
+
+/* ============================================================
+   MASTER FINAL OVERRIDE — FONT COMPACT, SEARCH FIX, SIDEBAR FULL
+   ============================================================ */
+
+/* 1. GLOBAL FONT — compact, rapi, tidak makan tempat */
+* {
+  font-family: 'DM Sans', Arial, Helvetica, sans-serif !important;
+}
+
+body {
+  font-size: 14px !important;
+  line-height: 1.55 !important;
+  letter-spacing: 0 !important;
+}
+
+/* Heading pakai DM Serif Display */
+h1, h2, h3, h4, h5, h6,
+.artikel-judul,
+.welcome-text,
+.sidebar-divider {
+  font-family: 'DM Serif Display', Georgia, serif !important;
+  letter-spacing: 0 !important;
+}
+
+/* 2. NAVBAR — compact, tidak ada border-radius aneh di search */
+.navbar {
+  height: 58px !important;
+  padding: 0 16px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  background: #fff !important;
+  border-bottom: 2px solid #ee9254 !important;
+  box-shadow: 0 2px 12px rgba(74,36,0,0.10) !important;
+  position: sticky !important;
+  top: 0 !important;
+  z-index: 9999 !important;
+  width: 100% !important;
+  left: 0 !important;
+}
+
+.brand span {
+  font-family: 'Geits', sans-serif !important;
+  font-size: 15px !important;
+  font-weight: 400 !important;
+  line-height: 1.25 !important;
+  color: #4a2400 !important;
+}
+
+.brand img {
+  height: 38px !important;
+  width: auto !important;
+}
+
+/* 3. SEARCH BUTTON — bersih, tidak ada border-radius aneh */
+.search-btn {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 6px !important;
+  background: none !important;
+  border: 1.5px solid #7b3f00 !important;
+  border-radius: 6px !important;
+  padding: 6px 14px !important;
+  font-family: 'DM Sans', Arial, sans-serif !important;
+  font-size: 13px !important;
+  font-weight: 600 !important;
+  color: #7b3f00 !important;
+  cursor: pointer !important;
+  height: 34px !important;
+  width: auto !important;
+  transition: background 0.2s, color 0.2s !important;
+  -webkit-tap-highlight-color: transparent !important;
+  outline: none !important;
+}
+
+.search-btn:hover {
+  background: #7b3f00 !important;
+  color: #fff !important;
+}
+
+.search-btn:active,
+.search-btn:focus {
+  background: none !important;
+  box-shadow: none !important;
+  outline: none !important;
+}
+
+/* 4. LAYOUT — sidebar full width, tanpa border-radius */
+.layout {
+  display: grid !important;
+  grid-template-columns: 1fr 260px !important;
+  gap: 28px !important;
+  max-width: 100% !important;
+  width: 100% !important;
+  margin: 0 !important;
+  padding: 20px 20px !important;
+  align-items: start !important;
+  box-sizing: border-box !important;
+}
+
+/* 5. SIDEBAR — full lebar kolom, tanpa border-radius pada tombol */
+.sidebar {
+  position: sticky !important;
+  top: 68px !important;
+  width: 100% !important;
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 10px !important;
+  height: fit-content !important;
+}
+
+.sidebar .tombol-section button,
+.sidebar .btn-box .full-btn,
+.sidebar .tombol-section .btn-link {
+  width: 100% !important;
+  min-height: 52px !important;
+  height: auto !important;
+  border-radius: 8px !important;
+  font-size: 14px !important;
+  font-weight: 600 !important;
+  font-family: 'DM Sans', Arial, sans-serif !important;
+  background: linear-gradient(135deg, #5a2100, #8b4000) !important;
+  color: #fff !important;
+  border: none !important;
+  cursor: pointer !important;
+  text-decoration: none !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  padding: 0 16px !important;
+  letter-spacing: 0 !important;
+  box-shadow: 0 2px 10px rgba(74,36,0,0.15) !important;
+  transition: background 0.2s !important;
+}
+
+.sidebar .tombol-section button:hover,
+.sidebar .btn-box .full-btn:hover,
+.sidebar .tombol-section .btn-link:hover {
+  background: #7a3a00 !important;
+}
+
+/* 6. KATEGORI CARDS — rapi tanpa border-radius berlebihan */
+.kategori-grid {
+  display: grid !important;
+  grid-template-columns: 1fr 1fr !important;
+  gap: 8px !important;
+}
+
+.kategori-card {
+  padding: 12px 6px !important;
+  font-size: 11px !important;
+}
+
+.kategori-icon-text {
+  font-size: 10px !important;
+  padding: 4px 8px !important;
+  letter-spacing: 0.05em !important;
+  font-family: 'DM Sans', Arial, sans-serif !important;
+  font-weight: 700 !important;
+}
+
+.kategori-sub {
+  font-size: 9px !important;
+  line-height: 1.3 !important;
+}
+
+/* 7. LITURGI CARD */
+.liturgi-card {
+  padding: 14px 12px !important;
+}
+
+/* 8. SIDEBAR DIVIDER */
+.sidebar-divider {
+  font-size: 10px !important;
+  letter-spacing: 0.12em !important;
+  padding: 6px 0 4px !important;
+}
+
+/* 9. MOBILE — 1 kolom, sidebar di bawah */
+@media (max-width: 768px) {
+  .layout {
+    display: block !important;
+    padding: 14px !important;
+    margin: 0 !important;
+  }
+
+  .sidebar {
+    position: relative !important;
+    top: auto !important;
+    margin-top: 16px !important;
+    width: 100% !important;
+  }
+
+  .navbar {
+    height: 54px !important;
+    padding: 0 12px !important;
+  }
+
+  .brand span {
+    font-size: 14px !important;
+  }
+
+  .brand img {
+    height: 32px !important;
+  }
+
+  .search-btn {
+    padding: 5px 10px !important;
+    font-size: 12px !important;
+    height: 30px !important;
+  }
+}
+
+/* ============================================================
+   POPPINS OVERRIDE FINAL — SEMUA FONT POPPINS + NAVBAR DESKTOP BESAR
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=DM+Serif+Display&family=Montserrat:wght@400;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap');
+
+/* === GLOBAL: SEMUA PAKAI POPPINS === */
+*,
+body, p, span, div, a, li, td, th,
+input, button, label, small, strong, em,
+.topbar, .sidebar-divider, .sidebar-btn,
+.kategori-sub, .kategori-icon-text,
+.liturgi-musim-label, .liturgi-tanggal,
+.liturgi-nama, .liturgi-desc,
+.search-result-text, .search-empty,
+.artikel-kap, .artikel-sub, .artikel-meta,
+.artikel-baca-btn, .artikel-badge, .artikel-info-pro p,
+.kegiatan-overlay span,
+.visitor-led-title {
+  font-family: 'Poppins', Arial, Helvetica, sans-serif !important;
+}
+
+/* === HEADING TETAP DM SERIF DISPLAY — elegan === */
+h1, h2, h3,
+.kegiatan-section h2,
+.artikel-judul,
+.welcome-text,
+.artikel-info-pro h3 {
+  font-family: 'DM Serif Display', Georgia, serif !important;
+}
+
+/* === KEGIATAN PASTORAL — Judul & teks overlay Poppins === */
+.kegiatan-section h2 {
+  font-family: 'Geits', sans-serif !important;
+  font-size: 30px !important;
+  font-weight: 400 !important;
+  color: #5a2100 !important;
+  margin-bottom: 22px !important;
+  letter-spacing: 0 !important;
+}
+
+.kegiatan-overlay h3 {
+  font-family: 'Poppins', sans-serif !important;
+  font-size: 15px !important;
+  font-weight: 600 !important;
+  letter-spacing: 0 !important;
+  line-height: 1.35 !important;
+}
+
+.kegiatan-overlay span {
+  font-family: 'Poppins', sans-serif !important;
+  font-size: 12px !important;
+  font-weight: 400 !important;
+  opacity: 0.88 !important;
+}
+
+@media (max-width: 768px) {
+  .kegiatan-overlay {
+    padding: 8px 10px !important;
+  }
+  .kegiatan-overlay h3 {
+    font-size: 11px !important;
+    line-height: 1.3 !important;
+    margin-bottom: 2px !important;
+  }
+  .kegiatan-overlay span {
+    font-size: 10px !important;
+  }
+}
+
+/* === ARTIKEL GEREJA — semua Poppins === */
+.artikel-kap {
+  font-family: 'Poppins', sans-serif !important;
+  font-size: 10px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.18em !important;
+}
+
+.artikel-judul {
+  font-family: 'Geits', sans-serif !important;
+  font-size: 32px !important;
+  font-weight: 400 !important;
+}
+
+.artikel-sub {
+  font-family: 'Poppins', sans-serif !important;
+  font-size: 13px !important;
+  font-weight: 400 !important;
+  line-height: 1.7 !important;
+}
+
+.artikel-meta {
+  font-family: 'Poppins', sans-serif !important;
+  font-size: 10px !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.08em !important;
+}
+
+.artikel-info-pro h3 {
+  font-family: 'Geits', sans-serif !important;
+  font-size: 20px !important;
+  font-weight: 400 !important;
+  line-height: 1.35 !important;
+}
+
+.artikel-info-pro p {
+  font-family: 'Poppins', sans-serif !important;
+  font-size: 13px !important;
+  font-weight: 400 !important;
+  line-height: 1.7 !important;
+}
+
+.artikel-baca-btn {
+  font-family: 'Poppins', sans-serif !important;
+  font-size: 11px !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.08em !important;
+}
+
+.artikel-badge {
+  font-family: 'Poppins', sans-serif !important;
+  font-size: 9px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.12em !important;
+}
+
+/* === NAVBAR BRAND "Kristus Raja Karawang" === */
+.brand span {
+  font-family: 'Poppins', sans-serif !important;
+  font-weight: 600 !important;
+  color: #4a2400 !important;
+  line-height: 1.25 !important;
+  letter-spacing: 0 !important;
+}
+
+/* === NAVBAR DESKTOP LEBIH BESAR === */
+@media (min-width: 769px) {
+  .navbar {
+    height: 72px !important;
+    padding: 0 40px !important;
+  }
+
+  .brand img {
+    height: 50px !important;
+  }
+
+  .brand span {
+    font-size: 18px !important;
+  }
+
+  .hamburger {
+    font-size: 26px !important;
+  }
+
+  .search-btn {
+    padding: 8px 20px !important;
+    font-size: 14px !important;
+    height: 38px !important;
+    font-family: 'Poppins', sans-serif !important;
+    font-weight: 600 !important;
+  }
+}
+
+/* === NAVBAR MOBILE TETAP COMPACT === */
+@media (max-width: 768px) {
+  .navbar {
+    height: 56px !important;
+    padding: 0 14px !important;
+  }
+
+  .brand span {
+    font-size: 14px !important;
+  }
+
+  .brand img {
+    height: 34px !important;
+  }
+}
+
+/* ============================================================
+   FONT OVERRIDES: HERO TITLE = MONTSERRAT, LOKASI = INTER
+   ============================================================ */
+
+/* Hero title "Gereja Katolik Kristus Raja Karawang" */
+.hero-text h1,
+.hero-text h2 {
+  font-family: 'Montserrat', sans-serif !important;
+  font-weight: 700 !important;
+}
+
+/* Semua teks di section Lokasi Gereja */
+.lokasi,
+.lokasi *,
+section.lokasi h2,
+.map-section,
+.map-section * {
+  font-family: 'Inter', sans-serif !important;
 }

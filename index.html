@@ -6,522 +6,8 @@
   <title>Gereja Katolik Kristus Raja Karawang</title>
   <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="search-highlight.css">
-  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=DM+Serif+Display&family=DM+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=DM+Serif+Display&display=swap" rel="stylesheet">
 
-  <style>
-    /* =============================================
-       OVERRIDE GABUNGAN — TIDAK UBAH WARNA ASLI
-       ============================================= */
-
-    /* ── TOPBAR ── */
-    .topbar {
-      background: linear-gradient(90deg, #4a2400, #7b3f00);
-      color: rgba(255,255,255,0.9);
-      text-align: center;
-      font-size: 13px;
-      letter-spacing: 0.06em;
-      padding: 8px 20px;
-      font-family: 'DM Sans', Arial, sans-serif;
-      font-weight: 500;
-      position: relative;
-      z-index: 1;
-    }
-
-    /* ── NAVBAR LEBIH BESAR ── */
-    .navbar {
-      position: sticky !important;
-      top: 0;
-      z-index: 9999;
-      background: #ffffff;
-      box-shadow: 0 3px 20px rgba(74,36,0,0.13);
-      border-bottom: 3px solid #ee9254;
-      display: flex;
-      font-family: 'DM Sans', Arial, sans-serif;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0 32px;
-      height: 80px !important; /* lebih besar */
-      transition: box-shadow 0.3s;
-    }
-
-    .nav-left {
-      display: flex;
-      align-items: center;
-      gap: 18px;
-    }
-
-    .hamburger {
-      font-size: 28px;
-      cursor: pointer;
-      color: #7b3f00;
-      background: none;
-      border: none;
-      padding: 4px 8px;
-      border-radius: 8px;
-      transition: background 0.2s;
-    }
-    .hamburger:hover { background: rgba(212,100,10,0.1); }
-
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-      text-decoration: none;
-    }
-
-    .brand img {
-      height: 52px !important;
-      width: auto;
-    }
-
-    .brand span {
-      font-family: 'Cinzel', serif !important;
-      font-size: 18px !important;
-      font-weight: 700 !important;
-      color: #4a2400;
-      line-height: 1.25;
-    }
-
-    .nav-right {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-
-    /* ── SEARCH BUTTON NAVBAR ── */
-    .search-btn {
-      background: none;
-      border: 2px solid #66360f;
-      border-radius: 50px;
-      padding: 8px 18px;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      font-family: 'DM Sans', Arial, sans-serif;
-      font-size: 14px;
-      font-weight: 600;
-      color: #7b3f00;
-      transition: background 0.2s, color 0.2s;
-    }
-    .search-btn:hover {
-      background: #97521a;
-      color: white;
-    }
-    .search-btn svg path { stroke: currentColor; }
-
-    /* ── SEARCH PANEL INLINE (langsung tampil hasil) ── */
-    .search-panel {
-      display: none;
-      position: fixed;
-      top: 83px;
-      left: 0; right: 0;
-      z-index: 9998;
-      background: rgba(255,255,255,0.98);
-      backdrop-filter: blur(10px);
-      border-bottom: 3px solid #723504;
-      padding: 18px 32px 20px;
-      box-shadow: 0 8px 30px rgba(74,36,0,0.15);
-    }
-    .search-panel.open { display: block; }
-
-    .search-panel-inner {
-      max-width: 700px;
-      margin: 0 auto;
-    }
-
-    .search-input-wrap {
-      display: flex;
-      align-items: center;
-      border: 2px solid #834009;
-      border-radius: 50px;
-      overflow: hidden;
-      background: #fff;
-      box-shadow: 0 2px 12px rgba(212,100,10,0.12);
-    }
-
-    .search-input-wrap input {
-      flex: 1;
-      border: none;
-      outline: none;
-      padding: 13px 22px;
-      font-size: 16px;
-      font-family: 'DM Sans', Arial, sans-serif;
-      background: transparent;
-      color: #4a2400;
-    }
-
-    .search-input-wrap button {
-      background: #642602;
-      border: none;
-      color: white;
-      padding: 0 22px;
-      height: 50px;
-      cursor: pointer;
-      font-size: 18px;
-      transition: background 0.2s;
-    }
-    .search-input-wrap button:hover { background: #7b3f00; }
-
-    /* Hasil pencarian */
-    #searchResults {
-      margin-top: 14px;
-    }
-
-    .search-result-item {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      padding: 12px 16px;
-      border-radius: 10px;
-      background: #fff8f0;
-      border: 1px solid rgba(212,100,10,0.15);
-      margin-bottom: 8px;
-      cursor: pointer;
-      transition: background 0.2s, transform 0.2s;
-      text-decoration: none;
-      color: #4a2400;
-    }
-    .search-result-item:hover {
-      background: #ffeedd;
-      transform: translateX(4px);
-    }
-    .search-result-icon {
-      width: 36px; height: 36px;
-      background: linear-gradient(135deg, #b46d33, #7b3f00);
-      border-radius: 8px;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 16px; flex-shrink: 0;
-    }
-    .search-result-text strong {
-      display: block;
-      font-size: 14px; font-weight: 700;
-      color: #4a2400;
-    }
-    .search-result-text span {
-      font-size: 12px; color: #7b5c40;
-    }
-    .search-highlight { background: #ffe08a; border-radius: 3px; padding: 0 2px; }
-
-    .search-empty {
-      text-align: center;
-      padding: 20px;
-      color: #a07850;
-      font-size: 14px;
-      font-family: 'DM Sans', Arial, sans-serif;
-    }
-
-    /* ── SIDE MENU ── */
-    .side-menu {
-      position: fixed;
-      top: 0; left: -280px;
-      width: 280px;
-      height: 100vh;
-      background: linear-gradient(180deg, #4a2400 0%, #7b3f00 100%);
-      z-index: 99999;
-      padding: 80px 0 30px;
-      transition: left 0.35s cubic-bezier(0.4,0,0.2,1);
-      box-shadow: 4px 0 30px rgba(0,0,0,0.3);
-    }
-
-    .side-menu.open { left: 0; }
-
-    .side-menu a {
-      display: block;
-      padding: 16px 32px;
-      color: rgba(255,255,255,0.88);
-      text-decoration: none;
-      font-family: 'DM Sans', Arial, sans-serif;
-      font-size: 15px; font-weight: 600;
-      border-bottom: 1px solid rgba(255,255,255,0.08);
-      transition: background 0.2s, color 0.2s, padding-left 0.2s;
-      letter-spacing: 0.03em;
-    }
-    .side-menu a:hover {
-      background: rgba(255,255,255,0.1);
-      color: #fff;
-      padding-left: 40px;
-    }
-
-    .side-menu-overlay {
-      display: none;
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,0.45);
-      z-index: 99998;
-    }
-    .side-menu-overlay.open { display: block; }
-
-    /* ── SEARCH BOX LAMA — sembunyikan ── */
-    .search-box { display: none !important; }
-
-    /* ── LAYOUT UTAMA ── */
-    .layout {
-      display: grid !important;
-      grid-template-columns: 1fr 280px !important;
-      gap: 32px !important;
-      max-width: 1280px !important;
-      margin: 36px auto !important;
-      padding: 0 28px !important;
-      align-items: start !important;
-    }
-
-    .main-content { min-width: 0; width: 100%; }
-
-    /* ── SIDEBAR FULL KE BAWAH ── */
-    .sidebar {
-      position: sticky !important;
-      top: 96px !important;
-      display: flex !important;
-      flex-direction: column !important;
-      gap: 14px !important;
-      width: 100% !important;
-      /* TIDAK height:fit-content supaya mengisi penuh */
-    }
-
-    /* Wrapper sidebar untuk full stretch */
-    .sidebar-inner {
-      display: flex;
-      flex-direction: column;
-      gap: 14px;
-    }
-
-    /* ── TOMBOL SIDEBAR — FULL WIDTH & STYLED ── */
-    .sidebar .tombol-section,
-    .sidebar .btn-box {
-      margin: 0 !important;
-      width: 100% !important;
-      text-align: center !important;
-    }
-
-    .sidebar .tombol-section button,
-    .sidebar .btn-box .full-btn,
-    .sidebar .tombol-section .btn-link {
-      width: 100% !important;
-      min-height: 64px !important;
-      height: auto !important;
-      line-height: normal !important;
-      font-size: 16px !important;
-      font-weight: 700 !important;
-      display: flex !important;
-      align-items: center !important;
-      justify-content: center !important;
-      padding: 16px 20px !important;
-      box-sizing: border-box !important;
-      text-align: center !important;
-      cursor: pointer !important;
-      text-decoration: none !important;
-      font-family: 'DM Sans', Arial, sans-serif !important;
-      letter-spacing: 0.03em !important;
-      transition: transform 0.2s, box-shadow 0.2s, background 0.2s !important;
-      box-shadow: 0 4px 16px rgba(74,36,0,0.18) !important;
-    }
-
-    /* Tombol 1 — Jadwal Misa */
-    .sidebar .tombol-section:nth-child(1) button,
-    .sidebar .tombol-section:nth-child(1) .btn-link {
-      background: linear-gradient(135deg, #5a2100, #8b4000) !important;
-      color: white !important;
-      border: none !important;
-    }
-
-    /* Tombol 2 — Wilayah */
-    .sidebar .tombol-section:nth-child(2) button,
-    .sidebar .tombol-section:nth-child(2) .btn-link {
-      background: linear-gradient(135deg, hsl(14, 93%, 16%) 93%, 16%), #a85a00 !important;
-      color: white !important;
-      border: none !important;
-    }
-
-    /* Tombol 3 — Sekretariat */
-    .sidebar .btn-box .full-btn {
-      background: linear-gradient(135deg, #4a2400, #6b3500) !important;
-      color: white !important;
-      border: none !important;
-    }
-
-    .sidebar .tombol-section button:hover,
-    .sidebar .btn-box .full-btn:hover,
-    .sidebar .tombol-section .btn-link:hover {
-      transform: translateY(-3px) !important;
-      box-shadow: 0 8px 24px rgba(74,36,0,0.3) !important;
-    }
-
-    /* ── SIDEBAR ARTIKEL SECTION (extend ke bawah) ── */
-    .sidebar-artikel {
-      background: white;
-      border-radius: 14px;
-      overflow: hidden;
-      box-shadow: 0 4px 18px rgba(74,36,0,0.12);
-      text-decoration: none;
-      color: #4a2400;
-      display: block;
-      transition: transform 0.25s, box-shadow 0.25s;
-    }
-    .sidebar-artikel:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 10px 30px rgba(74,36,0,0.2);
-    }
-    .sidebar-artikel img {
-      width: 100%;
-      height: 160px;
-      object-fit: cover;
-    }
-    .sidebar-artikel-body {
-      padding: 16px;
-    }
-    .sidebar-artikel-tag {
-      display: inline-block;
-      background: rgba(212,100,10,0.12);
-      color: #642d08;
-      font-size: 10px; font-weight: 700;
-      letter-spacing: 0.1em; text-transform: uppercase;
-      padding: 3px 10px; border-radius: 20px;
-      margin-bottom: 8px;
-    }
-    .sidebar-artikel-body h4 {
-      font-family: 'Cinzel', serif;
-      font-size: 14px; font-weight: 600;
-      color: #4a2400; margin-bottom: 6px; line-height: 1.4;
-    }
-    .sidebar-artikel-body p {
-      font-size: 12px; color: #7b5c40; line-height: 1.6;
-    }
-    .sidebar-divider {
-      font-family: 'Cinzel', serif;
-      font-size: 12px; font-weight: 700;
-      color: #7b3f00;
-      letter-spacing: 0.1em; text-transform: uppercase;
-      padding: 8px 0 6px;
-      border-bottom: 2px solid rgba(212,100,10,0.2);
-      margin-bottom: 6px;
-    }
-
-    /* ── WELCOME TEXT ── */
-    .welcome-text {
-      font-family: 'Cinzel', serif !important;
-      font-size: 22px !important;
-      color: #4a2400 !important;
-      padding: 28px 0 20px !important;
-      font-weight: 600 !important;
-      letter-spacing: 0.03em !important;
-    }
-
-    /* ── KEGIATAN SECTION (diluar layout tetap full-width) ── */
-    .kegiatan-section,
-    .lokasi,
-    .visitor-led,
-    .artikel-home,
-    footer {
-      /* dibiarkan full width */
-    }
-
-    /* ── VISITOR COUNTER ── */
-    .visitor-led {
-      background: linear-gradient(135deg, #4a2400, rgb(151, 90, 40));
-      padding: 30px;
-      text-align: center;
-    }
-
-    .visitor-led-title {
-      color: rgba(255,255,255,0.8);
-      font-family: 'DM Sans', Arial, sans-serif;
-      font-size: 11px; letter-spacing: 0.2em;
-      text-transform: uppercase;
-      margin-bottom: 12px; font-weight: 700;
-    }
-
-    .led-digit {
-      display: inline-flex;
-      align-items: center; justify-content: center;
-      width: 44px; height: 56px;
-      background: #1a0900;
-      color: #ff9a4a;
-      font-size: 30px; font-weight: 700;
-      font-family: 'Courier New', monospace;
-      border-radius: 8px;
-      margin: 0 3px;
-      box-shadow: 0 0 12px rgba(255,154,74,0.35), inset 0 0 8px rgba(0,0,0,0.5);
-      border: 1px solid rgba(255,154,74,0.2);
-    }
-
-    /* ── ARTIKEL HOME ── */
-    .artikel-home {
-      padding: 60px 5%;
-      background: #f7f3ee;
-      text-align: center;
-    }
-
-    .artikel-home h2 {
-      font-family: 'Cinzel', serif;
-      font-size: 28px; color: #4a2400;
-      margin-bottom: 8px;
-    }
-
-    .artikel-divider {
-      width: 50px; height: 3px;
-      background: linear-gradient(90deg, #94480a, #c9a84c);
-      border-radius: 2px;
-      margin: 10px auto 32px;
-    }
-
-    .artikel-card {
-      display: flex;
-      gap: 20px;
-      align-items: center;
-      background: white;
-      border-radius: 16px;
-      overflow: hidden;
-      text-decoration: none;
-      color: #333;
-      max-width: 760px;
-      margin: auto;
-      box-shadow: 0 8px 24px rgba(74,36,0,0.12);
-      transition: transform 0.3s, box-shadow 0.3s;
-    }
-
-    .artikel-card:hover {
-      transform: translateY(-6px);
-      box-shadow: 0 18px 40px rgba(74,36,0,0.2);
-    }
-
-    .artikel-card img {
-      width: 260px; height: 170px;
-      object-fit: cover;
-    }
-
-    /* ── FOOTER ── */
-    footer {
-      background: linear-gradient(135deg, #4a2400, #7b3f00);
-      color: rgba(255,255,255,0.85);
-      text-align: center;
-      padding: 22px;
-      font-family: 'DM Sans', Arial, sans-serif;
-      font-size: 13px;
-    }
-
-    /* ── MOBILE ── */
-    @media (max-width: 900px) {
-      .layout {
-        display: block !important;
-        padding: 0 16px !important;
-        margin: 20px auto !important;
-      }
-      .sidebar {
-        position: relative !important;
-        top: auto !important;
-        margin-top: 20px !important;
-        flex-direction: column !important;
-      }
-      .navbar { padding: 0 16px !important; height: 66px !important; }
-      .brand span { font-size: 15px !important; }
-      .search-panel { top: 69px; padding: 14px 16px 16px; }
-    }
-
-    /* Scroll reveal */
-    .reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.65s ease, transform 0.65s ease; }
-    .reveal.visible { opacity: 1; transform: none; }
-  </style>
 </head>
 
 <body>
@@ -597,7 +83,7 @@
 
     <!-- Slideshow Pengumuman -->
     <section class="lokasi" id="pengumuman" style="background:#fff8f0; border-radius:16px; margin-bottom:24px; padding:30px 20px;">
-      <h2 style="font-family:'Cinzel',serif; color:#4a2400; margin-bottom:18px;">Pengumuman</h2>
+      <h2 style="font-family:'DM Serif Display',serif; color:#4a2400; margin-bottom:18px;">Pengumuman</h2>
       <div class="slideshow-wrapper">
         <div class="slide fade"><img src="umumm1.jpeg" alt="pengumuman 1"></div>
         <div class="slide fade"><img src="umumm2.jpeg" alt="pengumuman 2"></div>
@@ -618,9 +104,8 @@
     <section class="filosofi">
       <div style="margin-top:20px; padding:0 10px;" class="mindmap-section-wrap">
         <div style="text-align:center; margin-bottom:40px;">
-          <div style="font-family:'DM Serif Display',serif; font-size:34px; color:#f89a6e; margin-bottom:8px;">Filosofi Logo Paroki</div>
-          <div style="font-family:'DM Sans',sans-serif; font-size:15px; color:#888; letter-spacing:2px; text-transform:uppercase;">makna &amp; Simbolisme</div>
-          <h6>tekan logo</h6>
+          <div style="font-family:'DM Serif Display',serif; font-size:28px; color:#f89a6e; margin-bottom:6px;">Filosofi Logo Paroki</div>
+          <div style="font-family:'DM Sans',sans-serif; font-size:12px; color:#888; letter-spacing:1.5px; text-transform:uppercase;">Makna &amp; Simbolisme</div>
         </div>
 
         <!-- SVG desktop -->
@@ -784,35 +269,39 @@
         <button class="full-btn" onclick="showSekretariat()">Jadwal Sekretariat Paroki</button>
       </div>
 
-      <!-- Artikel di sidebar -->
-      <div class="sidebar-divider" style="margin-top:10px;">Artikel Terbaru</div>
+      <!-- KATEGORI PELAYANAN -->
+      <div class="sidebar-divider" style="margin-top:10px;">Kategori Pelayanan</div>
 
-      <a href="aboutereja11.html" class="sidebar-artikel reveal">
-        <img src="altar.jpeg" alt="Sejarah Gereja">
-        <div class="sidebar-artikel-body">
-          <span class="sidebar-artikel-tag">Sejarah</span>
-          <h4>Sejarah Gereja Katolik Kristus Raja Karawang</h4>
-          <p>Mengenal sejarah dan perkembangan Gereja dari masa ke masa.</p>
-        </div>
-      </a>
+      <div class="kategori-grid">
+        <a href="omk.html" class="kategori-card">
+          <div class="kategori-icon-text">OMK</div>
+          <div class="kategori-sub">Orang Muda Katolik</div>
+        </a>
+        <a href="misdinar.html" class="kategori-card">
+          <div class="kategori-icon-text">MSD</div>
+          <div class="kategori-sub">Putra-Putri Altar</div>
+        </a>
+        <a href="lektor.html" class="kategori-card">
+          <div class="kategori-icon-text">LKT</div>
+          <div class="kategori-sub">Pembaca Kitab Suci</div>
+        </a>
+        <a href="kasi.html" class="kategori-card">
+          <div class="kategori-icon-text">KASI</div>
+          <div class="kategori-sub">Komisi &amp; Seksi</div>
+        </a>
+      </div>
 
-      <a href="kegiatan4.html" class="sidebar-artikel reveal">
-        <img src="FOKUSPAS.jpeg" alt="Fokus Pastoral">
-        <div class="sidebar-artikel-body">
-          <span class="sidebar-artikel-tag">Pastoral</span>
-          <h4>Fokus Pastoral 2026–2030</h4>
-          <p>Arah dan program pastoral paroki untuk lima tahun ke depan.</p>
+      <!-- KALENDER LITURGI OTOMATIS -->
+      <div class="sidebar-divider" style="margin-top:16px;">Kalender Liturgi</div>
+      <div class="liturgi-card" id="liturgiCard">
+        <div class="liturgi-header" id="liturgiHeader">
+          <span id="liturgiWarna" class="liturgi-dot"></span>
+          <span id="liturgiMusim" class="liturgi-musim-label"></span>
         </div>
-      </a>
-
-      <a href="kegiatan5.html" class="sidebar-artikel reveal">
-        <img src="pelkam.jpeg" alt="Pelatihan Kamera">
-        <div class="sidebar-artikel-body">
-          <span class="sidebar-artikel-tag">Kegiatan</span>
-          <h4>Pelatihan Kamera Komsos GKR</h4>
-          <p>Pelatihan fotografi dan videografi untuk tim Komsos.</p>
-        </div>
-      </a>
+        <div class="liturgi-tanggal" id="liturgiTanggal"></div>
+        <div class="liturgi-nama" id="liturgiNama"></div>
+        <div class="liturgi-desc" id="liturgiDesc"></div>
+      </div>
 
     </div>
   </aside>
@@ -884,17 +373,26 @@
 
 <!-- ARTIKEL -->
 <section class="artikel-home" id="artikel">
-  <h2>Artikel Gereja</h2>
-  <div class="artikel-divider"></div>
-  <a href="aboutereja11.html" class="artikel-card">
-    <img src="altar.jpeg" alt="Profil Gereja">
-    <div class="artikel-info">
-      <h3>Sejarah Gereja</h3>
-      <p>Mengenal sejarah Gereja Katolik Kristus Raja Karawang.</p>
-      <h5>Oleh Komsos GKR</h5>
-      <span class="baca"></span>
-    </div>
-  </a>
+  <div class="artikel-header">
+    <div class="artikel-kap">Artikel Gereja</div>
+    <h2 class="artikel-judul">Warta &amp; Tulisan</h2>
+    <div class="artikel-divider"></div>
+    <p class="artikel-sub">Bacaan pilihan seputar kehidupan iman, sejarah, dan kegiatan paroki Kristus Raja Karawang.</p>
+  </div>
+  <div class="artikel-grid">
+    <a href="aboutereja11.html" class="artikel-card-pro">
+      <div class="artikel-img-wrap">
+        <img src="altar.jpeg" alt="Profil Gereja">
+        <span class="artikel-badge">Sejarah</span>
+      </div>
+      <div class="artikel-info-pro">
+        <div class="artikel-meta">Komsos GKR &nbsp;·&nbsp; 2025</div>
+        <h3>Sejarah Gereja Katolik Kristus Raja Karawang</h3>
+        <p>Mengenal perjalanan panjang Gereja Katolik Kristus Raja Karawang dari masa ke masa — dari pendirian hingga kini menjadi paroki yang hidup dan berkembang.</p>
+        <span class="artikel-baca-btn">Baca Selengkapnya</span>
+      </div>
+    </a>
+  </div>
 </section>
 
 <footer>
@@ -946,18 +444,18 @@ const searchResults = document.getElementById('searchResults');
 
 // Data pencarian — sesuaikan dengan konten kamu
 const searchData = [
-  { icon: '', title: 'Jadwal Misa', desc: 'Lihat jadwal misa harian dan Misa Minggu', action: () => bukaFullscreenMisa() },
-  { icon: '', title: 'Daftar Wilayah Paroki', desc: 'Wilayah dan lingkungan paroki', url: 'ladaftarwilayah.html' },
-  { icon: '', title: 'Jadwal Sekretariat', desc: 'Jam buka sekretariat paroki', action: () => showSekretariat() },
-  { icon: '', title: 'Pengumuman', desc: 'Pengumuman terbaru dari paroki', anchor: '#pengumuman' },
-  { icon: '', title: 'Kegiatan Pastoral', desc: 'Kegiatan pastoral dan rohani', anchor: '#kegiatan' },
-  { icon: '', title: 'Lokasi Gereja', desc: 'Peta dan lokasi Gereja Kristus Raja Karawang', anchor: '#lokasi' },
-  { icon: '', title: 'Sejarah Gereja', desc: 'Mengenal sejarah Gereja Katolik Kristus Raja', url: 'aboutereja11.html' },
-  { icon: '', title: 'HPS & Pesta Nama', desc: 'Kegiatan HPS 23 November 2025', url: 'lakegiatan2.html' },
-  { icon: '', title: 'Fokus Pastoral 2026–2030', desc: 'Program pastoral 5 tahun ke depan', url: 'kegiatan4.html' },
-  { icon: '', title: 'Pelatihan Kamera Komsos', desc: 'Pelatihan kamera 28 Februari 2026', url: 'kegiatan5.html' },
-  { icon: '', title: 'APP Lingkungan', desc: 'APP Lingkungan 22 Februari 2026', url: 'apppekanpertama.html' },
-  { icon: '', title: 'Filosofi Logo Paroki', desc: 'Makna dan simbolisme logo GKR', anchor: '#beranda' },
+  { icon: 'Misa',      title: 'Jadwal Misa', desc: 'Lihat jadwal misa harian dan Misa Minggu', action: () => bukaFullscreenMisa() },
+  { icon: 'Wilayah',   title: 'Daftar Wilayah Paroki', desc: 'Wilayah dan lingkungan paroki', url: 'ladaftarwilayah.html' },
+  { icon: 'Sekr.',     title: 'Jadwal Sekretariat', desc: 'Jam buka sekretariat paroki', action: () => showSekretariat() },
+  { icon: 'Info',      title: 'Pengumuman', desc: 'Pengumuman terbaru dari paroki', anchor: '#pengumuman' },
+  { icon: 'Pastoral',  title: 'Kegiatan Pastoral', desc: 'Kegiatan pastoral dan rohani', anchor: '#kegiatan' },
+  { icon: 'Peta',      title: 'Lokasi Gereja', desc: 'Peta dan lokasi Gereja Kristus Raja Karawang', anchor: '#lokasi' },
+  { icon: 'Sejarah',   title: 'Sejarah Gereja', desc: 'Mengenal sejarah Gereja Katolik Kristus Raja', url: 'aboutereja11.html' },
+  { icon: 'HPS',       title: 'HPS & Pesta Nama', desc: 'Kegiatan HPS 23 November 2025', url: 'lakegiatan2.html' },
+  { icon: 'Pastoral',  title: 'Fokus Pastoral 2026–2030', desc: 'Program pastoral 5 tahun ke depan', url: 'kegiatan4.html' },
+  { icon: 'Komsos',    title: 'Pelatihan Kamera Komsos', desc: 'Pelatihan kamera 28 Februari 2026', url: 'kegiatan5.html' },
+  { icon: 'APP',       title: 'APP Lingkungan', desc: 'APP Lingkungan 22 Februari 2026', url: 'apppekanpertama.html' },
+  { icon: 'Logo',      title: 'Filosofi Logo Paroki', desc: 'Makna dan simbolisme logo GKR', anchor: '#beranda' },
 ];
 
 searchBtn.addEventListener('click', () => {
@@ -1037,6 +535,126 @@ const revealObs = new IntersectionObserver((entries) => {
   });
 }, { threshold: 0.1 });
 reveals.forEach(el => revealObs.observe(el));
+
+// ── KALENDER LITURGI OTOMATIS ──
+(function() {
+  const today = new Date();
+  const year  = today.getFullYear();
+  const month = today.getMonth(); // 0-indexed
+  const day   = today.getDate();
+
+  // Hitung Paskah (algoritma Anonymous Gregorian)
+  function getPaskah(y) {
+    const a = y % 19, b = Math.floor(y/100), c = y % 100;
+    const d = Math.floor(b/4), e = b % 4;
+    const f = Math.floor((b+8)/25), g = Math.floor((b-f+1)/3);
+    const h = (19*a + b - d - g + 15) % 30;
+    const i = Math.floor(c/4), k = c % 4;
+    const l = (32 + 2*e + 2*i - h - k) % 7;
+    const m = Math.floor((a + 11*h + 22*l)/451);
+    const month = Math.floor((h + l - 7*m + 114)/31) - 1; // 0-indexed
+    const eday  = ((h + l - 7*m + 114) % 31) + 1;
+    return new Date(y, month, eday);
+  }
+
+  function addDays(d, n) { const r = new Date(d); r.setDate(r.getDate() + n); return r; }
+  function sameDay(a, b)  { return a.getFullYear()===b.getFullYear() && a.getMonth()===b.getMonth() && a.getDate()===b.getDate(); }
+  function afterOrEq(a, b) { return a >= b || sameDay(a,b); }
+  function before(a, b)   { return a < b && !sameDay(a,b); }
+
+  const paskah   = getPaskah(year);
+  const adven1   = (function(){
+    // Minggu pertama Adven: Minggu terdekat ke 30 Nov
+    const nov30 = new Date(year, 10, 30);
+    const wd = nov30.getDay(); // 0=Sun
+    return addDays(nov30, -wd);
+  })();
+
+  const rabuAbu  = addDays(paskah, -46);
+  const mingguPalma = addDays(paskah, -7);
+  const kamisPutih  = addDays(paskah, -3);
+  const jumatAgung  = addDays(paskah, -2);
+  const sabtuSuci   = addDays(paskah, -1);
+  const ascension   = addDays(paskah, 39);
+  const pentakosta  = addDays(paskah, 49);
+
+  // Tentukan musim liturgi
+  const todayD = new Date(year, month, day);
+
+  let musim = '', warna = '', namaPesta = '', desc = '';
+
+  // Peristiwa khusus
+  const specialDays = [
+    { date: rabuAbu,      name: 'Rabu Abu',              desc: 'Awal masa Prapaskah. Tanda abu di dahi simbol pertobatan.',          warna: '#7a7a7a', musim: 'Prapaskah' },
+    { date: mingguPalma,  name: 'Minggu Palma',          desc: 'Peringatan Yesus memasuki Yerusalem. Minggu Sengsara dimulai.',      warna: '#8B0000', musim: 'Pekan Suci' },
+    { date: kamisPutih,   name: 'Kamis Putih',           desc: 'Perjamuan Terakhir dan pentahbisan Ekaristi.',                       warna: '#ffffff', musim: 'Pekan Suci' },
+    { date: jumatAgung,   name: 'Jumat Agung',           desc: 'Sengsara dan wafat Tuhan Yesus Kristus di kayu salib.',             warna: '#8B0000', musim: 'Pekan Suci' },
+    { date: sabtuSuci,    name: 'Sabtu Suci',            desc: 'Yesus di dalam kubur. Malam vigili Paskah.',                        warna: '#7a7a7a', musim: 'Vigili Paskah' },
+    { date: paskah,       name: 'Hari Raya Paskah',      desc: 'Yesus bangkit dari kematian! Alleluia!',                            warna: '#FFD700', musim: 'Paskah' },
+    { date: ascension,    name: 'Kenaikan Tuhan',        desc: 'Yesus naik ke surga empat puluh hari setelah Paskah.',              warna: '#FFFFFF', musim: 'Paskah' },
+    { date: pentakosta,   name: 'Hari Raya Pentakosta',  desc: 'Turunnya Roh Kudus atas para rasul. Gereja lahir.',                 warna: '#FF2200', musim: 'Pentakosta' },
+    { date: new Date(year,11,25), name: 'Natal – Kelahiran Tuhan',   desc: 'Merayakan kelahiran Yesus Kristus Putra Allah.',        warna: '#FFD700', musim: 'Natal' },
+    { date: new Date(year,0,1),   name: 'Hari Raya Santa Maria',     desc: 'Perayaan Santa Perawan Maria pada awal tahun baru.',    warna: '#FFFFFF', musim: 'Natal' },
+    { date: new Date(year,0,6),   name: 'Hari Raya Epifani',         desc: 'Penampakan Tuhan kepada para Majus dari Timur.',        warna: '#FFD700', musim: 'Natal' },
+  ];
+
+  let isSpecial = false;
+  for (const s of specialDays) {
+    if (sameDay(todayD, s.date)) {
+      namaPesta = s.name; desc = s.desc; warna = s.warna; musim = s.musim;
+      isSpecial = true; break;
+    }
+  }
+
+  if (!isSpecial) {
+    // Adven
+    const advenEnd = new Date(year, 11, 24);
+    const advenPrevYear = (function(){
+      const nov30 = new Date(year-1, 10, 30);
+      const wd = nov30.getDay();
+      return addDays(nov30, -wd);
+    })();
+
+    if ((afterOrEq(todayD, adven1) && before(todayD, new Date(year+1,0,1))) ||
+        (afterOrEq(todayD, advenPrevYear) && before(todayD, new Date(year,0,1)))) {
+      musim = 'Adven'; warna = '#6a0dad';
+      namaPesta = 'Masa Adven'; desc = 'Masa penantian dan persiapan menyambut kedatangan Tuhan.';
+    }
+    // Natal (25 Des – Pembaptisan Tuhan, kira² Jan 12)
+    else if ((afterOrEq(todayD, new Date(year,11,25))) ||
+             (afterOrEq(todayD, new Date(year,0,1)) && before(todayD, new Date(year,0,13)))) {
+      musim = 'Natal'; warna = '#FFD700';
+      namaPesta = 'Masa Natal'; desc = 'Merayakan misteri inkarnasi Putra Allah yang menjadi manusia.';
+    }
+    // Prapaskah (Rabu Abu – Sabtu Suci)
+    else if (afterOrEq(todayD, rabuAbu) && before(todayD, paskah)) {
+      musim = 'Prapaskah'; warna = '#6B3A9C';
+      namaPesta = 'Masa Prapaskah'; desc = 'Masa pertobatan, doa, dan puasa selama 40 hari sebelum Paskah.';
+    }
+    // Paskah (Paskah – Pentakosta)
+    else if (afterOrEq(todayD, paskah) && before(todayD, addDays(pentakosta,1))) {
+      musim = 'Paskah'; warna = '#FFD700';
+      namaPesta = 'Masa Paskah'; desc = 'Lima puluh hari perayaan kebangkitan Tuhan Yesus Kristus.';
+    }
+    // Biasa
+    else {
+      musim = 'Biasa'; warna = '#2d7a3a';
+      namaPesta = 'Masa Biasa'; desc = 'Masa merenungkan hidup dan ajaran Yesus sehari-hari.';
+    }
+  }
+
+  // Render
+  const bulanID = ['Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'];
+  const hariID  = ['Minggu','Senin','Selasa','Rabu','Kamis','Jumat','Sabtu'];
+  document.getElementById('liturgiTanggal').textContent =
+    hariID[todayD.getDay()] + ', ' + day + ' ' + bulanID[month] + ' ' + year;
+  document.getElementById('liturgiNama').textContent    = namaPesta;
+  document.getElementById('liturgiDesc').textContent    = desc;
+  document.getElementById('liturgiMusim').textContent   = musim;
+  const dot = document.getElementById('liturgiWarna');
+  dot.style.background = warna;
+  dot.style.border = warna === '#ffffff' || warna === '#FFFFFF' ? '1.5px solid #ccc' : 'none';
+})();
 </script>
 </body>
 </html>
