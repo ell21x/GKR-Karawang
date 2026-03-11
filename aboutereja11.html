@@ -8,18 +8,116 @@
 
 <style>
 
-/* RESET */
+ /* ===== RESET ===== */
 *{
-margin:0;
-padding:0;
-box-sizing:border-box;
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
 }
 
+/* ===== BODY ===== */
 body{
-font-family: "Segoe UI", Arial, sans-serif;
-background:#f5f6f8;
-color:#333;
-line-height:1.7;
+  font-family: Arial, sans-serif;
+  background:#f6f7fb;
+  line-height:1.6;
+}
+
+/* ===== CONTAINER ARTIKEL ===== */
+.container{
+  max-width:850px;
+  margin:20px auto;
+  background:white;
+  padding:30px;
+  border-radius:12px;
+  box-shadow:0 4px 16px rgba(0,0,0,0.1);
+}
+
+/* ===== JUDUL ===== */
+h1{
+  font-size:32px;
+  margin-bottom:10px;
+  color:#1a1a1a;
+}
+
+/* ===== META ===== */
+.meta{
+  color:#666;
+  font-size:14px;
+  margin-bottom:25px;
+}
+
+/* ===== FOTO ARTIKEL ===== */
+.artikel-img{
+  width:100%;
+  margin:20px 0;
+  display:block;
+}
+
+/* ===== PARAGRAF ===== */
+p{
+  font-size:18px;
+  color:#222;
+  line-height:1.7;
+  margin-bottom:18px;
+}
+
+/* ===== SUB JUDUL ===== */
+h3{
+  margin-top:30px;
+  margin-bottom:10px;
+  color:#1a1a1a;
+}
+
+/* ===== BLOCKQUOTE ===== */
+blockquote{
+  border-left:4px solid #4a67ff;
+  padding-left:15px;
+  font-style:italic;
+  color:#444;
+  margin:25px 0;
+}
+
+/* ===== RELATED ARTIKEL ===== */
+.related-section{
+  margin-top:40px;
+  padding-top:20px;
+  border-top:2px solid #eee;
+}
+
+.related-section h3{
+  font-size:22px;
+  margin-bottom:15px;
+}
+
+.related-list{
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+}
+
+.related-item{
+  text-decoration:none;
+  padding:15px 18px;
+  background:#f5f6ff;
+  box-shadow:0 3px 10px rgba(0,0,0,0.05);
+  transition:0.2s;
+}
+
+.related-item:hover{
+  background:#e7e9ff;
+  transform:translateX(3px);
+}
+
+.related-title{
+  font-size:17px;
+  font-weight:bold;
+  color:#1a1a1a;
+}
+
+.related-date{
+  font-size:13px;
+  color:#777;
+  margin-top:4px;
 }
 
 /* ===== BACK BUTTON ===== */
@@ -27,119 +125,59 @@ line-height:1.7;
   position:fixed;
   top:20px;
   left:20px;
-
   width:46px;
   height:46px;
-
   background:#662d17;
   border:none;
   border-radius:50%;
-
+  box-shadow:0 6px 15px rgba(0,0,0,0.25);
   display:flex;
   align-items:center;
   justify-content:center;
-
   cursor:pointer;
-
-  box-shadow:0 6px 15px rgba(0,0,0,0.25);
   z-index:9999;
-
-  transition:0.2s;
 }
 
 .back-full svg{
   width:22px;
   height:22px;
-  stroke:#fff;
+  stroke:#ffffff;
   stroke-width:2.5;
   fill:none;
 }
 
 .back-full:hover{
   background:#7c371b;
-  transform:scale(1.08);
 }
 
-/* CONTAINER */
-.container{
-max-width:900px;
-margin:auto;
-padding:20px;
-}
+/* ===== RESPONSIVE HP ===== */
+@media (max-width:600px){
 
-/* HERO */
-.hero{
-height:320px;
-background:url("gereja.jpg") center/cover;
-border-radius:16px;
-position:relative;
-overflow:hidden;
-margin-bottom:40px;
-}
+  .container{
+    padding:18px;
+  }
 
-.hero::after{
-content:"";
-position:absolute;
-inset:0;
-background:linear-gradient(transparent,rgba(0,0,0,0.6));
-}
+  h1{
+    font-size:24px;
+  }
 
-.hero-text{
-position:absolute;
-bottom:30px;
-left:30px;
-color:white;
-z-index:2;
-}
+  p{
+    font-size:15px;
+  }
 
-.hero-text h1{
-font-size:36px;
-font-weight:700;
-margin-bottom:6px;
-}
+  .related-item{
+    padding:12px 14px;
+  }
 
-.hero-text p{
-opacity:0.9;
-font-size:14px;
-}
+  .related-title{
+    font-size:15px;
+  }
 
-/* ARTIKEL */
-.article{
-background:white;
-padding:40px;
-border-radius:16px;
-box-shadow:0 10px 25px rgba(0,0,0,0.08);
-}
+}   
+    
+  </style>
 
-/* JUDUL */
-.article h2{
-font-size:28px;
-margin-bottom:18px;
-color:#222;
-}
 
-/* PARAGRAF */
-.article p{
-margin-bottom:18px;
-font-size:17px;
-}
-
-/* GAMBAR */
-.article img{
-width:100%;
-margin:25px 0;
-}
-
-/* QUOTE */
-.quote{
-border-left:4px solid #8b5e3c;
-padding-left:18px;
-font-style:italic;
-color:#555;
-margin:25px 0;
-}
-
-</style>
 </head>
 
 <body>
@@ -169,7 +207,7 @@ Setelah beberapa waktu berpindah-pindah tempat pertemuan dari rumah ke rumah, pa
  Sebuah gudang di Babakan Cianjur direnovasi dan dijadikan gereja sederhana sebagai tempat ibadah umat.
 </p>
 
-<img src="altar.jpeg">
+<img class="artikel-img" src="altar.jpeg">
 
 <p>
 Sejak tahun 1969, umat di Karawang mulai mendapatkan pelayanan pastoral secara rutin dari J. Corstjens. Beliau merupakan Pastor Paroki Subang yang mendapat tugas untuk melayani umat di Karawang dan Purwakarta secara tetap. Berkat usaha dan perhatian beliau bersama umat, pada tahun 1974 Karawang resmi menjadi stasi dari Paroki Subang. Lima tahun kemudian,
@@ -190,7 +228,7 @@ yang menggantikan Pastor Corstjens. Pastor Hardjo melakukan banyak penataan dan 
    sehingga Pesta Kristus Raja Semesta Alam diperingati sebagai hari jadi Paroki Karawang.
 </p>
 
-<img src="kristusrajajadul.jpg">
+<img class="artikel-img" src="kristusrajajadul.jpg">
 
 <p>Memasuki awal tahun 1990, Gereja menghadapi masa yang cukup berat. Sebagian masyarakat sekitar gereja menyatakan keberatan terhadap keberadaan tempat ibadah Katolik tersebut. Surat protes dilayangkan,
    dan pada masa Adven 1993 terjadi berbagai gangguan terhadap kegiatan gereja. Umat yang hendak menghadiri perayaan Ekaristi sering mengalami hambatan.</p>
@@ -205,7 +243,7 @@ yang menggantikan Pastor Corstjens. Pastor Hardjo melakukan banyak penataan dan 
 <p>Melalui perjalanan yang panjang dan dengan bantuan pemerintah pusat,
    pada tahun 1994 izin mendirikan bangunan gereja akhirnya dikeluarkan oleh Bupati Karawang saat itu, Sumarno Suradi, untuk pembangunan gereja di Babakan Sananga.</p>
 
-<img src="bupati.jpg">
+<img class="artikel-img" src="bupati.jpg" alt="Foto Kegiatan">
 
 <p>Melalui perjalanan yang panjang dan dengan bantuan pemerintah pusat, pada tahun 1994 izin mendirikan bangunan gereja
    akhirnya dikeluarkan oleh Bupati Karawang saat itu, Sumarno Sumardi, untuk pembangunan gereja di Babakan Sananga.</p>
@@ -216,7 +254,7 @@ yang menggantikan Pastor Corstjens. Pastor Hardjo melakukan banyak penataan dan 
 <p>Perkembangan sarana paroki terus berlanjut. Pada Pesta Kristus Raja tahun 1998, Aula St. Agustinus dan Pastoran diberkati oleh Markus Priyo Kushardjono selaku Vikaris Jenderal Keuskupan Bandung.
    Dengan demikian, kompleks bangunan Paroki Kristus Raja Karawang semakin lengkap.</p>
 
-   <img src="kristusrajasejara.jpg">
+   <img  class="artikel-img" src="kristusrajasejara.jpg">
 
 <p>Sejak tahun 1998, perkembangan umat dan sarana pastoral terus bertambah. Hingga tahun 2013, paroki ini semakin memantapkan pelayanannya dengan berbagai fasilitas yang mendukung kehidupan umat, antara lain Gedung Gereja, Gazebo, Gedung St. Agustinus, Balai Pengobatan “Kurnia Asih”, kantin, serta area parkir yang lebih luas. 
   Seluruh sarana ini hadir sebagai wujud pelayanan Gereja dalam mewartakan Injil dan menghadirkan karya keselamatan bagi masyarakat.</p>

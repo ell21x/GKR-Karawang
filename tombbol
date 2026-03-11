@@ -1,0 +1,17 @@
+<!-- TOMBOL JADWAL SEKRETARIAT -->
+<aside class="sidebar">
+  <button class="menu-btn" onclick="bukaFullscreenMisa()">
+    Jadwal Misa
+  </button>
+
+
+<!-- FULLSCREEN SEKRETARIAT -->
+  <!-- tombol kembali -->
+  <button class="back-full" onclick="closeSekretariat()" aria-label="Kembali">
+    <svg viewBox="0 0 24 24">
+      <path d="M15 18l-6-6 6-6"/>
+    </svg>
+  </button>
+
+  <img src="jadwalsekretariat.jpg" alt="Jadwal Sekretariat">
+</div>
