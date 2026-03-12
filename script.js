@@ -1,13 +1,14 @@
 /* =========================================
    HERO CAROUSEL (Global — runs immediately)
 ========================================= */
-const heroTrack  = document.querySelector(".hero-track");
-const heroSlides = document.querySelectorAll(".hero-slide");
+let heroTrack  = null;
+let heroSlides = [];
 let heroIdx = 0;
 let heroAuto;
 let swipeStartX = 0;
 
 function goToSlide(i) {
+  if (!heroTrack || !heroSlides.length) return;
   heroIdx = (i + heroSlides.length) % heroSlides.length;
   heroTrack.style.transform = `translateX(-${heroIdx * 100}%)`;
 }
@@ -18,32 +19,13 @@ function prevSlide() { goToSlide(heroIdx - 1); }
 function startAutoSlide() { heroAuto = setInterval(nextSlide, 5000); }
 function stopAutoSlide()  { clearInterval(heroAuto); }
 
-startAutoSlide();
+document.addEventListener('DOMContentLoaded', () => {
+  heroTrack  = document.querySelector(".hero-track");
+  heroSlides = document.querySelectorAll(".hero-slide");
+  if (heroTrack && heroSlides.length) startAutoSlide();
+});
 
-const heroEl = document.querySelector(".hero-header");
-if (heroEl) {
-  // Touch
-  heroEl.addEventListener("touchstart", (e) => {
-    swipeStartX = e.touches[0].clientX;
-    stopAutoSlide();
-  });
-  heroEl.addEventListener("touchend", (e) => {
-    const diff = swipeStartX - e.changedTouches[0].clientX;
-    if (Math.abs(diff) > 50) diff > 0 ? nextSlide() : prevSlide();
-    startAutoSlide();
-  });
-
-  // Mouse drag
-  heroEl.addEventListener("mousedown", (e) => {
-    swipeStartX = e.clientX;
-    stopAutoSlide();
-  });
-  heroEl.addEventListener("mouseup", (e) => {
-    const diff = swipeStartX - e.clientX;
-    if (Math.abs(diff) > 50) diff > 0 ? nextSlide() : prevSlide();
-    startAutoSlide();
-  });
-}
+// Hero swipe - set up in DOMContentLoaded below
 
 
 
@@ -119,7 +101,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const burger      = document.getElementById("hamburger");
   const sideMenu    = document.getElementById("sideMenu");
   const searchBtn   = document.getElementById("searchBtn");
-  const searchBox   = document.getElementById("searchBox");
+  const searchBox   = document.getElementById("searchPanel");
   const searchInput = document.getElementById("searchInput");
   const hero        = document.querySelector(".hero-header");
   const sections    = document.querySelectorAll("section");
@@ -337,6 +319,11 @@ window.addEventListener('DOMContentLoaded', () => {
 const EDITOR_CREDS = { u: 'admin', p: 'gkr2026' };
 let editorOn = false;
 
+/* Open a generated article page via the viewer router */
+function bukaHalamanArtikel(pageFile) {
+  window.open(pageUrl(pageFile), '_blank');
+}
+
 // State foto per panel: array 4 elemen (null jika kosong)
 let artFotos = [null, null, null, null];
 let pasFotos = [null, null, null, null];
@@ -454,11 +441,17 @@ function doEditorLogin() {
     editorOn = true;
     document.getElementById('editorLoginModal').classList.add('hidden');
     document.getElementById('editorToolbar').classList.remove('hidden');
-    document.body.style.paddingTop = '46px';
+    document.body.classList.add('editor-active');
+    document.body.style.paddingTop = ''; // toolbar is now at bottom
     document.getElementById('editorLoginError').classList.add('hidden');
     document.getElementById('editorUsername').value = '';
     document.getElementById('editorPassword').value = '';
     toggleDelButtons(true);
+    // Show FAB
+    const fab = document.getElementById('fabMain');
+    const fabMenu = document.getElementById('fabMenu');
+    if (fab) fab.classList.remove('fab-hidden');
+    if (fabMenu) fabMenu.classList.add('fab-hidden'); // menu starts closed
   } else {
     document.getElementById('editorLoginError').classList.remove('hidden');
     document.getElementById('editorPassword').value = '';
@@ -476,11 +469,48 @@ function closeEditorLogin() {
 function doEditorLogout() {
   editorOn = false;
   document.getElementById('editorToolbar').classList.add('hidden');
+  document.body.classList.remove('editor-active');
   document.body.style.paddingTop = '';
   editorTutup('artikel');
   editorTutup('pastoral');
   toggleDelButtons(false);
+  // Hide FAB
+  const fab = document.getElementById('fabMain');
+  const fabMenu = document.getElementById('fabMenu');
+  if (fab) fab.classList.add('fab-hidden');
+  if (fabMenu) fabMenu.classList.add('fab-hidden');
 }
+
+let fabOpen = false;
+function toggleFab() {
+  fabOpen = !fabOpen;
+  const menu = document.getElementById('fabMenu');
+  const btn = document.getElementById('fabMain');
+  if (fabOpen) {
+    menu.classList.remove('fab-hidden');
+    btn.classList.add('fab-open');
+  } else {
+    menu.classList.add('fab-hidden');
+    btn.classList.remove('fab-open');
+  }
+}
+
+// Close FAB menu when a panel opens
+const _origEditorBuka = window.editorBuka;
+document.addEventListener('DOMContentLoaded', () => {
+  // Close FAB when clicking outside
+  document.addEventListener('click', e => {
+    if (fabOpen) {
+      const fab = document.getElementById('fabMain');
+      const menu = document.getElementById('fabMenu');
+      if (fab && !fab.contains(e.target) && menu && !menu.contains(e.target)) {
+        fabOpen = false;
+        menu.classList.add('fab-hidden');
+        fab.classList.remove('fab-open');
+      }
+    }
+  });
+});
 
 // Enter key on login
 document.addEventListener('keydown', e => {
@@ -492,6 +522,13 @@ document.addEventListener('keydown', e => {
 
 /* ─── BUKA / TUTUP PANEL ─────────────────── */
 function editorBuka(type) {
+  // Close FAB menu
+  fabOpen = false;
+  const menu = document.getElementById('fabMenu');
+  const btn = document.getElementById('fabMain');
+  if (menu) menu.classList.add('fab-hidden');
+  if (btn) btn.classList.remove('fab-open');
+
   if (type === 'artikel') {
     resetArtForm();
     document.getElementById('panelArtikel').classList.remove('hidden');
@@ -745,6 +782,659 @@ function pakaiGambar() {
 }
 
 /* ─── UPLOAD & SIMPAN KE LOCALSTORAGE ────── */
+
+/* Generate a slug from title */
+function makeSlug(str) {
+  return str.toLowerCase()
+    .replace(/[^a-z0-9\s-]/g, '')
+    .trim()
+    .replace(/\s+/g, '-')
+    .slice(0, 50) + '-' + Date.now();
+}
+
+/* Generate full article HTML page — matching existing article pages */
+function generateArtikelPage(d) {
+  const fotos = (d.fotos || []).filter(Boolean);
+  const extraFotos = fotos.slice(1);
+  const fotoGridHTML = extraFotos.length
+    ? `<div class="gen-foto-grid gen-foto-${Math.min(extraFotos.length, 3)}">
+        ${extraFotos.map(f => `<div class="gen-foto-item"><img src="${f}" alt=""></div>`).join('')}
+       </div>`
+    : '';
+
+  const isiHTML = (d.isi || '')
+    .split(/\n\n+/)
+    .map(p => `<p>${p.replace(/\n/g, '<br>')}</p>`)
+    .join('');
+
+  return `<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>${d.judul} – Gereja Katolik Kristus Raja Karawang</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=DM+Serif+Display&display=swap" rel="stylesheet">
+  <style>
+    /* ── Halaman Artikel ── */
+    body { background: #f8f5f0; }
+
+    .gen-topbar {
+      background: #7a4b00;
+      color: rgba(255,255,255,0.9);
+      text-align: center;
+      padding: 8px 12px;
+      font-size: 12px;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    .gen-navbar {
+      background: #fff;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+      padding: 0 24px;
+      height: 60px;
+      display: flex;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 999;
+    }
+    .gen-nav-brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+    }
+    .gen-nav-logo {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      background: #5a2100;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      color: #fff;
+      font-weight: 700;
+    }
+    .gen-nav-name {
+      font-family: 'DM Serif Display', serif;
+      font-size: 16px;
+      color: #2a1000;
+      line-height: 1.2;
+    }
+    .gen-nav-name small {
+      display: block;
+      font-family: 'Poppins', sans-serif;
+      font-size: 10px;
+      color: #999;
+      font-weight: 400;
+    }
+
+    /* Round back button — same as existing pages */
+    .btn-back {
+      position: fixed;
+      top: 80px;
+      left: 16px;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: rgba(0,0,0,0.55);
+      border: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      z-index: 9999;
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+      transition: transform 0.2s ease, background 0.2s ease;
+      text-decoration: none;
+    }
+    .btn-back:hover {
+      background: rgba(0,0,0,0.78);
+      transform: scale(1.07);
+    }
+    .btn-back svg {
+      width: 22px;
+      height: 22px;
+      stroke: #fff;
+      stroke-width: 2.5;
+      fill: none;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      pointer-events: none;
+    }
+    @media (max-width: 600px) {
+      .btn-back { width: 40px; height: 40px; top: 74px; left: 12px; }
+      .btn-back svg { width: 20px; height: 20px; }
+    }
+
+    /* Article content */
+    .gen-wrap {
+      max-width: 780px;
+      margin: 0 auto;
+      padding: 40px 24px 80px;
+    }
+
+    .gen-breadcrumb {
+      font-size: 12px;
+      color: #aaa;
+      margin-bottom: 28px;
+      font-family: 'Poppins', sans-serif;
+    }
+    .gen-breadcrumb a {
+      color: #c8791e;
+      text-decoration: none;
+    }
+    .gen-breadcrumb a:hover { text-decoration: underline; }
+
+    .gen-meta-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 16px;
+    }
+    .gen-kat {
+      background: #fff3e8;
+      color: #c8791e;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      padding: 5px 14px;
+      border-radius: 30px;
+      font-family: 'Poppins', sans-serif;
+    }
+    .gen-sep { color: #ccc; }
+    .gen-author, .gen-date {
+      font-size: 13px;
+      color: #999;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    .gen-judul {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(26px, 4vw, 38px);
+      color: #1a0a00;
+      line-height: 1.22;
+      margin-bottom: 20px;
+    }
+
+    .gen-hero {
+      width: 100%;
+      border-radius: 18px;
+      overflow: hidden;
+      margin-bottom: 32px;
+      max-height: 480px;
+    }
+    .gen-hero img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .gen-ringkasan {
+      font-family: 'Poppins', sans-serif;
+      font-size: 17px;
+      color: #5a3a1a;
+      line-height: 1.75;
+      margin-bottom: 28px;
+      padding-bottom: 28px;
+      border-bottom: 2px solid #e8ddd0;
+      font-weight: 500;
+    }
+
+    .gen-isi {
+      font-family: 'Poppins', sans-serif;
+      font-size: 15px;
+      color: #333;
+      line-height: 1.9;
+    }
+    .gen-isi p { margin-bottom: 20px; }
+
+    .gen-foto-grid {
+      display: grid;
+      gap: 12px;
+      margin: 32px 0;
+      border-radius: 14px;
+      overflow: hidden;
+    }
+    .gen-foto-1 { grid-template-columns: 1fr; }
+    .gen-foto-2 { grid-template-columns: 1fr 1fr; }
+    .gen-foto-3 { grid-template-columns: 1fr 1fr 1fr; }
+    .gen-foto-item img {
+      width: 100%;
+      height: 220px;
+      object-fit: cover;
+      display: block;
+    }
+    @media (max-width: 600px) {
+      .gen-foto-2, .gen-foto-3 { grid-template-columns: 1fr 1fr; }
+      .gen-foto-item img { height: 140px; }
+      .gen-wrap { padding: 28px 16px 60px; }
+    }
+
+    .gen-divider {
+      height: 2px;
+      background: linear-gradient(90deg, #e8ddd0, transparent);
+      margin: 32px 0;
+      border-radius: 2px;
+    }
+
+    .gen-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 32px;
+    }
+    .gen-tag {
+      background: #f0ece4;
+      color: #7a5535;
+      font-size: 12px;
+      font-family: 'Poppins', sans-serif;
+      font-weight: 500;
+      padding: 5px 14px;
+      border-radius: 30px;
+    }
+
+    footer {
+      background: linear-gradient(135deg, #4a2400, #7b3f00);
+      color: rgba(255,255,255,0.75);
+      text-align: center;
+      padding: 22px;
+      font-family: 'Poppins', sans-serif;
+      font-size: 13px;
+      margin-top: 60px;
+    }
+  </style>
+</head>
+<body>
+
+<!-- Topbar -->
+<div class="gen-topbar">Gereja Katolik Kristus Raja Karawang – Keuskupan Bandung</div>
+
+<!-- Navbar -->
+<nav class="gen-navbar">
+  <a href="index.html" class="gen-nav-brand">
+    <div class="gen-nav-logo">✝</div>
+    <div class="gen-nav-name">
+      Kristus Raja Karawang
+      <small>Keuskupan Bandung</small>
+    </div>
+  </a>
+</nav>
+
+<!-- Tombol Back — bulat di kiri atas (sama seperti artikel lain) -->
+<a href="index.html#artikel" class="btn-back" title="Kembali ke Artikel">
+  <svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg>
+</a>
+
+<!-- Konten -->
+<div class="gen-wrap">
+
+  <!-- Breadcrumb -->
+  <div class="gen-breadcrumb">
+    <a href="index.html">Beranda</a> &rsaquo;
+    <a href="index.html#artikel">Artikel</a> &rsaquo;
+    ${d.judul}
+  </div>
+
+  <!-- Meta -->
+  <div class="gen-meta-row">
+    <span class="gen-kat">${d.kat}</span>
+    <span class="gen-sep">·</span>
+    <span class="gen-author">${d.penulis || 'Komsos GKR'}</span>
+    <span class="gen-sep">·</span>
+    <span class="gen-date">${d.tglFmt}</span>
+  </div>
+
+  <!-- Judul -->
+  <h1 class="gen-judul">${d.judul}</h1>
+
+  <!-- Foto Hero -->
+  ${fotos[0] ? `<div class="gen-hero"><img src="${fotos[0]}" alt="${d.judul}"></div>` : ''}
+
+  <!-- Ringkasan -->
+  ${d.ringkasan ? `<p class="gen-ringkasan">${d.ringkasan}</p>` : ''}
+
+  <!-- Isi Artikel -->
+  <div class="gen-isi">${isiHTML}</div>
+
+  <!-- Foto tambahan -->
+  ${fotoGridHTML}
+
+  <div class="gen-divider"></div>
+
+  <!-- Tags -->
+  <div class="gen-tags">
+    <span class="gen-tag">${d.kat}</span>
+    <span class="gen-tag">Paroki Kristus Raja</span>
+    <span class="gen-tag">Karawang</span>
+  </div>
+
+</div>
+
+<footer>© 2025 Gereja Katolik Kristus Raja Karawang – Keuskupan Bandung</footer>
+
+</body>
+</html>`;
+}
+
+/* Generate full pastoral page HTML — matching existing article pages */
+function generatePastoralPage(d) {
+  const fotos = (d.fotos || []).filter(Boolean);
+  const extraFotos = fotos.slice(1);
+  const fotoGridHTML = extraFotos.length
+    ? `<div class="gen-foto-grid gen-foto-${Math.min(extraFotos.length, 3)}">
+        ${extraFotos.map(f => `<div class="gen-foto-item"><img src="${f}" alt=""></div>`).join('')}
+       </div>`
+    : '';
+
+  return `<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>${d.judul} – Gereja Katolik Kristus Raja Karawang</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=DM+Serif+Display&display=swap" rel="stylesheet">
+  <style>
+    body { background: #f8f5f0; }
+
+    .gen-topbar {
+      background: #7a4b00;
+      color: rgba(255,255,255,0.9);
+      text-align: center;
+      padding: 8px 12px;
+      font-size: 12px;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    .gen-navbar {
+      background: #fff;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+      padding: 0 24px;
+      height: 60px;
+      display: flex;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 999;
+    }
+    .gen-nav-brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+    }
+    .gen-nav-logo {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      background: #5a2100;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      color: #fff;
+      font-weight: 700;
+    }
+    .gen-nav-name {
+      font-family: 'DM Serif Display', serif;
+      font-size: 16px;
+      color: #2a1000;
+      line-height: 1.2;
+    }
+    .gen-nav-name small {
+      display: block;
+      font-family: 'Poppins', sans-serif;
+      font-size: 10px;
+      color: #999;
+      font-weight: 400;
+    }
+
+    .btn-back {
+      position: fixed;
+      top: 80px;
+      left: 16px;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: rgba(0,0,0,0.55);
+      border: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      z-index: 9999;
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+      transition: transform 0.2s ease, background 0.2s ease;
+      text-decoration: none;
+    }
+    .btn-back:hover {
+      background: rgba(0,0,0,0.78);
+      transform: scale(1.07);
+    }
+    .btn-back svg {
+      width: 22px;
+      height: 22px;
+      stroke: #fff;
+      stroke-width: 2.5;
+      fill: none;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      pointer-events: none;
+    }
+    @media (max-width: 600px) {
+      .btn-back { width: 40px; height: 40px; top: 74px; left: 12px; }
+      .btn-back svg { width: 20px; height: 20px; }
+    }
+
+    .gen-wrap {
+      max-width: 780px;
+      margin: 0 auto;
+      padding: 40px 24px 80px;
+    }
+
+    .gen-breadcrumb {
+      font-size: 12px;
+      color: #aaa;
+      margin-bottom: 28px;
+      font-family: 'Poppins', sans-serif;
+    }
+    .gen-breadcrumb a { color: #c8791e; text-decoration: none; }
+    .gen-breadcrumb a:hover { text-decoration: underline; }
+
+    .gen-meta-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 16px;
+    }
+    .gen-kat {
+      background: #fff3e8;
+      color: #c8791e;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      padding: 5px 14px;
+      border-radius: 30px;
+      font-family: 'Poppins', sans-serif;
+    }
+    .gen-sep { color: #ccc; }
+    .gen-date {
+      font-size: 13px;
+      color: #999;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    .gen-judul {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(26px, 4vw, 38px);
+      color: #1a0a00;
+      line-height: 1.22;
+      margin-bottom: 20px;
+    }
+
+    .gen-hero {
+      width: 100%;
+      border-radius: 18px;
+      overflow: hidden;
+      margin-bottom: 32px;
+      max-height: 480px;
+    }
+    .gen-hero img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .gen-ringkasan {
+      font-family: 'Poppins', sans-serif;
+      font-size: 16px;
+      color: #5a3a1a;
+      line-height: 1.75;
+      margin-bottom: 28px;
+      padding-bottom: 28px;
+      border-bottom: 2px solid #e8ddd0;
+    }
+
+    .gen-foto-grid {
+      display: grid;
+      gap: 12px;
+      margin: 32px 0;
+      border-radius: 14px;
+      overflow: hidden;
+    }
+    .gen-foto-1 { grid-template-columns: 1fr; }
+    .gen-foto-2 { grid-template-columns: 1fr 1fr; }
+    .gen-foto-3 { grid-template-columns: 1fr 1fr 1fr; }
+    .gen-foto-item img {
+      width: 100%;
+      height: 220px;
+      object-fit: cover;
+      display: block;
+    }
+    @media (max-width: 600px) {
+      .gen-foto-2, .gen-foto-3 { grid-template-columns: 1fr 1fr; }
+      .gen-foto-item img { height: 140px; }
+      .gen-wrap { padding: 28px 16px 60px; }
+    }
+
+    .gen-divider {
+      height: 2px;
+      background: linear-gradient(90deg, #e8ddd0, transparent);
+      margin: 32px 0;
+      border-radius: 2px;
+    }
+
+    .gen-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 32px;
+    }
+    .gen-tag {
+      background: #f0ece4;
+      color: #7a5535;
+      font-size: 12px;
+      font-family: 'Poppins', sans-serif;
+      font-weight: 500;
+      padding: 5px 14px;
+      border-radius: 30px;
+    }
+
+    footer {
+      background: linear-gradient(135deg, #4a2400, #7b3f00);
+      color: rgba(255,255,255,0.75);
+      text-align: center;
+      padding: 22px;
+      font-family: 'Poppins', sans-serif;
+      font-size: 13px;
+      margin-top: 60px;
+    }
+  </style>
+</head>
+<body>
+
+<div class="gen-topbar">Gereja Katolik Kristus Raja Karawang – Keuskupan Bandung</div>
+
+<nav class="gen-navbar">
+  <a href="index.html" class="gen-nav-brand">
+    <div class="gen-nav-logo">✝</div>
+    <div class="gen-nav-name">
+      Kristus Raja Karawang
+      <small>Keuskupan Bandung</small>
+    </div>
+  </a>
+</nav>
+
+<!-- Tombol Back bulat — sama persis seperti artikel lain -->
+<a href="index.html#kegiatan" class="btn-back" title="Kembali ke Kegiatan Pastoral">
+  <svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg>
+</a>
+
+<div class="gen-wrap">
+
+  <div class="gen-breadcrumb">
+    <a href="index.html">Beranda</a> &rsaquo;
+    <a href="index.html#kegiatan">Kegiatan Pastoral</a> &rsaquo;
+    ${d.judul}
+  </div>
+
+  <div class="gen-meta-row">
+    <span class="gen-kat">${d.kat}</span>
+    <span class="gen-sep">·</span>
+    <span class="gen-date">${d.tglFmt}</span>
+  </div>
+
+  <h1 class="gen-judul">${d.judul}</h1>
+
+  ${fotos[0] ? `<div class="gen-hero"><img src="${fotos[0]}" alt="${d.judul}"></div>` : ''}
+
+  ${d.desc ? `<p class="gen-ringkasan">${d.desc}</p>` : ''}
+
+  ${fotoGridHTML}
+
+  <div class="gen-divider"></div>
+
+  <div class="gen-tags">
+    <span class="gen-tag">${d.kat}</span>
+    <span class="gen-tag">Kegiatan Pastoral</span>
+    <span class="gen-tag">Kristus Raja Karawang</span>
+  </div>
+
+</div>
+
+<footer>© 2025 Gereja Katolik Kristus Raja Karawang – Keuskupan Bandung</footer>
+
+</body>
+</html>`;
+}
+
+/* Store generated page HTML to localStorage */
+function savePageToStorage(filename, html) {
+  try {
+    const pages = JSON.parse(localStorage.getItem('gkr_pages') || '{}');
+    pages[filename] = html;
+    localStorage.setItem('gkr_pages', JSON.stringify(pages));
+    console.log('[GKR] Page saved:', filename, '— size:', html.length);
+  } catch(e) { console.warn('[GKR] Page storage failed:', e); }
+}
+
+/* Build the URL for a generated page — uses artikel-viewer.html router */
+function pageUrl(filename) {
+  if (!filename) return '#';
+  return 'artikel-viewer.html?page=' + encodeURIComponent(filename);
+}
+
 function artUpload() {
   const judul   = document.getElementById('artJudul').value.trim();
   const kat     = document.getElementById('artKategori').value;
@@ -757,8 +1447,14 @@ function artUpload() {
 
   const tglFmt = tgl ? new Date(tgl).toLocaleDateString('id-ID',{day:'numeric',month:'long',year:'numeric'}) : '';
   const id = 'art_' + Date.now();
+  const slug = makeSlug(judul);
+  const pageFile = 'artikel-' + slug + '.html';
 
-  const data = { id, judul, kat, penulis, tgl, tglFmt, ringkasan, isi, fotos: [...artFotos], type: 'artikel', ts: Date.now() };
+  const data = { id, judul, kat, penulis, tgl, tglFmt, ringkasan, isi, fotos: [...artFotos], type: 'artikel', ts: Date.now(), pageFile };
+
+  // Generate & save HTML page
+  const pageHTML = generateArtikelPage(data);
+  savePageToStorage(pageFile, pageHTML);
 
   // Simpan ke localStorage
   const stored = JSON.parse(localStorage.getItem('gkr_konten') || '[]');
@@ -767,13 +1463,12 @@ function artUpload() {
 
   // Tampilkan langsung ke halaman
   renderArtikelCard(data, true);
-  // Tombol hapus langsung aktif karena editor sedang on
   toggleDelButtons(true);
 
-  // Feedback + tawarkan simulasi
+  // Feedback
   document.getElementById('artUploadMsg').classList.remove('hidden');
   document.getElementById('artUploadMsg').innerHTML =
-    '✅ Berhasil! &nbsp;<button class="ep-sim-quick-btn" onclick="bukaSimulasi(' + JSON.stringify(data).replace(/'/g,"\\'") + ')">👁 Lihat Simulasi</button>';
+    '✅ Berhasil! Artikel tersimpan. &nbsp;<a class="ep-sim-quick-btn" href="' + pageUrl(pageFile) + '" target="_blank">🔗 Buka Halaman</a>';
   setTimeout(() => {
     document.getElementById('artUploadMsg').classList.add('hidden');
     editorTutup('artikel');
@@ -792,8 +1487,14 @@ function pasUpload() {
 
   const tglFmt = tgl ? new Date(tgl).toLocaleDateString('id-ID',{day:'numeric',month:'long',year:'numeric'}) : '';
   const id = 'pas_' + Date.now();
+  const slug = makeSlug(judul);
+  const pageFile = 'kegiatan-' + slug + '.html';
 
-  const data = { id, judul, kat, tgl, tglFmt, desc, link, fotos: [...pasFotos], type: 'pastoral', ts: Date.now() };
+  const data = { id, judul, kat, tgl, tglFmt, desc, link: pageFile, fotos: [...pasFotos], type: 'pastoral', ts: Date.now(), pageFile };
+
+  // Generate & save HTML page
+  const pageHTML = generatePastoralPage(data);
+  savePageToStorage(pageFile, pageHTML);
 
   const stored = JSON.parse(localStorage.getItem('gkr_konten') || '[]');
   stored.unshift(data);
@@ -803,6 +1504,7 @@ function pasUpload() {
   toggleDelButtons(true);
 
   document.getElementById('pasUploadMsg').classList.remove('hidden');
+  document.getElementById('pasUploadMsg').innerHTML = '✅ Kegiatan berhasil ditambahkan!';
   setTimeout(() => {
     document.getElementById('pasUploadMsg').classList.add('hidden');
     editorTutup('pastoral');
@@ -821,7 +1523,7 @@ function renderArtikelCard(d, animate) {
   wrap.setAttribute('data-konten-id', d.id);
 
   const a = document.createElement('a');
-  a.href = '#';
+  a.href = pageUrl(d.pageFile);
   a.className = 'artikel-card-pro';
   a.innerHTML = `
     <div class="artikel-img-wrap">
@@ -834,13 +1536,11 @@ function renderArtikelCard(d, animate) {
       <p>${d.ringkasan}</p>
       <span class="artikel-baca-btn">Baca Selengkapnya</span>
     </div>`;
-  a.addEventListener('click', e => { e.preventDefault(); bukaSimulasi(d); });
-
   wrap.appendChild(a);
 
   // Tombol hapus — hanya muncul saat editor aktif
   const delBtn = document.createElement('button');
-  delBtn.className = 'ep-del-btn ep-del-hidden';
+  delBtn.className = 'ep-del-btn' + (editorOn ? '' : ' ep-del-hidden');
   delBtn.innerHTML = '🗑 Hapus';
   delBtn.addEventListener('click', e => { e.stopPropagation(); hapusKonten(d.id, wrap); });
   wrap.appendChild(delBtn);
@@ -859,11 +1559,11 @@ function renderPastoralCard(d, animate) {
   wrap.setAttribute('data-konten-id', d.id);
 
   const a = document.createElement('a');
-  a.href = d.link || '#kegiatan';
+  a.href = pageUrl(d.pageFile) || d.link || '#kegiatan';
   a.className = 'pastoral-card';
   a.innerHTML = `
     <div class="pastoral-card-img">
-      ${foto ? `<img src="${foto}" alt="${d.judul}">` : '<div style="height:200px;background:linear-gradient(135deg,#f0e8d8,#e8d4b8);display:flex;align-items:center;justify-content:center;font-size:40px;">🕊️</div>'}
+      ${foto ? `<img src="${foto}" alt="${d.judul}">` : '<div style="height:190px;background:linear-gradient(135deg,#f0e8d8,#e8d4b8);display:flex;align-items:center;justify-content:center;font-size:40px;">🕊️</div>'}
       <span class="pastoral-badge">${katShort}</span>
     </div>
     <div class="pastoral-card-info">
@@ -880,7 +1580,7 @@ function renderPastoralCard(d, animate) {
   wrap.appendChild(a);
 
   const delBtn = document.createElement('button');
-  delBtn.className = 'ep-del-btn ep-del-hidden';
+  delBtn.className = 'ep-del-btn' + (editorOn ? '' : ' ep-del-hidden');
   delBtn.innerHTML = '🗑 Hapus';
   delBtn.addEventListener('click', e => { e.stopPropagation(); hapusKonten(d.id, wrap); });
   wrap.appendChild(delBtn);

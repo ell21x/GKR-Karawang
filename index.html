@@ -333,29 +333,28 @@
     <p class="pastoral-sub">Liputan kegiatan rohani, pelayanan, dan momen istimewa umat Paroki Kristus Raja Karawang.</p>
   </div>
 
-  <!-- Featured Article (pertama besar) -->
-  <div class="pastoral-featured-wrap" id="pastoralFeatured">
-    <a href="lakegiatan2.html" class="pastoral-featured">
-      <div class="pastoral-featured-img">
+  <!-- Grid semua kegiatan pastoral -->
+  <div class="pastoral-grid-wrap">
+    <div class="pastoral-grid" id="pastoralGrid">
+
+    <!-- HPS & Pesta Nama (dipindah ke sini) -->
+    <a href="lakegiatan2.html" class="pastoral-card pastoral-card-featured">
+      <div class="pastoral-card-img">
         <img src="lhps4.jpg" alt="HPS & Pesta Nama">
-        <span class="pastoral-badge-featured">Unggulan</span>
+        <span class="pastoral-badge">Unggulan</span>
       </div>
-      <div class="pastoral-featured-info">
+      <div class="pastoral-card-info">
         <div class="pastoral-meta-row">
           <span class="pastoral-kategori">Liturgi &amp; Perayaan</span>
           <span class="pastoral-dot-sep">·</span>
-          <span class="pastoral-tanggal">23 November 2025</span>
+          <span class="pastoral-tanggal">23 Nov 2025</span>
         </div>
-        <h3>HPS &amp; Pesta Nama Paroki Kristus Raja Karawang</h3>
-        <p>Umat Paroki Kristus Raja merayakan Hari Pelindung Selingkungan (HPS) dan Pesta Nama dengan penuh sukacita dan iman. Perayaan ini menjadi momen persatuan seluruh umat paroki.</p>
-        <span class="pastoral-baca-btn">Baca Selengkapnya →</span>
+        <h4>HPS &amp; Pesta Nama Paroki Kristus Raja Karawang</h4>
+        <p>Umat Paroki Kristus Raja merayakan Hari Pelindung Selingkungan (HPS) dan Pesta Nama dengan penuh sukacita dan iman.</p>
+        <span class="pastoral-baca-link">Baca →</span>
       </div>
     </a>
-  </div>
 
-  <!-- Grid Artikel Kecil -->
-  <div class="pastoral-grid-wrap">
-    <div class="pastoral-grid" id="pastoralGrid">
     <a href="kegiatan4.html" class="pastoral-card">
       <div class="pastoral-card-img">
         <img src="FOKUSPAS.jpeg" alt="Fokus Pastoral">
@@ -406,6 +405,7 @@
         <span class="pastoral-baca-link">Baca →</span>
       </div>
     </a>
+
   </div><!-- end pastoral-grid -->
   <div class="pastoral-scroll-hint" id="pastoralScrollHint">
     <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
@@ -1049,5 +1049,20 @@ reveals.forEach(el => revealObs.observe(el));
     </div>
   </div>
 </div>
+<!-- FAB — Tombol + Tambah Konten (hanya muncul saat editor aktif) -->
+<div id="fabMenu" class="fab-menu fab-hidden">
+  <button class="fab-item fab-item-pastoral" onclick="editorBuka('pastoral')" title="Tambah Kegiatan Pastoral">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+    <span>Kegiatan Pastoral</span>
+  </button>
+  <button class="fab-item fab-item-artikel" onclick="editorBuka('artikel')" title="Tambah Artikel">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+    <span>Artikel Baru</span>
+  </button>
+</div>
+<button id="fabMain" class="fab-main fab-hidden" onclick="toggleFab()" title="Tambah Konten">
+  <svg id="fabIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg>
+</button>
+
 </body>
 </html>

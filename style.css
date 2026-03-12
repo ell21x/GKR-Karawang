@@ -4061,16 +4061,23 @@ button {
   line-height: 1.75;
 }
 .artikel-grid {
-  max-width: 820px;
+  max-width: 900px;
   margin: 0 auto;
-  display: flex;
-  flex-direction: column;
-  gap: 28px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+}
+
+/* Single card: full width */
+.artikel-grid:has(.artikel-card-pro:only-child),
+.artikel-grid:has(.ep-card-wrap:only-child) {
+  grid-template-columns: 1fr;
 }
 
 /* -- Tambah artikel baru: cukup salin blok .artikel-card-pro di HTML -- */
 .artikel-card-pro {
   display: flex;
+  flex-direction: column;
   background: #fff;
   border-radius: 18px;
   overflow: hidden;
@@ -4087,8 +4094,8 @@ button {
 }
 .artikel-img-wrap {
   position: relative;
-  flex-shrink: 0;
-  width: 280px;
+  width: 100%;
+  height: 200px;
 }
 .artikel-img-wrap img {
   width: 100%;
@@ -4107,13 +4114,15 @@ button {
   letter-spacing: 0.14em;
   text-transform: uppercase;
   padding: 4px 12px;
+  border-radius: 20px;
 }
 .artikel-info-pro {
-  padding: 32px;
+  padding: 22px 24px 24px;
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  gap: 10px;
+  justify-content: flex-start;
+  gap: 8px;
+  flex: 1;
 }
 .artikel-meta {
   font-family: 'DM Sans', sans-serif;
@@ -4125,7 +4134,7 @@ button {
 }
 .artikel-info-pro h3 {
   font-family: 'DM Serif Display', serif;
-  font-size: 22px;
+  font-size: 20px;
   font-weight: 400;
   color: #2c1400;
   line-height: 1.35;
@@ -4137,6 +4146,7 @@ button {
   color: #7a5535;
   line-height: 1.75;
   margin: 0;
+  flex: 1;
 }
 .artikel-baca-btn {
   display: inline-block;
@@ -4294,6 +4304,7 @@ footer {
   .artikel-img-wrap { width: 100%; height: 200px; }
   .artikel-info-pro { padding: 22px 20px; }
   .artikel-judul { font-size: 28px; }
+  .artikel-grid { grid-template-columns: 1fr; }
 }
 
 /* ============================================================
@@ -5000,28 +5011,23 @@ section.lokasi h2,
 }
 
 @media (max-width: 580px) {
-  /* 2 kolom dengan batas tinggi 3 baris, sisanya scroll */
+  /* 1 kolom di mobile */
   .pastoral-grid {
-    grid-template-columns: 1fr 1fr;
-    gap: 12px;
+    grid-template-columns: 1fr;
+    gap: 16px;
 
-    /* tinggi maksimal = 3 baris kartu + gap */
-    /* tiap kartu ±260px + gap 12px × 2 = ~804px */
-    max-height: calc((260px * 3) + (12px * 2));
+    /* tinggi maksimal = 3 kartu */
+    max-height: calc((300px * 3) + (16px * 2));
     overflow-y: auto;
     overflow-x: hidden;
-
-    /* scroll smooth */
     scroll-behavior: smooth;
     -webkit-overflow-scrolling: touch;
 
-    /* border luar */
     border: 1.5px solid rgba(200, 121, 30, 0.2);
     border-radius: 16px;
     padding: 10px;
     background: rgba(253, 248, 242, 0.6);
 
-    /* shadow bawah sebagai hint ada konten tersembunyi */
     -webkit-mask-image: linear-gradient(to bottom, black 85%, transparent 100%);
     mask-image: linear-gradient(to bottom, black 85%, transparent 100%);
   }
@@ -5036,23 +5042,26 @@ section.lokasi h2,
     mask-image: none;
   }
 
-  /* Kartu di mobile: kompak */
+  /* Kartu di mobile: kompak tapi satu kolom penuh */
   .pastoral-card {
-    border-radius: 12px;
+    border-radius: 14px;
+    flex-direction: row;
+    align-items: stretch;
   }
 
   .pastoral-card-img {
-    height: 120px;
+    width: 120px;
+    flex-shrink: 0;
+    height: auto;
   }
 
   .pastoral-card-info {
-    padding: 12px 12px 14px;
+    padding: 14px 14px 16px;
   }
 
   .pastoral-card-info h4 {
-    font-size: 13px;
+    font-size: 14px;
     margin-bottom: 6px;
-    /* max 2 baris */
     display: -webkit-box;
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
@@ -5060,11 +5069,10 @@ section.lokasi h2,
   }
 
   .pastoral-card-info p {
-    font-size: 11px;
+    font-size: 12px;
     line-height: 1.5;
-    /* max 2 baris */
     display: -webkit-box;
-    -webkit-line-clamp: 2;
+    -webkit-line-clamp: 3;
     -webkit-box-orient: vertical;
     overflow: hidden;
     margin-bottom: 8px;
@@ -5607,6 +5615,11 @@ section.lokasi h2,
 }
 #artikelGrid .ep-card-wrap {
   position: relative;
+  display: flex;
+  flex-direction: column;
+}
+#artikelGrid .ep-card-wrap .artikel-card-pro {
+  flex: 1;
 }
 
 /* Quick simulasi button in upload msg */
@@ -5813,4 +5826,871 @@ section.lokasi h2,
   .ep-sim-nav-links { display: none; }
   .ep-sim-hero { height: 220px; }
   .sim-foto-3 { grid-template-columns: 1fr 1fr; }
+}
+
+/* ══════════════════════════════════════════
+   FAB — Tombol + Tambah Konten
+══════════════════════════════════════════ */
+.fab-main {
+  position: fixed;
+  bottom: 28px;
+  right: 28px;
+  width: 58px;
+  height: 58px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #c8791e, #e8920a);
+  border: none;
+  cursor: pointer;
+  z-index: 8000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 6px 24px rgba(200,121,30,0.45);
+  transition: transform 0.25s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.25s ease;
+}
+.fab-main svg {
+  width: 26px;
+  height: 26px;
+  stroke: #fff;
+  transition: transform 0.3s ease;
+}
+.fab-main:hover {
+  transform: scale(1.1);
+  box-shadow: 0 10px 32px rgba(200,121,30,0.55);
+}
+.fab-main.fab-open svg {
+  transform: rotate(45deg);
+}
+.fab-hidden {
+  display: none !important;
+}
+
+/* FAB menu items */
+.fab-menu {
+  position: fixed;
+  bottom: 98px;
+  right: 28px;
+  z-index: 7999;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 12px;
+}
+.fab-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: #fff;
+  border: none;
+  border-radius: 30px;
+  padding: 10px 18px 10px 14px;
+  cursor: pointer;
+  box-shadow: 0 4px 18px rgba(0,0,0,0.14);
+  font-family: 'Poppins', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  color: #2a1000;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  white-space: nowrap;
+
+  /* Slide in from right */
+  animation: fabItemIn 0.22s cubic-bezier(0.34,1.56,0.64,1) both;
+}
+.fab-item svg {
+  width: 18px;
+  height: 18px;
+  stroke: #c8791e;
+  flex-shrink: 0;
+}
+.fab-item:hover {
+  transform: translateX(-4px);
+  box-shadow: 0 6px 24px rgba(0,0,0,0.18);
+}
+.fab-item-artikel { animation-delay: 0s; }
+.fab-item-pastoral { animation-delay: 0.05s; }
+
+@keyframes fabItemIn {
+  from { opacity: 0; transform: translateX(20px) scale(0.92); }
+  to   { opacity: 1; transform: translateX(0) scale(1); }
+}
+
+/* Featured card in pastoral grid — slightly emphasized */
+.pastoral-card-featured {
+  border: 2px solid rgba(200,121,30,0.25);
+  background: linear-gradient(160deg, #fff 80%, #fff8f0 100%);
+}
+.pastoral-card-featured .pastoral-badge {
+  background: rgba(90,33,0,0.88);
+}
+
+@media (max-width: 600px) {
+  .fab-main { bottom: 20px; right: 16px; width: 52px; height: 52px; }
+  .fab-menu { bottom: 84px; right: 16px; }
+  .fab-item { font-size: 12px; padding: 9px 14px 9px 12px; }
+}
+
+/* ═══════════════════════════════════════════════════
+   OVERHAUL — EDITOR TOOLBAR (slim, professional)
+═══════════════════════════════════════════════════ */
+.editor-toolbar {
+  position: fixed !important;
+  top: 0 !important; left: 0 !important; right: 0 !important;
+  z-index: 10001 !important;
+  background: linear-gradient(90deg, #1a0800 0%, #3d1f00 100%) !important;
+  border-bottom: 1px solid rgba(240,201,122,0.18) !important;
+  box-shadow: 0 2px 16px rgba(0,0,0,0.35) !important;
+  height: 42px !important;
+}
+.editor-toolbar-inner {
+  display: flex !important;
+  align-items: center !important;
+  gap: 12px !important;
+  padding: 0 20px !important;
+  height: 100% !important;
+}
+.editor-toolbar-label {
+  font-family: 'Poppins', sans-serif !important;
+  font-size: 11px !important;
+  font-weight: 700 !important;
+  color: #f0c97a !important;
+  letter-spacing: 1.5px !important;
+  text-transform: uppercase !important;
+}
+.editor-toolbar-hint {
+  font-family: 'Poppins', sans-serif !important;
+  font-size: 11px !important;
+  color: rgba(255,255,255,0.45) !important;
+  flex: 1 !important;
+}
+.editor-toolbar-hint kbd {
+  display: inline-block;
+  background: rgba(240,201,122,0.2);
+  color: #f0c97a;
+  border-radius: 4px;
+  padding: 1px 6px;
+  font-size: 11px;
+  font-family: monospace;
+  font-style: normal;
+}
+
+/* ═══════════════════════════════════════════════════
+   FAB — Redesigned professional
+═══════════════════════════════════════════════════ */
+.fab-main {
+  position: fixed !important;
+  bottom: 28px !important;
+  right: 28px !important;
+  width: 56px !important;
+  height: 56px !important;
+  border-radius: 50% !important;
+  background: linear-gradient(135deg, #c8791e 0%, #e8a030 100%) !important;
+  border: none !important;
+  cursor: pointer !important;
+  z-index: 8000 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  box-shadow: 0 4px 20px rgba(200,121,30,0.5), 0 2px 6px rgba(0,0,0,0.2) !important;
+  transition: transform 0.25s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.25s ease !important;
+}
+.fab-main:hover { transform: scale(1.08) !important; box-shadow: 0 8px 28px rgba(200,121,30,0.6) !important; }
+.fab-main svg { width: 24px !important; height: 24px !important; stroke: #fff !important; transition: transform 0.3s ease !important; }
+.fab-main.fab-open svg { transform: rotate(45deg) !important; }
+.fab-hidden { display: none !important; }
+
+.fab-menu {
+  position: fixed !important;
+  bottom: 96px !important;
+  right: 28px !important;
+  z-index: 7999 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: flex-end !important;
+  gap: 10px !important;
+}
+.fab-item {
+  display: flex !important;
+  align-items: center !important;
+  gap: 10px !important;
+  background: #fff !important;
+  border: none !important;
+  border-radius: 28px !important;
+  padding: 10px 18px 10px 14px !important;
+  cursor: pointer !important;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.12) !important;
+  font-family: 'Poppins', sans-serif !important;
+  font-size: 13px !important;
+  font-weight: 600 !important;
+  color: #1a0800 !important;
+  white-space: nowrap !important;
+  animation: fabItemIn 0.2s cubic-bezier(0.34,1.56,0.64,1) both !important;
+  transition: transform 0.18s ease, box-shadow 0.18s ease !important;
+}
+.fab-item:hover { transform: translateX(-4px) !important; box-shadow: 0 6px 24px rgba(0,0,0,0.17) !important; }
+.fab-item svg { width: 16px !important; height: 16px !important; flex-shrink: 0 !important; }
+.fab-item-artikel svg { stroke: #c8791e !important; }
+.fab-item-pastoral svg { stroke: #4a7c59 !important; }
+.fab-item-keluar {
+  background: #fff8f6 !important;
+  color: #c0392b !important;
+}
+.fab-item-keluar svg { stroke: #c0392b !important; }
+.fab-item-keluar:hover { background: #fff0ee !important; }
+.fab-item-artikel { animation-delay: 0s !important; }
+.fab-item-pastoral { animation-delay: 0.06s !important; }
+.fab-item-keluar { animation-delay: 0.12s !important; }
+@keyframes fabItemIn {
+  from { opacity: 0; transform: translateX(16px) scale(0.9); }
+  to   { opacity: 1; transform: translateX(0) scale(1); }
+}
+
+/* ═══════════════════════════════════════════════════
+   BACAAN LITURGI
+═══════════════════════════════════════════════════ */
+.liturgi-bacaan-wrap {
+  margin-top: 14px;
+  padding-top: 12px;
+  border-top: 1.5px solid rgba(200,121,30,0.14);
+}
+.liturgi-bacaan-label {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 9.5px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #c8791e;
+  margin-bottom: 8px;
+}
+.liturgi-bacaan-list { display: flex; flex-direction: column; gap: 5px; }
+.liturgi-bacaan-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 6px 10px;
+  background: rgba(255,255,255,0.65);
+  border-radius: 8px;
+  border-left: 2.5px solid rgba(200,121,30,0.35);
+}
+.liturgi-bacaan-jenis {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 9px;
+  font-weight: 700;
+  color: #c8791e;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  flex-shrink: 0;
+  padding-top: 1px;
+  min-width: 58px;
+}
+.liturgi-bacaan-ref {
+  font-family: 'DM Serif Display', serif;
+  font-size: 12.5px;
+  color: #3a1800;
+  line-height: 1.45;
+}
+
+/* ═══════════════════════════════════════════════════
+   ARTIKEL CARD — Mobile professional horizontal
+═══════════════════════════════════════════════════ */
+.artikel-card-pro {
+  display: flex;
+  flex-direction: column;
+  text-decoration: none;
+  color: inherit;
+  background: #fff;
+  border-radius: 18px;
+  overflow: hidden;
+  box-shadow: 0 2px 16px rgba(100,50,0,0.08);
+  border: 1px solid rgba(212,100,10,0.06);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+.artikel-card-pro:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 32px rgba(100,50,0,0.14);
+}
+.artikel-img-wrap {
+  position: relative;
+  width: 100%;
+  height: 200px;
+  overflow: hidden;
+}
+.artikel-img-wrap img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  transition: transform 0.35s ease;
+  display: block;
+}
+.artikel-card-pro:hover .artikel-img-wrap img { transform: scale(1.04); }
+.artikel-badge {
+  position: absolute;
+  top: 10px; left: 10px;
+  background: rgba(200,121,30,0.92);
+  color: #fff;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  padding: 4px 10px;
+  border-radius: 20px;
+}
+.artikel-info-pro {
+  padding: 18px 20px 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  flex: 1;
+}
+.artikel-meta {
+  font-size: 11px;
+  color: #bbb;
+  font-family: 'Poppins', sans-serif;
+}
+.artikel-info-pro h3 {
+  font-family: 'DM Serif Display', serif;
+  font-size: 18px;
+  color: #1a0800;
+  line-height: 1.3;
+}
+.artikel-info-pro p {
+  font-size: 13px;
+  color: #7a5020;
+  line-height: 1.65;
+  flex: 1;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.artikel-baca-btn {
+  display: inline-block;
+  font-size: 12px;
+  font-weight: 700;
+  color: #c8791e;
+  font-family: 'Poppins', sans-serif;
+  margin-top: 4px;
+  letter-spacing: 0.3px;
+}
+
+@media (max-width: 768px) {
+  .artikel-grid {
+    grid-template-columns: 1fr !important;
+    gap: 14px !important;
+  }
+  .artikel-card-pro {
+    flex-direction: row !important;
+    border-radius: 14px !important;
+    min-height: 120px !important;
+  }
+  .artikel-img-wrap {
+    width: 120px !important;
+    min-width: 120px !important;
+    height: auto !important;
+    flex-shrink: 0 !important;
+  }
+  .artikel-img-wrap img { height: 100% !important; min-height: 120px !important; }
+  .artikel-info-pro {
+    padding: 12px 14px 14px !important;
+    gap: 4px !important;
+  }
+  .artikel-info-pro h3 { font-size: 14px !important; line-height: 1.3 !important; -webkit-line-clamp: 2; display: -webkit-box; -webkit-box-orient: vertical; overflow: hidden; }
+  .artikel-info-pro p  { font-size: 11.5px !important; -webkit-line-clamp: 2 !important; margin: 0 !important; }
+  .artikel-meta        { font-size: 10px !important; }
+  .artikel-baca-btn    { font-size: 11px !important; margin-top: 2px !important; }
+  .artikel-badge       { font-size: 8.5px !important; padding: 3px 8px !important; }
+}
+
+/* ═══════════════════════════════════════════════════
+   PASTORAL GRID — Professional 2-col card
+═══════════════════════════════════════════════════ */
+.pastoral-artikel-section {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 60px 24px;
+}
+.pastoral-grid-wrap { margin-top: 32px; }
+.pastoral-scroll-hint { display: none !important; }
+
+.pastoral-grid {
+  display: grid !important;
+  grid-template-columns: repeat(2, 1fr) !important;
+  gap: 22px !important;
+  max-height: none !important;
+  overflow: visible !important;
+  mask-image: none !important;
+  -webkit-mask-image: none !important;
+  background: transparent !important;
+  border: none !important;
+  padding: 0 !important;
+}
+
+.pastoral-card {
+  display: flex !important;
+  flex-direction: column !important;
+  background: #fff !important;
+  border-radius: 18px !important;
+  overflow: hidden !important;
+  text-decoration: none !important;
+  color: inherit !important;
+  border: 1px solid rgba(212,100,10,0.07) !important;
+  box-shadow: 0 2px 14px rgba(100,50,0,0.07) !important;
+  transition: transform 0.25s ease, box-shadow 0.25s ease !important;
+}
+.pastoral-card:hover {
+  transform: translateY(-5px) !important;
+  box-shadow: 0 12px 32px rgba(100,50,0,0.14) !important;
+}
+.pastoral-card-img {
+  position: relative !important;
+  width: 100% !important;
+  height: 190px !important;
+  overflow: hidden !important;
+  flex-shrink: 0 !important;
+}
+.pastoral-card-img img {
+  width: 100% !important; height: 100% !important;
+  object-fit: cover !important;
+  transition: transform 0.35s ease !important;
+  display: block !important;
+}
+.pastoral-card:hover .pastoral-card-img img { transform: scale(1.05) !important; }
+.pastoral-badge {
+  position: absolute !important;
+  top: 10px !important; left: 10px !important;
+  background: rgba(200,121,30,0.92) !important;
+  color: #fff !important;
+  font-size: 9px !important;
+  font-weight: 700 !important;
+  letter-spacing: 1px !important;
+  text-transform: uppercase !important;
+  padding: 4px 10px !important;
+  border-radius: 20px !important;
+}
+.pastoral-card-featured .pastoral-badge {
+  background: rgba(42,16,0,0.88) !important;
+}
+.pastoral-card-info {
+  padding: 18px 18px 20px !important;
+  display: flex !important;
+  flex-direction: column !important;
+  flex: 1 !important;
+  gap: 6px !important;
+}
+.pastoral-meta-row {
+  display: flex; align-items: center; gap: 6px; flex-wrap: wrap;
+}
+.pastoral-kategori {
+  font-size: 9.5px !important;
+  font-weight: 700 !important;
+  color: #c8791e !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.5px !important;
+  background: #fff3e8 !important;
+  padding: 3px 9px !important;
+  border-radius: 20px !important;
+}
+.pastoral-dot-sep { color: #ddd; font-size: 11px; }
+.pastoral-tanggal { font-size: 11px !important; color: #bbb !important; font-family: 'Poppins', sans-serif !important; }
+.pastoral-card-info h4 {
+  font-family: 'DM Serif Display', serif !important;
+  font-size: 16px !important;
+  color: #1a0800 !important;
+  line-height: 1.35 !important;
+  margin: 0 !important;
+}
+.pastoral-card-info p {
+  font-size: 12.5px !important;
+  color: #7a5020 !important;
+  line-height: 1.65 !important;
+  flex: 1 !important;
+  margin: 0 !important;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.pastoral-baca-link {
+  font-size: 12px !important;
+  font-weight: 700 !important;
+  color: #c8791e !important;
+  font-family: 'Poppins', sans-serif !important;
+  margin-top: auto !important;
+  padding-top: 8px !important;
+}
+
+@media (max-width: 640px) {
+  .pastoral-grid {
+    grid-template-columns: 1fr !important;
+    gap: 14px !important;
+  }
+  .pastoral-card {
+    flex-direction: row !important;
+    border-radius: 14px !important;
+    min-height: 110px !important;
+  }
+  .pastoral-card-img {
+    width: 110px !important;
+    min-width: 110px !important;
+    height: auto !important;
+    min-height: 110px !important;
+  }
+  .pastoral-card-info {
+    padding: 11px 13px 13px !important;
+    gap: 4px !important;
+  }
+  .pastoral-card-info h4 { font-size: 13px !important; -webkit-line-clamp: 2; display: -webkit-box; -webkit-box-orient: vertical; overflow: hidden; }
+  .pastoral-card-info p  { font-size: 11px !important; -webkit-line-clamp: 2 !important; }
+  .pastoral-badge { top: 6px !important; left: 6px !important; font-size: 8px !important; padding: 3px 7px !important; }
+}
+
+/* ══════════════════════════════════════════
+   LITURGI BACAAN — Enhanced styles
+══════════════════════════════════════════ */
+.liturgi-bacaan-ref {
+  color: #1a0800 !important;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 12.5px;
+  font-family: 'Poppins', sans-serif;
+  transition: color 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 3px;
+}
+.liturgi-bacaan-ref:hover { color: #c8791e !important; }
+.liturgi-bacaan-ext {
+  font-size: 10px;
+  opacity: 0.5;
+  margin-left: 2px;
+}
+.liturgi-bacaan-item {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 2px !important;
+  padding: 8px 0 !important;
+  border-bottom: 1px solid rgba(212,100,10,0.07) !important;
+}
+.liturgi-bacaan-item:last-child { border-bottom: none !important; }
+.liturgi-bacaan-jenis {
+  font-size: 9.5px !important;
+  font-weight: 700 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.8px !important;
+  color: #c8791e !important;
+  font-family: 'Poppins', sans-serif !important;
+}
+.liturgi-bacaan-more {
+  display: block;
+  margin-top: 12px;
+  font-size: 11.5px;
+  font-weight: 600;
+  color: #c8791e;
+  text-decoration: none;
+  font-family: 'Poppins', sans-serif;
+  padding: 8px 0 2px;
+  border-top: 1px solid rgba(212,100,10,0.1);
+  transition: color 0.2s;
+}
+.liturgi-bacaan-more:hover { color: #a5620f; }
+.liturgi-bacaan-wrap {
+  margin-top: 14px !important;
+  background: rgba(255,243,232,0.6) !important;
+  border-radius: 10px !important;
+  padding: 10px 12px !important;
+}
+.liturgi-bacaan-label {
+  font-size: 11px !important;
+  font-weight: 700 !important;
+  color: #7a5535 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.6px !important;
+  margin-bottom: 6px !important;
+  font-family: 'Poppins', sans-serif !important;
+}
+
+/* ══════════════════════════════════════════
+   ARTIKEL CARD MOBILE — More polished
+══════════════════════════════════════════ */
+@media (max-width: 768px) {
+  .artikel-section, .artikel-home {
+    padding: 36px 16px 48px !important;
+  }
+  .artikel-grid {
+    grid-template-columns: 1fr !important;
+    gap: 12px !important;
+  }
+  .artikel-card-pro {
+    flex-direction: row !important;
+    border-radius: 14px !important;
+    min-height: 116px !important;
+    box-shadow: 0 2px 12px rgba(100,50,0,0.09) !important;
+  }
+  .artikel-img-wrap {
+    width: 116px !important;
+    min-width: 116px !important;
+    height: auto !important;
+    border-radius: 0 !important;
+    flex-shrink: 0 !important;
+  }
+  .artikel-img-wrap img {
+    height: 100% !important;
+    min-height: 116px !important;
+    border-radius: 0 !important;
+  }
+  .artikel-badge {
+    font-size: 8px !important;
+    padding: 3px 7px !important;
+    top: 8px !important;
+    left: 8px !important;
+  }
+  .artikel-info-pro {
+    padding: 11px 13px 13px !important;
+    gap: 3px !important;
+    justify-content: center !important;
+  }
+  .artikel-meta { font-size: 10px !important; line-height: 1 !important; }
+  .artikel-info-pro h3 {
+    font-size: 14px !important;
+    line-height: 1.28 !important;
+    -webkit-line-clamp: 2 !important;
+    display: -webkit-box !important;
+    -webkit-box-orient: vertical !important;
+    overflow: hidden !important;
+  }
+  .artikel-info-pro p {
+    font-size: 11.5px !important;
+    line-height: 1.55 !important;
+    -webkit-line-clamp: 2 !important;
+    display: -webkit-box !important;
+    -webkit-box-orient: vertical !important;
+    overflow: hidden !important;
+    margin: 0 !important;
+  }
+  .artikel-baca-btn {
+    font-size: 11px !important;
+    margin-top: 4px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 4px !important;
+    color: #c8791e !important;
+  }
+  /* ep-card-wrap mobile fix */
+  #artikelGrid .ep-card-wrap {
+    display: block !important;
+  }
+  #artikelGrid .ep-card-wrap .artikel-card-pro {
+    display: flex !important;
+    flex-direction: row !important;
+  }
+}
+
+/* ══════════════════════════════════════════
+   PASTORAL CARD — Vertical pro style (like right column)
+══════════════════════════════════════════ */
+.pastoral-grid {
+  display: grid !important;
+  grid-template-columns: repeat(2, 1fr) !important;
+  gap: 24px !important;
+  max-height: none !important;
+  overflow: visible !important;
+  mask-image: none !important;
+  -webkit-mask-image: none !important;
+}
+.pastoral-card {
+  display: flex !important;
+  flex-direction: column !important;
+  background: #fff !important;
+  border-radius: 20px !important;
+  overflow: hidden !important;
+  text-decoration: none !important;
+  color: inherit !important;
+  border: none !important;
+  box-shadow: 0 2px 20px rgba(60,20,0,0.09) !important;
+  transition: transform 0.28s ease, box-shadow 0.28s ease !important;
+}
+.pastoral-card:hover {
+  transform: translateY(-6px) !important;
+  box-shadow: 0 16px 40px rgba(60,20,0,0.15) !important;
+}
+.pastoral-card-img {
+  position: relative !important;
+  width: 100% !important;
+  height: 200px !important;
+  overflow: hidden !important;
+  flex-shrink: 0 !important;
+}
+.pastoral-card-img img {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+  transition: transform 0.38s ease !important;
+  display: block !important;
+}
+.pastoral-card:hover .pastoral-card-img img {
+  transform: scale(1.06) !important;
+}
+.pastoral-badge {
+  position: absolute !important;
+  top: 12px !important;
+  left: 12px !important;
+  background: rgba(42,16,0,0.72) !important;
+  backdrop-filter: blur(6px) !important;
+  color: #fff !important;
+  font-size: 9px !important;
+  font-weight: 700 !important;
+  letter-spacing: 1.2px !important;
+  text-transform: uppercase !important;
+  padding: 4px 11px !important;
+  border-radius: 20px !important;
+}
+.pastoral-card-featured .pastoral-badge {
+  background: rgba(200,121,30,0.92) !important;
+}
+.pastoral-card-info {
+  padding: 16px 18px 20px !important;
+  display: flex !important;
+  flex-direction: column !important;
+  flex: 1 !important;
+  gap: 6px !important;
+}
+.pastoral-meta-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+.pastoral-kategori {
+  font-size: 9.5px !important;
+  font-weight: 700 !important;
+  color: #c8791e !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.5px !important;
+  background: #fff3e8 !important;
+  padding: 3px 9px !important;
+  border-radius: 20px !important;
+}
+.pastoral-dot-sep { color: #ddd; font-size: 10px; }
+.pastoral-tanggal { font-size: 11px !important; color: #bbb !important; font-family: 'Poppins', sans-serif !important; }
+.pastoral-card-info h4 {
+  font-family: 'DM Serif Display', serif !important;
+  font-size: 17px !important;
+  color: #1a0800 !important;
+  line-height: 1.3 !important;
+  margin: 2px 0 0 !important;
+  -webkit-line-clamp: 2;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.pastoral-card-info p {
+  font-size: 12.5px !important;
+  color: #8a6030 !important;
+  line-height: 1.65 !important;
+  flex: 1 !important;
+  margin: 0 !important;
+  display: -webkit-box !important;
+  -webkit-line-clamp: 3 !important;
+  -webkit-box-orient: vertical !important;
+  overflow: hidden !important;
+}
+.pastoral-baca-link {
+  font-size: 12px !important;
+  font-weight: 700 !important;
+  color: #c8791e !important;
+  font-family: 'Poppins', sans-serif !important;
+  margin-top: auto !important;
+  padding-top: 10px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 4px !important;
+}
+
+/* Mobile pastoral — single column, horizontal card */
+@media (max-width: 640px) {
+  .pastoral-grid {
+    grid-template-columns: 1fr !important;
+    gap: 12px !important;
+  }
+  .pastoral-card {
+    flex-direction: row !important;
+    border-radius: 14px !important;
+    min-height: 112px !important;
+  }
+  .pastoral-card-img {
+    width: 112px !important;
+    min-width: 112px !important;
+    height: auto !important;
+    min-height: 112px !important;
+    flex-shrink: 0 !important;
+  }
+  .pastoral-card-img img {
+    height: 100% !important;
+    min-height: 112px !important;
+  }
+  .pastoral-card-info {
+    padding: 11px 13px 13px !important;
+    gap: 3px !important;
+    justify-content: center !important;
+  }
+  .pastoral-card-info h4 { font-size: 13.5px !important; }
+  .pastoral-card-info p { font-size: 11px !important; -webkit-line-clamp: 2 !important; }
+  .pastoral-badge { top: 7px !important; left: 7px !important; font-size: 8px !important; padding: 3px 7px !important; }
+  #pastoralGrid .ep-card-wrap { display: block !important; }
+  #pastoralGrid .ep-card-wrap .pastoral-card { display: flex !important; flex-direction: row !important; }
+}
+
+/* ══════════════════════════════════════════
+   EDITOR TOOLBAR — Clean minimal bar
+══════════════════════════════════════════ */
+.editor-toolbar {
+  position: fixed !important;
+  bottom: 0 !important;
+  top: auto !important;
+  left: 0 !important;
+  right: 0 !important;
+  height: 42px !important;
+  background: linear-gradient(90deg, #1a0800 0%, #2d1200 100%) !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  z-index: 7000 !important;
+  border-top: 1px solid rgba(200,121,30,0.3) !important;
+  box-shadow: 0 -4px 20px rgba(0,0,0,0.3) !important;
+}
+.editor-toolbar.hidden { display: none !important; }
+.editor-toolbar-inner {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.editor-toolbar-label {
+  font-family: 'Poppins', sans-serif !important;
+  font-size: 12px !important;
+  font-weight: 600 !important;
+  color: #f0c97a !important;
+  letter-spacing: 0.5px !important;
+}
+.editor-toolbar-hint {
+  font-family: 'Poppins', sans-serif;
+  font-size: 11px;
+  color: rgba(255,255,255,0.45);
+}
+.editor-toolbar-hint kbd {
+  background: rgba(200,121,30,0.3);
+  color: #f0c97a;
+  border-radius: 4px;
+  padding: 1px 5px;
+  font-size: 10px;
+  font-family: 'Poppins', sans-serif;
+}
+/* Push content above toolbar when editor is on */
+body.editor-active { padding-bottom: 42px; }
+
+/* FAB position adjusts when toolbar at bottom */
+.editor-toolbar:not(.hidden) ~ #fabMain,
+body.editor-active .fab-main {
+  bottom: 70px !important;
+}
+.editor-toolbar:not(.hidden) ~ #fabMenu,
+body.editor-active .fab-menu {
+  bottom: 140px !important;
 }
