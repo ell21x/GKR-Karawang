@@ -22,7 +22,7 @@
   <div class="nav-left">
     <button id="hamburger" class="hamburger" aria-label="Menu">☰</button>
     <div class="brand">
-      <img src="logoparoki.png" alt="Logo Paroki">
+      <img src="logoparoki.png" alt="Logo Paroki" id="navLogo" style="cursor:default;user-select:none;">
       <span>Kristus Raja<br>Karawang</span>
     </div>
   </div>
@@ -324,39 +324,94 @@
   <img src="jadwalsekretariat.jpg" alt="Jadwal Sekretariat">
 </div>
 
-<!-- Dokumentasi Kegiatan -->
-<section class="kegiatan-section" id="kegiatan">
-  <h2>Kegiatan Pastoral</h2>
-  <div class="kegiatan-grid">
-    <a href="lakegiatan2.html" class="kegiatan-card">
-      <img src="lhps4.jpg">
-      <div class="kegiatan-overlay">
-        <h3>HPS &amp; Pesta Nama</h3>
-        <span>23 November 2025</span>
+<!-- KEGIATAN PASTORAL — ARTIKEL STYLE -->
+<section class="pastoral-artikel-section" id="kegiatan">
+  <div class="pastoral-header">
+    <div class="pastoral-kap">Dokumentasi &amp; Warta</div>
+    <h2 class="pastoral-judul">Kegiatan Pastoral</h2>
+    <div class="pastoral-divider"></div>
+    <p class="pastoral-sub">Liputan kegiatan rohani, pelayanan, dan momen istimewa umat Paroki Kristus Raja Karawang.</p>
+  </div>
+
+  <!-- Featured Article (pertama besar) -->
+  <div class="pastoral-featured-wrap" id="pastoralFeatured">
+    <a href="lakegiatan2.html" class="pastoral-featured">
+      <div class="pastoral-featured-img">
+        <img src="lhps4.jpg" alt="HPS & Pesta Nama">
+        <span class="pastoral-badge-featured">Unggulan</span>
       </div>
-    </a>
-    <a href="kegiatan4.html" class="kegiatan-card">
-      <img src="FOKUSPAS.jpeg">
-      <div class="kegiatan-overlay">
-        <h3>Fokus Pastoral 2026-2030</h3>
-        <span>12 Februari 2026</span>
-      </div>
-    </a>
-    <a href="kegiatan5.html" class="kegiatan-card">
-      <img src="pelkam.jpeg">
-      <div class="kegiatan-overlay">
-        <h3>Pelatihan Kamera Komsos GKR Karawang</h3>
-        <span>28 Februari 2026</span>
-      </div>
-    </a>
-    <a href="apppekanpertama.html" class="kegiatan-card">
-      <img src="patuyesus.jpg">
-      <div class="kegiatan-overlay">
-        <h3>APP Lingkungan</h3>
-        <span>22 Februari 2026</span>
+      <div class="pastoral-featured-info">
+        <div class="pastoral-meta-row">
+          <span class="pastoral-kategori">Liturgi &amp; Perayaan</span>
+          <span class="pastoral-dot-sep">·</span>
+          <span class="pastoral-tanggal">23 November 2025</span>
+        </div>
+        <h3>HPS &amp; Pesta Nama Paroki Kristus Raja Karawang</h3>
+        <p>Umat Paroki Kristus Raja merayakan Hari Pelindung Selingkungan (HPS) dan Pesta Nama dengan penuh sukacita dan iman. Perayaan ini menjadi momen persatuan seluruh umat paroki.</p>
+        <span class="pastoral-baca-btn">Baca Selengkapnya →</span>
       </div>
     </a>
   </div>
+
+  <!-- Grid Artikel Kecil -->
+  <div class="pastoral-grid-wrap">
+    <div class="pastoral-grid" id="pastoralGrid">
+    <a href="kegiatan4.html" class="pastoral-card">
+      <div class="pastoral-card-img">
+        <img src="FOKUSPAS.jpeg" alt="Fokus Pastoral">
+        <span class="pastoral-badge">Pastoral</span>
+      </div>
+      <div class="pastoral-card-info">
+        <div class="pastoral-meta-row">
+          <span class="pastoral-kategori">Program Paroki</span>
+          <span class="pastoral-dot-sep">·</span>
+          <span class="pastoral-tanggal">12 Feb 2026</span>
+        </div>
+        <h4>Fokus Pastoral 2026–2030</h4>
+        <p>Program pastoral lima tahun ke depan menuju Gereja yang semakin misioner dan pelayanan yang menyentuh seluruh lapisan umat.</p>
+        <span class="pastoral-baca-link">Baca →</span>
+      </div>
+    </a>
+
+    <a href="kegiatan5.html" class="pastoral-card">
+      <div class="pastoral-card-img">
+        <img src="pelkam.jpeg" alt="Pelatihan Kamera">
+        <span class="pastoral-badge">Komsos</span>
+      </div>
+      <div class="pastoral-card-info">
+        <div class="pastoral-meta-row">
+          <span class="pastoral-kategori">Komsos GKR</span>
+          <span class="pastoral-dot-sep">·</span>
+          <span class="pastoral-tanggal">28 Feb 2026</span>
+        </div>
+        <h4>Pelatihan Kamera Komsos GKR Karawang</h4>
+        <p>Tim Komsos Paroki mengadakan pelatihan fotografi dan videografi untuk mendukung peliputan kegiatan gerejawi secara profesional.</p>
+        <span class="pastoral-baca-link">Baca →</span>
+      </div>
+    </a>
+
+    <a href="apppekanpertama.html" class="pastoral-card">
+      <div class="pastoral-card-img">
+        <img src="patuyesus.jpg" alt="APP Lingkungan">
+        <span class="pastoral-badge">APP</span>
+      </div>
+      <div class="pastoral-card-info">
+        <div class="pastoral-meta-row">
+          <span class="pastoral-kategori">Lingkungan</span>
+          <span class="pastoral-dot-sep">·</span>
+          <span class="pastoral-tanggal">22 Feb 2026</span>
+        </div>
+        <h4>APP Lingkungan Pekan Pertama</h4>
+        <p>Aksi Puasa Pembangunan (APP) di tingkat lingkungan mengajak umat untuk merefleksikan iman melalui doa bersama dan aksi sosial nyata.</p>
+        <span class="pastoral-baca-link">Baca →</span>
+      </div>
+    </a>
+  </div><!-- end pastoral-grid -->
+  <div class="pastoral-scroll-hint" id="pastoralScrollHint">
+    <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+    scroll untuk lihat lebih
+  </div>
+  </div><!-- end pastoral-grid-wrap -->
 </section>
 
 <!-- Lokasi -->
@@ -379,7 +434,7 @@
     <div class="artikel-divider"></div>
     <p class="artikel-sub">Bacaan pilihan seputar kehidupan iman, sejarah, dan kegiatan paroki Kristus Raja Karawang.</p>
   </div>
-  <div class="artikel-grid">
+  <div class="artikel-grid" id="artikelGrid">
     <a href="aboutereja11.html" class="artikel-card-pro">
       <div class="artikel-img-wrap">
         <img src="altar.jpeg" alt="Profil Gereja">
@@ -398,6 +453,310 @@
 <footer>
   &copy; 2025 Gereja Katolik Kristus Raja Karawang - Paroki Kristus Raja
 </footer>
+
+<!-- ══════════════════════════════════════════
+     EDITOR SYSTEM — semua tersembunyi dari publik
+══════════════════════════════════════════ -->
+<div id="editorHoldRing" class="editor-hold-ring"></div>
+
+<!-- LOGIN MODAL -->
+<div id="editorLoginModal" class="editor-modal-overlay hidden">
+  <div class="editor-modal-box">
+    <div class="editor-modal-logo">✝</div>
+    <h3>Mode Editor</h3>
+    <p>Masuk untuk mengelola konten website</p>
+    <div class="editor-form-group">
+      <label>Username</label>
+      <input type="text" id="editorUsername" placeholder="admin" autocomplete="off">
+    </div>
+    <div class="editor-form-group">
+      <label>Password</label>
+      <input type="password" id="editorPassword" placeholder="••••••••">
+    </div>
+    <div id="editorLoginError" class="editor-login-error hidden">Username atau password salah.</div>
+    <button class="editor-login-btn" onclick="doEditorLogin()">Masuk</button>
+    <button class="editor-cancel-btn" onclick="closeEditorLogin()">Batal</button>
+  </div>
+</div>
+
+<!-- EDITOR TOOLBAR -->
+<div id="editorToolbar" class="editor-toolbar hidden">
+  <div class="editor-toolbar-inner">
+    <span class="editor-toolbar-label">✏️ Mode Editor</span>
+    <button class="editor-tool-btn" onclick="editorBuka('artikel')">
+      <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg>
+      Artikel Baru
+    </button>
+    <button class="editor-tool-btn" onclick="editorBuka('pastoral')">
+      <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg>
+      Kegiatan Pastoral
+    </button>
+    <button class="editor-tool-btn editor-tool-sim" onclick="infoSimulasi()">
+      <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+      Simulasi
+    </button>
+    <button class="editor-logout-btn" onclick="doEditorLogout()">Keluar</button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     PANEL FULLSCREEN — ARTIKEL BARU
+══════════════════════════════════════════ -->
+<div id="panelArtikel" class="ep-overlay hidden">
+  <div class="ep-container">
+
+    <!-- Header -->
+    <div class="ep-header">
+      <div class="ep-header-left">
+        <span class="ep-badge">✍️ Artikel Baru</span>
+        <h2>Buat Artikel</h2>
+      </div>
+      <button class="ep-close" onclick="editorTutup('artikel')">✕</button>
+    </div>
+
+    <div class="ep-body">
+      <!-- KIRI: Form -->
+      <div class="ep-form-col">
+
+        <!-- Pilih Template -->
+        <div class="ep-section-label">Pilih Template</div>
+        <div class="ep-tpl-row">
+          <div class="ep-tpl active" onclick="artPilihTemplate(this,'berita')">
+            <span class="ep-tpl-ico">📰</span><span>Berita</span>
+          </div>
+          <div class="ep-tpl" onclick="artPilihTemplate(this,'renungan')">
+            <span class="ep-tpl-ico">✝️</span><span>Renungan</span>
+          </div>
+          <div class="ep-tpl" onclick="artPilihTemplate(this,'pengumuman')">
+            <span class="ep-tpl-ico">📣</span><span>Pengumuman</span>
+          </div>
+          <div class="ep-tpl" onclick="artPilihTemplate(this,'sejarah')">
+            <span class="ep-tpl-ico">🏛️</span><span>Sejarah</span>
+          </div>
+        </div>
+
+        <!-- Info Artikel -->
+        <div class="ep-section-label" style="margin-top:20px;">Informasi Artikel</div>
+        <div class="ep-field">
+          <label>Judul</label>
+          <input type="text" id="artJudul" placeholder="Judul artikel...">
+        </div>
+        <div class="ep-row3">
+          <div class="ep-field">
+            <label>Kategori</label>
+            <select id="artKategori">
+              <option>Berita Paroki</option>
+              <option>Pastoral</option>
+              <option>Liturgi &amp; Perayaan</option>
+              <option>Renungan</option>
+              <option>Pengumuman</option>
+              <option>Komsos</option>
+              <option>Sejarah</option>
+            </select>
+          </div>
+          <div class="ep-field">
+            <label>Penulis</label>
+            <input type="text" id="artPenulis" value="Komsos GKR">
+          </div>
+          <div class="ep-field">
+            <label>Tanggal</label>
+            <input type="date" id="artTanggal">
+          </div>
+        </div>
+        <div class="ep-field">
+          <label>Ringkasan <span class="ep-hint">(tampil di kartu)</span></label>
+          <textarea id="artRingkasan" rows="2" placeholder="Ringkasan singkat..."></textarea>
+        </div>
+        <div class="ep-field">
+          <label>Isi Artikel</label>
+          <textarea id="artIsi" rows="7" placeholder="Tulis isi artikel di sini..."></textarea>
+        </div>
+
+        <!-- Slot Foto -->
+        <div class="ep-section-label" style="margin-top:20px;">
+          Foto Artikel
+          <span class="ep-hint">— pilih hingga 4 foto</span>
+        </div>
+        <div class="ep-foto-slots" id="artFotoSlots">
+          <div class="ep-foto-slot" id="artSlot0" onclick="bukaGaleriSlot(0,'art')">
+            <div class="ep-slot-empty"><span>+</span><small>Foto Utama</small></div>
+          </div>
+          <div class="ep-foto-slot ep-slot-sm" id="artSlot1" onclick="bukaGaleriSlot(1,'art')">
+            <div class="ep-slot-empty"><span>+</span><small>Foto 2</small></div>
+          </div>
+          <div class="ep-foto-slot ep-slot-sm" id="artSlot2" onclick="bukaGaleriSlot(2,'art')">
+            <div class="ep-slot-empty"><span>+</span><small>Foto 3</small></div>
+          </div>
+          <div class="ep-foto-slot ep-slot-sm" id="artSlot3" onclick="bukaGaleriSlot(3,'art')">
+            <div class="ep-slot-empty"><span>+</span><small>Foto 4</small></div>
+          </div>
+        </div>
+
+      </div><!-- end form-col -->
+
+      <!-- KANAN: Live Preview -->
+      <div class="ep-preview-col">
+        <div class="ep-section-label">Preview Kartu</div>
+        <div class="ep-live-card" id="artLiveCard">
+          <div class="ep-live-img" id="artLiveImg">
+            <div class="ep-live-placeholder">🖼️</div>
+          </div>
+          <div class="ep-live-info">
+            <div class="ep-live-kat" id="artLiveKat">Kategori</div>
+            <div class="ep-live-judul" id="artLiveJudul">Judul artikel akan muncul di sini</div>
+            <div class="ep-live-ring" id="artLiveRing">Ringkasan artikel...</div>
+            <div class="ep-live-meta" id="artLiveMeta">Penulis · Tanggal</div>
+          </div>
+        </div>
+        <div class="ep-section-label" style="margin-top:20px;">Preview Isi Foto</div>
+        <div class="ep-foto-preview-grid" id="artFotoPreviewGrid">
+          <div class="ep-fp-empty">Belum ada foto dipilih</div>
+        </div>
+      </div>
+
+    </div><!-- end body -->
+
+    <!-- Footer actions -->
+    <div class="ep-footer">
+      <span id="artUploadMsg" class="ep-upload-msg hidden">✅ Berhasil! Artikel muncul di halaman.</span>
+      <button class="ep-btn-secondary" onclick="editorTutup('artikel')">Batal</button>
+      <button class="ep-btn-primary" onclick="artUpload()">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+        Upload & Tampilkan
+      </button>
+    </div>
+
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     PANEL FULLSCREEN — KEGIATAN PASTORAL
+══════════════════════════════════════════ -->
+<div id="panelPastoral" class="ep-overlay hidden">
+  <div class="ep-container">
+
+    <div class="ep-header">
+      <div class="ep-header-left">
+        <span class="ep-badge ep-badge-green">🕊️ Kegiatan Baru</span>
+        <h2>Tambah Kegiatan Pastoral</h2>
+      </div>
+      <button class="ep-close" onclick="editorTutup('pastoral')">✕</button>
+    </div>
+
+    <div class="ep-body">
+      <div class="ep-form-col">
+
+        <div class="ep-section-label">Informasi Kegiatan</div>
+        <div class="ep-field">
+          <label>Judul Kegiatan</label>
+          <input type="text" id="pasJudul" placeholder="Nama kegiatan...">
+        </div>
+        <div class="ep-row3">
+          <div class="ep-field">
+            <label>Kategori</label>
+            <select id="pasKategori">
+              <option>Liturgi &amp; Perayaan</option>
+              <option>Program Paroki</option>
+              <option>Komsos</option>
+              <option>Lingkungan</option>
+              <option>OMK</option>
+              <option>Misdinar</option>
+              <option>Sosial</option>
+            </select>
+          </div>
+          <div class="ep-field">
+            <label>Tanggal</label>
+            <input type="date" id="pasTanggal">
+          </div>
+        </div>
+        <div class="ep-field">
+          <label>Deskripsi</label>
+          <textarea id="pasDesc" rows="4" placeholder="Ceritakan kegiatan ini..."></textarea>
+        </div>
+        <div class="ep-field">
+          <label>Link halaman <span class="ep-hint">(opsional)</span></label>
+          <input type="text" id="pasLink" placeholder="kegiatan6.html">
+        </div>
+
+        <div class="ep-section-label" style="margin-top:20px;">
+          Foto Kegiatan
+          <span class="ep-hint">— pilih hingga 4 foto</span>
+        </div>
+        <div class="ep-foto-slots" id="pasFotoSlots">
+          <div class="ep-foto-slot" id="pasSlot0" onclick="bukaGaleriSlot(0,'pas')">
+            <div class="ep-slot-empty"><span>+</span><small>Foto Utama</small></div>
+          </div>
+          <div class="ep-foto-slot ep-slot-sm" id="pasSlot1" onclick="bukaGaleriSlot(1,'pas')">
+            <div class="ep-slot-empty"><span>+</span><small>Foto 2</small></div>
+          </div>
+          <div class="ep-foto-slot ep-slot-sm" id="pasSlot2" onclick="bukaGaleriSlot(2,'pas')">
+            <div class="ep-slot-empty"><span>+</span><small>Foto 3</small></div>
+          </div>
+          <div class="ep-foto-slot ep-slot-sm" id="pasSlot3" onclick="bukaGaleriSlot(3,'pas')">
+            <div class="ep-slot-empty"><span>+</span><small>Foto 4</small></div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Preview -->
+      <div class="ep-preview-col">
+        <div class="ep-section-label">Preview Kartu</div>
+        <div class="ep-live-card" id="pasLiveCard">
+          <div class="ep-live-img" id="pasLiveImg">
+            <div class="ep-live-placeholder">🖼️</div>
+          </div>
+          <div class="ep-live-info">
+            <div class="ep-live-kat" id="pasLiveKat">Kategori</div>
+            <div class="ep-live-judul" id="pasLiveJudul">Judul kegiatan</div>
+            <div class="ep-live-ring" id="pasLiveDesc">Deskripsi...</div>
+            <div class="ep-live-meta" id="pasLiveMeta">Tanggal</div>
+          </div>
+        </div>
+        <div class="ep-section-label" style="margin-top:20px;">Preview Foto</div>
+        <div class="ep-foto-preview-grid" id="pasFotoPreviewGrid">
+          <div class="ep-fp-empty">Belum ada foto dipilih</div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="ep-footer">
+      <span id="pasUploadMsg" class="ep-upload-msg hidden">✅ Berhasil! Kegiatan muncul di halaman.</span>
+      <button class="ep-btn-secondary" onclick="editorTutup('pastoral')">Batal</button>
+      <button class="ep-btn-primary ep-btn-green" onclick="pasUpload()">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+        Upload & Tampilkan
+      </button>
+    </div>
+
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     GALERI FOTO MODAL
+══════════════════════════════════════════ -->
+<div id="galeriModal" class="editor-modal-overlay hidden">
+  <div class="galeri-box">
+    <div class="galeri-head">
+      <div class="galeri-breadcrumb" id="galeriBreadcrumb">
+        <span class="galeri-bc-root" onclick="galeriGoRoot()">📁 Album</span>
+      </div>
+      <button class="ep-close" onclick="closeGaleri()">✕</button>
+    </div>
+    <div id="galeriAlbumView">
+      <p class="galeri-hint">Pilih album untuk melihat foto</p>
+      <div class="galeri-album-grid" id="galeriAlbumGrid"></div>
+    </div>
+    <div id="galeriFotoView" class="hidden">
+      <div class="galeri-foto-grid" id="galeriFotoGrid"></div>
+    </div>
+    <div class="galeri-footer">
+      <span id="galeriSelectedLabel" class="galeri-selected-label"></span>
+      <button class="ep-btn-primary galeri-pakai-btn" onclick="pakaiGambar()">Gunakan Foto</button>
+    </div>
+  </div>
+</div>
 
 <script src="script.js"></script>
 
@@ -656,5 +1015,39 @@ reveals.forEach(el => revealObs.observe(el));
   dot.style.border = warna === '#ffffff' || warna === '#FFFFFF' ? '1.5px solid #ccc' : 'none';
 })();
 </script>
+
+<!-- ═══════════════════════════════════════
+     GALERI ALBUM — MODAL PILIH FOTO
+═══════════════════════════════════════ -->
+<div id="galeriModal" class="editor-modal-overlay hidden">
+  <div class="galeri-box">
+    <div class="galeri-head">
+      <div class="galeri-breadcrumb" id="galeriBreadcrumb">
+        <span class="galeri-bc-root" onclick="galeriGoRoot()">📁 Album</span>
+      </div>
+      <button class="editor-panel-close" onclick="closeGaleri()">✕</button>
+    </div>
+
+    <!-- VIEW: DAFTAR ALBUM -->
+    <div id="galeriAlbumView">
+      <p class="galeri-hint">Pilih album untuk melihat foto</p>
+      <div class="galeri-album-grid" id="galeriAlbumGrid">
+        <!-- Diisi JS -->
+      </div>
+    </div>
+
+    <!-- VIEW: ISI FOTO -->
+    <div id="galeriFotoView" class="hidden">
+      <div class="galeri-foto-grid" id="galeriFotoGrid">
+        <!-- Diisi JS -->
+      </div>
+    </div>
+
+    <div class="galeri-footer">
+      <span id="galeriSelectedLabel" class="galeri-selected-label"></span>
+      <button class="editor-save-btn galeri-pakai-btn" onclick="pakaiGambar()">Gunakan Foto Ini</button>
+    </div>
+  </div>
+</div>
 </body>
 </html>
