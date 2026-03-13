@@ -452,6 +452,9 @@ function doEditorLogin() {
     const fabMenu = document.getElementById('fabMenu');
     if (fab) fab.classList.remove('fab-hidden');
     if (fabMenu) fabMenu.classList.add('fab-hidden'); // menu starts closed
+    // Show Keluar Editor button
+    const btnKeluar = document.getElementById('btnKeluarEditor');
+    if (btnKeluar) btnKeluar.classList.remove('fab-hidden');
   } else {
     document.getElementById('editorLoginError').classList.remove('hidden');
     document.getElementById('editorPassword').value = '';
@@ -479,6 +482,9 @@ function doEditorLogout() {
   const fabMenu = document.getElementById('fabMenu');
   if (fab) fab.classList.add('fab-hidden');
   if (fabMenu) fabMenu.classList.add('fab-hidden');
+  // Hide Keluar Editor button
+  const btnKeluar = document.getElementById('btnKeluarEditor');
+  if (btnKeluar) btnKeluar.classList.add('fab-hidden');
 }
 
 let fabOpen = false;
@@ -718,7 +724,157 @@ function updateFotoPreview(type) {
 function closeGaleri() {
   document.getElementById('galeriModal').classList.add('hidden');
   galeriSelectedSrc = null;
+  // Reset file input
+  const fi = document.getElementById('galeriFileInput');
+  if (fi) fi.value = '';
 }
+
+/* ─── UPLOAD FOTO DARI PERANGKAT LOKAL (PROFESSIONAL) ─── */
+function galeriUploadLokal(input) {
+  const file = input.files && input.files[0];
+  if (!file) return;
+  prosesUploadFile(file);
+}
+
+function prosesUploadFile(file) {
+  if (!file || !file.type.startsWith('image/')) {
+    alert('Harap pilih file gambar (JPG, PNG, WEBP).');
+    return;
+  }
+  if (file.size > 10 * 1024 * 1024) {
+    alert('Ukuran file terlalu besar. Maksimal 10MB.');
+    return;
+  }
+
+  // Show progress bar animation
+  const progress = document.getElementById('galeriDropProgress');
+  const bar = document.getElementById('galeriDropBar');
+  const dropzone = document.getElementById('galeriDropzone');
+  if (progress) progress.classList.remove('hidden');
+  if (bar) { bar.style.width = '0%'; bar.style.transition = 'none'; }
+  if (dropzone) dropzone.classList.add('galeri-drop-loading');
+
+  // Simulate progress then read file
+  let pct = 0;
+  const iv = setInterval(() => {
+    pct = Math.min(pct + Math.random() * 18, 85);
+    if (bar) { bar.style.transition = 'width 0.2s ease'; bar.style.width = pct + '%'; }
+  }, 80);
+
+  const sizeKB = (file.size / 1024).toFixed(0);
+  const sizeTxt = file.size > 1024 * 1024
+    ? (file.size / (1024*1024)).toFixed(1) + ' MB'
+    : sizeKB + ' KB';
+
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    clearInterval(iv);
+    if (bar) { bar.style.width = '100%'; }
+
+    setTimeout(() => {
+      const src = e.target.result;
+
+      // Show preview in dropzone
+      if (dropzone) {
+        dropzone.classList.remove('galeri-drop-loading');
+        // Replace content with preview card
+        dropzone.innerHTML = `
+          <div class="galeri-drop-preview">
+            <img src="${src}" alt="preview">
+            <div class="galeri-drop-preview-info">
+              <span class="galeri-drop-preview-name">${file.name}</span>
+              <span class="galeri-drop-preview-size">${sizeTxt}</span>
+            </div>
+            <div class="galeri-drop-preview-done">✓</div>
+          </div>
+          <div style="display:flex;gap:8px;margin-top:10px;justify-content:center;">
+            <button onclick="galeriKonfirmasiUpload('${src.replace(/'/g,"\\'")}', event)"
+              style="background:linear-gradient(135deg,#27ae60,#2ecc71);color:#fff;border:none;border-radius:20px;padding:8px 20px;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:700;cursor:pointer;box-shadow:0 3px 12px rgba(39,174,96,0.35);">
+              ✓ Pakai Foto Ini
+            </button>
+            <button onclick="galeriResetDropzone()"
+              style="background:rgba(0,0,0,0.07);color:#5a4030;border:none;border-radius:20px;padding:8px 16px;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:600;cursor:pointer;">
+              ✕ Ganti
+            </button>
+          </div>`;
+      }
+    }, 300);
+  };
+  reader.onerror = () => { clearInterval(iv); alert('Gagal membaca file.'); };
+  reader.readAsDataURL(file);
+}
+
+function galeriKonfirmasiUpload(src, e) {
+  if (e) e.stopPropagation();
+  if (galeriTargetType === 'art') artFotos[galeriTargetSlot] = src;
+  else pasFotos[galeriTargetSlot] = src;
+  renderFotoSlot(galeriTargetSlot, galeriTargetType, src);
+  updateFotoPreview(galeriTargetType);
+  if (galeriTargetSlot === 0) {
+    galeriTargetType === 'art' ? updateArtLiveCard() : updatePasLiveCard();
+  }
+  closeGaleri();
+}
+
+function galeriResetDropzone() {
+  const dz = document.getElementById('galeriDropzone');
+  if (!dz) return;
+  dz.innerHTML = `
+    <input type="file" id="galeriFileInput" accept="image/*" style="display:none" onchange="galeriUploadLokal(this)">
+    <div class="galeri-drop-icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" width="32" height="32"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+    </div>
+    <div class="galeri-drop-title">Drag &amp; drop foto di sini</div>
+    <div class="galeri-drop-sub">atau <span class="galeri-drop-browse">pilih dari perangkat</span></div>
+    <div class="galeri-drop-types">JPG, PNG, WEBP — maks. 10MB</div>
+    <div class="galeri-drop-progress hidden" id="galeriDropProgress">
+      <div class="galeri-drop-bar" id="galeriDropBar"></div>
+    </div>`;
+  dz.classList.remove('galeri-drop-loading','galeri-drop-hover');
+  dz.onclick = () => document.getElementById('galeriFileInput').click();
+}
+
+/* ─── DRAG & DROP DROPZONE ─────────────── */
+(function() {
+  function initDropzone() {
+    const dz = document.getElementById('galeriDropzone');
+    if (!dz) return;
+
+    dz.addEventListener('dragover', e => {
+      e.preventDefault();
+      dz.classList.add('galeri-drop-hover');
+    });
+    dz.addEventListener('dragleave', e => {
+      if (!dz.contains(e.relatedTarget)) dz.classList.remove('galeri-drop-hover');
+    });
+    dz.addEventListener('drop', e => {
+      e.preventDefault();
+      dz.classList.remove('galeri-drop-hover');
+      const file = e.dataTransfer.files && e.dataTransfer.files[0];
+      if (file) prosesUploadFile(file);
+    });
+  }
+
+  // Re-init dropzone each time galeri opens
+  const orig = window.bukaGaleriSlot;
+  window.bukaGaleriSlot = function(slot, type) {
+    galeriTargetType = type;
+    galeriTargetSlot = slot;
+    galeriSelectedSrc = null;
+    galeriCurrentAlbum = null;
+    renderGaleriAlbum();
+    document.getElementById('galeriModal').classList.remove('hidden');
+    // Reset dropzone state
+    const dz = document.getElementById('galeriDropzone');
+    if (dz) { galeriResetDropzone(); }
+  };
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initDropzone);
+  } else {
+    initDropzone();
+  }
+})();
 
 function galeriGoRoot() {
   galeriCurrentAlbum = null;
@@ -1783,5 +1939,201 @@ function infoSimulasi() {
     document.addEventListener('DOMContentLoaded', initPastoralScroll);
   } else {
     initPastoralScroll();
+  }
+})();
+
+/* =========================================
+   BACAAN LITURGI HARIAN — via Claude AI
+   Mengambil bacaan liturgi Katolik Indonesia
+   berdasarkan tanggal hari ini
+========================================= */
+(function() {
+  const BULAN_ID = ['Januari','Februari','Maret','April','Mei','Juni',
+                    'Juli','Agustus','September','Oktober','November','Desember'];
+  const HARI_ID  = ['Minggu','Senin','Selasa','Rabu','Kamis','Jumat','Sabtu'];
+
+  async function loadBacaanLiturgi() {
+    const today = new Date();
+    const hari  = HARI_ID[today.getDay()];
+    const tgl   = today.getDate();
+    const bln   = BULAN_ID[today.getMonth()];
+    const thn   = today.getFullYear();
+
+    const listEl = document.getElementById('liturgiBacaanList');
+    const linkEl = document.getElementById('liturgiEkatolikLink');
+    if (!listEl) return;
+
+    // Build URL imankatolik.or.id
+    const blnSingkat = ['Jan','Feb','Mar','Apr','Mei','Jun','Jul','Agu','Sep','Okt','Nov','Des'][today.getMonth()];
+    const imanUrl = `https://www.imankatolik.or.id/kalender/${tgl}${blnSingkat}.html`;
+    if (linkEl) linkEl.href = imanUrl;
+
+    // Cek cache dulu (localStorage, key per tanggal)
+    const cacheKey = `gkr_bacaan_${thn}_${today.getMonth()}_${tgl}`;
+    const cached = (() => { try { return JSON.parse(localStorage.getItem(cacheKey)); } catch(e) { return null; } })();
+    if (cached) { renderBacaan(listEl, cached); return; }
+
+    // --- COBA FETCH DARI IMANKATOLIK VIA CORS PROXY ---
+    try {
+      const proxyUrl = `https://api.allorigins.win/get?url=${encodeURIComponent(imanUrl)}`;
+      const res = await fetch(proxyUrl);
+      if (!res.ok) throw new Error('proxy error');
+      const json = await res.json();
+      const html = json.contents || '';
+
+      // Parse HTML string untuk ambil data bacaan
+      const parsed = parseImanKatolikHtml(html, hari, tgl, bln, thn);
+      if (parsed) {
+        try { localStorage.setItem(cacheKey, JSON.stringify(parsed)); } catch(e) {}
+        renderBacaan(listEl, parsed);
+        return;
+      }
+      throw new Error('parse failed');
+
+    } catch(proxyErr) {
+      // --- FALLBACK: Claude AI ---
+      try {
+        // Hitung tahun liturgi untuk prompt yang lebih akurat
+        function getPaskahQ(y){const a=y%19,b=Math.floor(y/100),c=y%100,d=Math.floor(b/4),e=b%4,f=Math.floor((b+8)/25),g=Math.floor((b-f+1)/3),h=(19*a+b-d-g+15)%30,i=Math.floor(c/4),k=c%4,l=(32+2*e+2*i-h-k)%7,m=Math.floor((a+11*h+22*l)/451);return new Date(y,Math.floor((h+l-7*m+114)/31)-1,((h+l-7*m+114)%31)+1);}
+        function getAdven1Q(y){const n=new Date(y,10,30);return new Date(n.getFullYear(),n.getMonth(),n.getDate()-n.getDay());}
+        const thnNow = today.getFullYear();
+        const adven1Q = getAdven1Q(thnNow);
+        const liturgiCycleYear = today >= adven1Q ? thnNow+1 : thnNow;
+        const cycleChar = ['A','B','C'][((liturgiCycleYear-1)%3+3)%3];
+
+        const prompt = `Kamu adalah pakar liturgi Gereja Katolik Ritus Roma. Berikan daftar bacaan Misa Katolik untuk:
+Tanggal: ${hari}, ${tgl} ${bln} ${thn}
+Tahun Liturgi: ${cycleChar}
+Berdasarkan Leksionarium Katolik edisi Bahasa Indonesia (Lectionary, Ordo Lectionum Missae).
+
+Balas HANYA JSON ini (tanpa backtick, tanpa teks lain):
+{"pekan":"nama lengkap hari liturgi ini","bacaan":[{"label":"Bacaan I","ref":"kitab bab:ayat"},{"label":"Mazmur Tanggapan","ref":"Mzm bab:ayat"},{"label":"Injil","ref":"kitab bab:ayat"}],"warna":"warna liturgi"}
+
+Jika Minggu tambahkan Bacaan II sebelum Injil. Warna: Hijau/Ungu/Putih/Merah/Merah Muda. JSON saja.`;
+
+        const aiRes = await fetch('https://api.anthropic.com/v1/messages', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            model: 'claude-sonnet-4-20250514',
+            max_tokens: 500,
+            messages: [{ role: 'user', content: prompt }]
+          })
+        });
+        if (!aiRes.ok) throw new Error('AI error');
+        const aiData = await aiRes.json();
+        const rawText = (aiData.content || []).map(b => b.text || '').join('').trim();
+        const clean = rawText.replace(/```json|```/g, '').trim();
+        const aiParsed = JSON.parse(clean);
+        try { localStorage.setItem(cacheKey, JSON.stringify(aiParsed)); } catch(e) {}
+        renderBacaan(listEl, aiParsed);
+
+      } catch(aiErr) {
+        listEl.innerHTML = `<div class="liturgi-bacaan-fallback">
+          Tidak dapat memuat bacaan. Klik tombol di bawah.
+        </div>`;
+      }
+    }
+  }
+
+  // --- PARSER HTML IMANKATOLIK ---
+  function parseImanKatolikHtml(html, hari, tgl, bln, thn) {
+    try {
+      const parser = new DOMParser();
+      const doc = parser.parseFromString(html, 'text/html');
+      const bodyText = doc.body ? doc.body.innerText || doc.body.textContent : '';
+
+      // Cari nama pekan/hari
+      const pekanMatch = bodyText.match(/(Hari\s+(?:Biasa|Raya|Pesta|Peringatan)[^\n\r]{0,80})/i) ||
+                         bodyText.match(/(Minggu\s+[^\n\r]{0,60})/i) ||
+                         bodyText.match(/(Prapaskah[^\n\r]{0,60})/i);
+      const pekan = pekanMatch ? pekanMatch[1].trim().slice(0,80) : `${hari}, ${tgl} ${bln} ${thn}`;
+
+      // Cari warna liturgi
+      const warnaMatch = bodyText.match(/Warna\s*[Ll]iturgi[:\s]*([A-Za-z\s]+)/i) ||
+                         bodyText.match(/warna\s*:\s*([A-Za-z]+)/i);
+      let warna = 'Hijau';
+      if (warnaMatch) {
+        const w = warnaMatch[1].trim().toLowerCase();
+        if (w.includes('ungu') || w.includes('violet'))  warna = 'Ungu';
+        else if (w.includes('merah muda') || w.includes('pink') || w.includes('rose')) warna = 'Merah Muda';
+        else if (w.includes('merah') || w.includes('red'))  warna = 'Merah';
+        else if (w.includes('putih') || w.includes('white')) warna = 'Putih';
+        else if (w.includes('hijau') || w.includes('green')) warna = 'Hijau';
+      }
+
+      // Cari referensi bacaan — pola umum kitab + pasal:ayat
+      const refRegex = /\b((?:[1-3]\s*)?[A-ZÄÖÜ][a-zA-ZäöüÄÖÜ]+\.?\s*\d+:\d+[\d\-,;.]*)/g;
+      const allRefs = [...bodyText.matchAll(refRegex)].map(m => m[1].trim()).filter(r => r.length > 3);
+      const uniqueRefs = [...new Set(allRefs)].slice(0, 5);
+
+      // Bentuk label-label bacaan
+      const bacaan = [];
+      const labelPairs = [
+        ['Bacaan I', 0], ['Mazmur', 1], ['Bacaan II', 2], ['Injil', -1]
+      ];
+
+      if (uniqueRefs.length >= 2) {
+        bacaan.push({ label: 'Bacaan I', ref: uniqueRefs[0] });
+        if (uniqueRefs.length >= 3) {
+          bacaan.push({ label: 'Mazmur', ref: uniqueRefs[1] });
+          if (uniqueRefs.length >= 4 && hari === 'Minggu') {
+            bacaan.push({ label: 'Bacaan II', ref: uniqueRefs[2] });
+            bacaan.push({ label: 'Injil', ref: uniqueRefs[uniqueRefs.length - 1] });
+          } else {
+            bacaan.push({ label: 'Injil', ref: uniqueRefs[uniqueRefs.length - 1] });
+          }
+        } else {
+          bacaan.push({ label: 'Injil', ref: uniqueRefs[1] });
+        }
+      }
+
+      // Juga coba cari langsung pola "Bacaan I/Injil"
+      const bacaanIMatch = bodyText.match(/Bacaan\s+I[:\s]+([^\n\r]{4,50})/i);
+      const injilMatch   = bodyText.match(/Injil[:\s]+([^\n\r]{4,50})/i);
+      const mazmurMatch  = bodyText.match(/Mzm\.?\s*\d+[:\d\-,;.]+/i);
+
+      if (bacaanIMatch || injilMatch) {
+        const result = [];
+        if (bacaanIMatch) result.push({ label: 'Bacaan I', ref: bacaanIMatch[1].trim().slice(0,50) });
+        if (mazmurMatch) result.push({ label: 'Mazmur', ref: mazmurMatch[0].trim().slice(0,40) });
+        if (injilMatch)  result.push({ label: 'Injil', ref: injilMatch[1].trim().slice(0,50) });
+        if (result.length >= 2) return { pekan, bacaan: result, warna };
+      }
+
+      if (bacaan.length >= 2) return { pekan, bacaan, warna };
+      return null;
+    } catch(e) {
+      return null;
+    }
+  }
+
+  function renderBacaan(listEl, data) {
+    const warnaMap = {
+      'Hijau':'#2d7a3a', 'Ungu':'#6a0dad', 'Putih':'#888',
+      'Merah':'#c0392b', 'Merah Muda':'#e91e8c'
+    };
+    const warnaHex = warnaMap[data.warna] || '#888';
+    const bacaanHtml = (data.bacaan || []).map(b =>
+      `<div class="liturgi-bacaan-item">
+        <span class="liturgi-bacaan-lbl">${b.label}</span>
+        <span class="liturgi-bacaan-ref">${b.ref}</span>
+      </div>`
+    ).join('');
+
+    listEl.innerHTML = `
+      <div class="liturgi-bacaan-pekan" style="border-left-color:${warnaHex}">
+        <span class="liturgi-bacaan-warna-dot" style="background:${warnaHex}"></span>
+        ${data.pekan || ''}
+      </div>
+      ${bacaanHtml}
+    `;
+  }
+
+  // Jalankan setelah DOM siap
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', loadBacaanLiturgi);
+  } else {
+    loadBacaanLiturgi();
   }
 })();

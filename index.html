@@ -301,7 +301,69 @@
         <div class="liturgi-tanggal" id="liturgiTanggal"></div>
         <div class="liturgi-nama" id="liturgiNama"></div>
         <div class="liturgi-desc" id="liturgiDesc"></div>
+
+        <!-- BACAAN HARIAN -->
+        <div class="liturgi-bacaan-wrap" id="liturgiBacaanWrap">
+          <div class="liturgi-bacaan-label">&#128214; Bacaan Hari Ini</div>
+          <div class="liturgi-bacaan-list" id="liturgiBacaanList">
+            <div class="liturgi-bacaan-loading">
+              <span class="liturgi-loading-dot"></span>
+              <span class="liturgi-loading-dot"></span>
+              <span class="liturgi-loading-dot"></span>
+            </div>
+          </div>
+          <a id="liturgiEkatolikLink" href="#" target="_blank" class="liturgi-ekatolik-btn">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="13" height="13"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+            Baca Lengkap di eKatolik
+          </a>
+        </div>
       </div>
+
+      <!-- ARTIKEL KEGIATAN PASTORAL (sidebar mini) -->
+      <div class="sidebar-divider" style="margin-top:18px;">Artikel Kegiatan Pastoral</div>
+      <div class="sidebar-pastoral-list" id="sidebarPastoralList">
+        <a href="lakegiatan2.html" class="sidebar-pastoral-item">
+          <div class="sidebar-pastoral-thumb">
+            <img src="lhps4.jpg" alt="HPS">
+          </div>
+          <div class="sidebar-pastoral-text">
+            <span class="sidebar-pastoral-cat">Liturgi &amp; Perayaan</span>
+            <p>HPS &amp; Pesta Nama Paroki Kristus Raja</p>
+            <span class="sidebar-pastoral-tgl">23 Nov 2025</span>
+          </div>
+        </a>
+        <a href="kegiatan4.html" class="sidebar-pastoral-item">
+          <div class="sidebar-pastoral-thumb">
+            <img src="FOKUSPAS.jpeg" alt="Fokus Pastoral">
+          </div>
+          <div class="sidebar-pastoral-text">
+            <span class="sidebar-pastoral-cat">Program Paroki</span>
+            <p>Fokus Pastoral 2026–2030</p>
+            <span class="sidebar-pastoral-tgl">12 Feb 2026</span>
+          </div>
+        </a>
+        <a href="kegiatan5.html" class="sidebar-pastoral-item">
+          <div class="sidebar-pastoral-thumb">
+            <img src="pelkam.jpeg" alt="Kamera">
+          </div>
+          <div class="sidebar-pastoral-text">
+            <span class="sidebar-pastoral-cat">Komsos GKR</span>
+            <p>Pelatihan Kamera Komsos GKR</p>
+            <span class="sidebar-pastoral-tgl">28 Feb 2026</span>
+          </div>
+        </a>
+        <a href="apppekanpertama.html" class="sidebar-pastoral-item">
+          <div class="sidebar-pastoral-thumb">
+            <img src="patuyesus.jpg" alt="APP">
+          </div>
+          <div class="sidebar-pastoral-text">
+            <span class="sidebar-pastoral-cat">Lingkungan</span>
+            <p>APP Lingkungan Pekan Pertama</p>
+            <span class="sidebar-pastoral-tgl">22 Feb 2026</span>
+          </div>
+        </a>
+      </div>
+      <a href="#kegiatan" class="sidebar-pastoral-more">Lihat Semua Kegiatan →</a>
 
     </div>
   </aside>
@@ -744,6 +806,22 @@
       </div>
       <button class="ep-close" onclick="closeGaleri()">✕</button>
     </div>
+
+    <!-- UPLOAD FOTO LOKAL — PROFESSIONAL DROPZONE -->
+    <div class="galeri-dropzone" id="galeriDropzone" onclick="document.getElementById('galeriFileInput').click()">
+      <input type="file" id="galeriFileInput" accept="image/*" style="display:none" onchange="galeriUploadLokal(this)">
+      <div class="galeri-drop-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" width="32" height="32"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+      </div>
+      <div class="galeri-drop-title">Drag &amp; drop foto di sini</div>
+      <div class="galeri-drop-sub">atau <span class="galeri-drop-browse">pilih dari perangkat</span></div>
+      <div class="galeri-drop-types">JPG, PNG, WEBP — maks. 10MB</div>
+      <div class="galeri-drop-progress hidden" id="galeriDropProgress">
+        <div class="galeri-drop-bar" id="galeriDropBar"></div>
+      </div>
+    </div>
+    <div class="galeri-or-divider"><span>atau pilih dari album</span></div>
+
     <div id="galeriAlbumView">
       <p class="galeri-hint">Pilih album untuk melihat foto</p>
       <div class="galeri-album-grid" id="galeriAlbumGrid"></div>
@@ -895,160 +973,534 @@ const revealObs = new IntersectionObserver((entries) => {
 }, { threshold: 0.1 });
 reveals.forEach(el => revealObs.observe(el));
 
-// ── KALENDER LITURGI OTOMATIS ──
+// ══════════════════════════════════════════════════════════════
+//  KALENDER LITURGI KATOLIK — Engine Lengkap v3.0
+//  Algoritma: Computus (Meeus/Jones/Butcher) + Ordo Romanum
+//  Mencakup: Musim liturgi, Tahun A/B/C, Pekan, Hari Raya,
+//  Pesta, Peringatan Wajib, Santo/Santa harian
+// ══════════════════════════════════════════════════════════════
 (function() {
   const today = new Date();
-  const year  = today.getFullYear();
-  const month = today.getMonth(); // 0-indexed
-  const day   = today.getDate();
+  const Y = today.getFullYear();
+  const M = today.getMonth(); // 0-based
+  const D = today.getDate();
+  const todayD = new Date(Y, M, D);
 
-  // Hitung Paskah (algoritma Anonymous Gregorian)
+  // ── UTILITAS ──────────────────────────────────────────────
+  function addDays(d, n) { const r = new Date(d); r.setDate(r.getDate() + n); return r; }
+  function sameDay(a, b) { return a.getFullYear()===b.getFullYear() && a.getMonth()===b.getMonth() && a.getDate()===b.getDate(); }
+  function onOrAfter(a, b) { return a >= b; }
+  function before(a, b)   { return a < b; }
+
+  // ── ALGORITMA PASKAH (Meeus/Jones/Butcher — akurat 1582–4099) ──
   function getPaskah(y) {
-    const a = y % 19, b = Math.floor(y/100), c = y % 100;
-    const d = Math.floor(b/4), e = b % 4;
-    const f = Math.floor((b+8)/25), g = Math.floor((b-f+1)/3);
+    const a = y % 19;
+    const b = Math.floor(y / 100), c = y % 100;
+    const d = Math.floor(b / 4), e = b % 4;
+    const f = Math.floor((b + 8) / 25);
+    const g = Math.floor((b - f + 1) / 3);
     const h = (19*a + b - d - g + 15) % 30;
-    const i = Math.floor(c/4), k = c % 4;
+    const i = Math.floor(c / 4), k = c % 4;
     const l = (32 + 2*e + 2*i - h - k) % 7;
-    const m = Math.floor((a + 11*h + 22*l)/451);
-    const month = Math.floor((h + l - 7*m + 114)/31) - 1; // 0-indexed
-    const eday  = ((h + l - 7*m + 114) % 31) + 1;
-    return new Date(y, month, eday);
+    const m = Math.floor((a + 11*h + 22*l) / 451);
+    const mo = Math.floor((h + l - 7*m + 114) / 31) - 1; // 0-based
+    const dy = ((h + l - 7*m + 114) % 31) + 1;
+    return new Date(y, mo, dy);
   }
 
-  function addDays(d, n) { const r = new Date(d); r.setDate(r.getDate() + n); return r; }
-  function sameDay(a, b)  { return a.getFullYear()===b.getFullYear() && a.getMonth()===b.getMonth() && a.getDate()===b.getDate(); }
-  function afterOrEq(a, b) { return a >= b || sameDay(a,b); }
-  function before(a, b)   { return a < b && !sameDay(a,b); }
-
-  const paskah   = getPaskah(year);
-  const adven1   = (function(){
-    // Minggu pertama Adven: Minggu terdekat ke 30 Nov
-    const nov30 = new Date(year, 10, 30);
+  // ── MINGGU ADVEN PERTAMA ──────────────────────────────────
+  // = Minggu terdekat (sebelum/sesudah) 30 November
+  function getAdven1(y) {
+    const nov30 = new Date(y, 10, 30);
     const wd = nov30.getDay(); // 0=Sun
     return addDays(nov30, -wd);
-  })();
+  }
 
-  const rabuAbu  = addDays(paskah, -46);
-  const mingguPalma = addDays(paskah, -7);
-  const kamisPutih  = addDays(paskah, -3);
-  const jumatAgung  = addDays(paskah, -2);
-  const sabtuSuci   = addDays(paskah, -1);
-  const ascension   = addDays(paskah, 39);
-  const pentakosta  = addDays(paskah, 49);
+  // ── TAHUN LITURGI A / B / C ───────────────────────────────
+  // Tahun A dimulai Adven 1 tahun sebelumnya (tahun kalender dikurangi 1 lalu mod 3)
+  // Referensi: Adven 2025 = Tahun C (2025+1=2026, (2026-1)%3=0 → C)
+  // Pattern: 2022=A, 2023=B, 2024=C, 2025=A, 2026=B, 2027=C
+  function getTahunLiturgi(y) {
+    // Tahun liturgi dimulai dari Adven. Jika belum Adven, masih tahun liturgi lama.
+    const adven1 = getAdven1(y);
+    const liturgiYear = onOrAfter(todayD, adven1) ? y + 1 : y;
+    const cycle = ((liturgiYear - 1) % 3 + 3) % 3; // 0=A,1=B,2=C
+    return ['A','B','C'][cycle];
+  }
 
-  // Tentukan musim liturgi
-  const todayD = new Date(year, month, day);
+  // ── HITUNG SEMUA TANGGAL KUNCI ────────────────────────────
+  const paskah        = getPaskah(Y);
+  const paskahPrev    = getPaskah(Y - 1);
+  const rabuAbu       = addDays(paskah, -46);
+  const mingguPalma   = addDays(paskah, -7);
+  const kamisPutih    = addDays(paskah, -3);
+  const jumatAgung    = addDays(paskah, -2);
+  const sabtuSuci     = addDays(paskah, -1);
+  const mingguIlahi   = addDays(paskah, 7);   // Minggu Kerahiman Ilahi
+  const kenaikanTuhan = addDays(paskah, 39);  // Kenaikan Tuhan (Kamis — beberapa negara Minggu ke-7)
+  const pentakosta    = addDays(paskah, 49);
+  const trinitasMinggu = addDays(pentakosta, 7);
+  const corpusChristi  = addDays(pentakosta, 11); // Kamis setelah Trinitas; beberapa pindah Minggu
+  const hatiKudus      = addDays(pentakosta, 19); // Jumat setelah Corpusc (pekan ke-2 post-Pentecost+8)
+  const adven1ThisYear = getAdven1(Y);
+  const adven1PrevYear = getAdven1(Y - 1);
+  const tahunLiturgi   = getTahunLiturgi(Y);
 
-  let musim = '', warna = '', namaPesta = '', desc = '';
+  // ── PEMBAPTISAN TUHAN: Minggu setelah Epifani (atau 13 Jan bila Epifani Minggu) ──
+  function getPembaptisanTuhan(y) {
+    const epifani = new Date(y, 0, 6);
+    const wd = epifani.getDay();
+    if (wd === 0) return new Date(y, 0, 13); // Epifani Minggu → Pembaptisan Senin 13
+    return addDays(epifani, 7 - wd); // Minggu berikutnya
+  }
+  const pembaptisanTuhan = getPembaptisanTuhan(Y);
+  const pembaptisanTuhanPrev = getPembaptisanTuhan(Y - 1);
 
-  // Peristiwa khusus
-  const specialDays = [
-    { date: rabuAbu,      name: 'Rabu Abu',              desc: 'Awal masa Prapaskah. Tanda abu di dahi simbol pertobatan.',          warna: '#7a7a7a', musim: 'Prapaskah' },
-    { date: mingguPalma,  name: 'Minggu Palma',          desc: 'Peringatan Yesus memasuki Yerusalem. Minggu Sengsara dimulai.',      warna: '#8B0000', musim: 'Pekan Suci' },
-    { date: kamisPutih,   name: 'Kamis Putih',           desc: 'Perjamuan Terakhir dan pentahbisan Ekaristi.',                       warna: '#ffffff', musim: 'Pekan Suci' },
-    { date: jumatAgung,   name: 'Jumat Agung',           desc: 'Sengsara dan wafat Tuhan Yesus Kristus di kayu salib.',             warna: '#8B0000', musim: 'Pekan Suci' },
-    { date: sabtuSuci,    name: 'Sabtu Suci',            desc: 'Yesus di dalam kubur. Malam vigili Paskah.',                        warna: '#7a7a7a', musim: 'Vigili Paskah' },
-    { date: paskah,       name: 'Hari Raya Paskah',      desc: 'Yesus bangkit dari kematian! Alleluia!',                            warna: '#FFD700', musim: 'Paskah' },
-    { date: ascension,    name: 'Kenaikan Tuhan',        desc: 'Yesus naik ke surga empat puluh hari setelah Paskah.',              warna: '#FFFFFF', musim: 'Paskah' },
-    { date: pentakosta,   name: 'Hari Raya Pentakosta',  desc: 'Turunnya Roh Kudus atas para rasul. Gereja lahir.',                 warna: '#FF2200', musim: 'Pentakosta' },
-    { date: new Date(year,11,25), name: 'Natal – Kelahiran Tuhan',   desc: 'Merayakan kelahiran Yesus Kristus Putra Allah.',        warna: '#FFD700', musim: 'Natal' },
-    { date: new Date(year,0,1),   name: 'Hari Raya Santa Maria',     desc: 'Perayaan Santa Perawan Maria pada awal tahun baru.',    warna: '#FFFFFF', musim: 'Natal' },
-    { date: new Date(year,0,6),   name: 'Hari Raya Epifani',         desc: 'Penampakan Tuhan kepada para Majus dari Timur.',        warna: '#FFD700', musim: 'Natal' },
+  // ── HARI RAYA TUHAN YANG TETAP ────────────────────────────
+  const HariRayaTetap = [
+    { m:0,  d:1,  name:'Hari Raya Santa Maria Bunda Allah',    desc:'Membuka tahun baru dengan merayakan keibuan ilahi Maria.',             warna:'#FFFFFF', musimLabel:'Natal'  },
+    { m:0,  d:6,  name:'Hari Raya Penampakan Tuhan (Epifani)', desc:'Yesus diperkenalkan kepada bangsa-bangsa oleh para Majus dari Timur.', warna:'#FFD700', musimLabel:'Natal'  },
+    { m:1,  d:2,  name:'Pesta Pengantar Tuhan ke Bait Suci',   desc:'Yesus diserahkan kepada Tuhan di Bait Suci oleh Maria dan Yusuf.',    warna:'#FFFFFF', musimLabel:'Natal'  },
+    { m:2,  d:19, name:'Hari Raya Santo Yusuf',                desc:'Pelindung Gereja Universal, suami Bunda Maria, bapak asuh Yesus.',    warna:'#FFFFFF', musimLabel:'Biasa'  },
+    { m:2,  d:25, name:'Hari Raya Kabar Sukacita',             desc:'Malaikat Gabriel memberitakan kepada Maria tentang inkarnasi Putra Allah.', warna:'#FFFFFF', musimLabel:'' },
+    { m:5,  d:24, name:'Hari Raya Kelahiran Santo Yohanes Pembaptis', desc:'Merayakan kelahiran nabi yang mempersiapkan jalan bagi Mesias.', warna:'#FFFFFF', musimLabel:'Biasa' },
+    { m:5,  d:29, name:'Hari Raya Santo Petrus dan Paulus',    desc:'Dua tiang Gereja: Petrus sang Batu Karang, Paulus Rasul Bangsa-bangsa.', warna:'#FF2200', musimLabel:'Biasa'},
+    { m:7,  d:6,  name:'Pesta Transfigurasi Tuhan',            desc:'Yesus menampakkan kemuliaan ilahi-Nya di hadapan Petrus, Yakobus, dan Yohanes.', warna:'#FFFFFF', musimLabel:'Biasa'},
+    { m:7,  d:15, name:'Hari Raya Diangkatnya Maria ke Surga', desc:'Maria, Bunda Allah, diangkat ke surga dengan jiwa dan raganya.',     warna:'#FFFFFF', musimLabel:'Biasa'  },
+    { m:8,  d:8,  name:'Hari Raya Kelahiran Santa Perawan Maria', desc:'Merayakan kelahiran Maria yang dipilih Allah menjadi Bunda Putra-Nya.', warna:'#FFFFFF', musimLabel:'Biasa'},
+    { m:8,  d:14, name:'Pesta Salib Suci',                     desc:'Merayakan salib Kristus sebagai tanda kemenangan dan keselamatan.', warna:'#FF2200', musimLabel:'Biasa'   },
+    { m:10, d:1,  name:'Hari Raya Semua Orang Kudus',          desc:'Menghormati seluruh orang kudus di surga yang telah bersatu dengan Allah.', warna:'#FFFFFF', musimLabel:'Biasa'},
+    { m:10, d:2,  name:'Peringatan Arwah Semua Orang Beriman', desc:'Mendoakan semua jiwa yang masih dalam proses pemurnian di Api Penyucian.', warna:'#7a7a7a', musimLabel:'Biasa'},
+    { m:11, d:8,  name:'Hari Raya Dikandung Tanpa Noda',       desc:'Maria dikandung tanpa noda dosa asal — Immaculata Conceptio.',       warna:'#FFFFFF', musimLabel:'Adven'  },
+    { m:11, d:25, name:'Hari Raya Natal — Kelahiran Tuhan',    desc:'Merayakan kelahiran Yesus Kristus, Putra Allah yang menjadi manusia.', warna:'#FFFFFF', musimLabel:'Natal' },
+    { m:11, d:26, name:'Pesta Santo Stefanus Martir Pertama',  desc:'Diakon perdana, martir pertama Gereja yang mengikuti jejak Kristus.', warna:'#FF2200', musimLabel:'Natal'  },
+    { m:11, d:27, name:'Pesta Santo Yohanes Rasul dan Penulis Injil', desc:'Murid yang dikasihi Yesus, saksi sengsara dan kebangkitan Tuhan.', warna:'#FFFFFF', musimLabel:'Natal'},
+    { m:11, d:28, name:'Pesta Kanak-kanak Suci (Betlehem)',    desc:'Para anak kecil yang menjadi martir akibat kejahatan Raja Herodes.', warna:'#FF2200', musimLabel:'Natal'   },
   ];
 
-  let isSpecial = false;
-  for (const s of specialDays) {
-    if (sameDay(todayD, s.date)) {
-      namaPesta = s.name; desc = s.desc; warna = s.warna; musim = s.musim;
-      isSpecial = true; break;
+  // ── SANTO/SANTA TETAP (Peringatan Wajib & Bebas) ─────────
+  const SantoTetap = [
+    { m:0,  d:2,  name:'Hh. Basilus Agung & Gregorius dr Nazianzus' },
+    { m:0,  d:3,  name:'Nama Suci Yesus (Opsional)' },
+    { m:0,  d:4,  name:'Hb. Elisabet Ann Seton' },
+    { m:0,  d:5,  name:'Hb. Yohanes Neumann' },
+    { m:0,  d:7,  name:'Hb. Raimundus dari Penyafort' },
+    { m:0,  d:13, name:'Hb. Hilarius' },
+    { m:0,  d:17, name:'Hb. Antonius Abbas' },
+    { m:0,  d:20, name:'Hb. Fabianus / Sebastianus' },
+    { m:0,  d:21, name:'Hb. Agnes' },
+    { m:0,  d:22, name:'Hb. Vinsensius' },
+    { m:0,  d:24, name:'Hb. Fransiskus de Sales' },
+    { m:0,  d:25, name:'Pertobatan Santo Paulus Rasul' },
+    { m:0,  d:26, name:'Hh. Timoteus & Titus' },
+    { m:0,  d:28, name:'Hb. Tomas Aquinas' },
+    { m:0,  d:31, name:'Hb. Yohanes Bosko' },
+    { m:1,  d:3,  name:'Hb. Blasius / Anskar' },
+    { m:1,  d:5,  name:'Hb. Agata' },
+    { m:1,  d:6,  name:'Hb. Paulus Miki dan Rekan Martir Jepang' },
+    { m:1,  d:8,  name:'Hb. Hieronymus Emilianus' },
+    { m:1,  d:10, name:'Hb. Skolastika' },
+    { m:1,  d:11, name:'Hb. Perawan Maria dari Lourdes' },
+    { m:1,  d:14, name:'Hh. Sirilus dan Metodius' },
+    { m:1,  d:17, name:'Hh. Tujuh Pendiri Serikat Hamba Maria' },
+    { m:1,  d:21, name:'Hb. Petrus Damianus' },
+    { m:1,  d:22, name:'Takhta Santo Petrus Rasul' },
+    { m:1,  d:23, name:'Hb. Polikarpus' },
+    { m:2,  d:4,  name:'Hb. Kasimirus' },
+    { m:2,  d:7,  name:'Hh. Perpetua dan Felisitas' },
+    { m:2,  d:8,  name:'Hb. Yohanes dari Allah' },
+    { m:2,  d:9,  name:'Hb. Fransiska dari Roma' },
+    { m:2,  d:17, name:'Hb. Patrik' },
+    { m:2,  d:18, name:'Hb. Sirilus dari Yerusalem' },
+    { m:2,  d:23, name:'Hb. Toribius dari Mongrovejo' },
+    { m:3,  d:2,  name:'Hb. Fransiskus dari Paola' },
+    { m:3,  d:4,  name:'Hb. Isidorus dari Sevilla' },
+    { m:3,  d:5,  name:'Hb. Vinsensius Ferrer' },
+    { m:3,  d:7,  name:'Hb. Yohanes Baptis de la Salle' },
+    { m:3,  d:11, name:'Hb. Stanislaus' },
+    { m:3,  d:13, name:'Hb. Martinus I, Paus & Martir' },
+    { m:3,  d:21, name:'Hb. Anselmus dari Canterbury' },
+    { m:3,  d:23, name:'Hb. Georgius / Adalbertus' },
+    { m:3,  d:24, name:'Hb. Fidelis dari Sigmaringen' },
+    { m:3,  d:25, name:'Hb. Markus Penginjil' },
+    { m:3,  d:28, name:'Hb. Petrus Chanel' },
+    { m:3,  d:29, name:'Hb. Katarina dari Siena' },
+    { m:3,  d:30, name:'Hb. Pius V, Paus' },
+    { m:4,  d:1,  name:'Hb. Yusuf Pekerja (1 Mei)' },
+    { m:4,  d:2,  name:'Hb. Atanasius' },
+    { m:4,  d:3,  name:'Hh. Filipus dan Yakobus Rasul' },
+    { m:4,  d:10, name:'Hb. Yohanes dari Avila' },
+    { m:4,  d:12, name:'Hh. Nereius dan Akhileus / Pankratius' },
+    { m:4,  d:13, name:'Hb. Andres Bobola' },
+    { m:4,  d:14, name:'Hb. Matius' },
+    { m:4,  d:15, name:'Hb. Isidorus Petani' },
+    { m:4,  d:18, name:'Hb. Yohanes I, Paus' },
+    { m:4,  d:20, name:'Hb. Bernardinus dari Siena' },
+    { m:4,  d:21, name:'Hb. Kristoforus Magallanes' },
+    { m:4,  d:22, name:'Hb. Rita dari Cascia' },
+    { m:4,  d:25, name:'Hb. Beda yang Mulia' },
+    { m:4,  d:26, name:'Hb. Filipus Neri' },
+    { m:4,  d:27, name:'Hb. Agustinus dari Canterbury' },
+    { m:5,  d:1,  name:'Hb. Yustinus Martir' },
+    { m:5,  d:2,  name:'Hh. Marselinus dan Petrus' },
+    { m:5,  d:3,  name:'Hb. Karolus Lwanga & Rekan Martir Uganda' },
+    { m:5,  d:5,  name:'Hb. Bonifasius' },
+    { m:5,  d:6,  name:'Hb. Norbertus' },
+    { m:5,  d:9,  name:'Hb. Efrem dari Syria' },
+    { m:5,  d:11, name:'Hb. Barnabas Rasul' },
+    { m:5,  d:13, name:'Hb. Antonius dari Padua' },
+    { m:5,  d:19, name:'Hb. Romualdus' },
+    { m:5,  d:21, name:'Hb. Aloysius Gonzaga' },
+    { m:5,  d:22, name:'Hb. Paulinus dari Nola / Yohanes Fisher & Tomas More' },
+    { m:5,  d:27, name:'Hb. Sirilius dari Aleksandria' },
+    { m:5,  d:28, name:'Hb. Ireneus dari Lyon' },
+    { m:5,  d:30, name:'Hh. Primus dan Felisianus' },
+    { m:6,  d:3,  name:'Hb. Tomas Rasul' },
+    { m:6,  d:4,  name:'Hb. Elisabet dari Portugalia' },
+    { m:6,  d:5,  name:'Hb. Antonius Maria Zakkaria' },
+    { m:6,  d:6,  name:'Hb. Maria Goretti' },
+    { m:6,  d:9,  name:'Hb. Agustinus Zhao Rong & Rekan Martir Tiongkok' },
+    { m:6,  d:11, name:'Hb. Benediktus dari Nursia' },
+    { m:6,  d:13, name:'Hb. Henrikus' },
+    { m:6,  d:14, name:'Hb. Kamilus dari Lellis' },
+    { m:6,  d:15, name:'Hb. Bonaventura' },
+    { m:6,  d:16, name:'Hb. Perawan Maria Karmel (Our Lady of Mt Carmel)' },
+    { m:6,  d:18, name:'Hb. Apollinaris' },
+    { m:6,  d:20, name:'Hb. Laurensius dari Brindisi' },
+    { m:6,  d:21, name:'Hb. Birgitta dari Swedia' },
+    { m:6,  d:22, name:'Hb. Maria Magdalena' },
+    { m:6,  d:23, name:'Hb. Brigitta' },
+    { m:6,  d:24, name:'Hb. Sharbel Makhlouf' },
+    { m:6,  d:25, name:'Hb. Yakobus Rasul' },
+    { m:6,  d:26, name:'Hh. Yoakhim dan Anna' },
+    { m:6,  d:29, name:'Hb. Marta, Maria, dan Lazarus' },
+    { m:6,  d:30, name:'Hb. Petrus Krisologus' },
+    { m:6,  d:31, name:'Hb. Ignatius dari Loyola' },
+    { m:7,  d:1,  name:'Hb. Alfonsus Ligouri' },
+    { m:7,  d:2,  name:'Hb. Eusebius dari Vercelli / Petrus Julian Eymard' },
+    { m:7,  d:4,  name:'Hb. Yohanes Vianney (Imam Paroki Ars)' },
+    { m:7,  d:7,  name:'Hb. Sixtus II & Rekan / Kajetanus' },
+    { m:7,  d:8,  name:'Hb. Dominikus Pendiri OP' },
+    { m:7,  d:9,  name:'Hb. Teresia Benedikta dari Salib (Edith Stein)' },
+    { m:7,  d:10, name:'Hb. Laurensius Diakon & Martir' },
+    { m:7,  d:11, name:'Hb. Klara dari Assisi' },
+    { m:7,  d:12, name:'Hh. Pontianus & Hippolytus' },
+    { m:7,  d:13, name:'Hb. Maksimilianus Maria Kolbe' },
+    { m:7,  d:16, name:'Hb. Stefanus dari Hungaria' },
+    { m:7,  d:19, name:'Hb. Yohanes Eudes' },
+    { m:7,  d:20, name:'Hb. Bernardus dari Clairvaux' },
+    { m:7,  d:21, name:'Hb. Pius X, Paus' },
+    { m:7,  d:22, name:'Hb. Rosa dari Lima' },
+    { m:7,  d:23, name:'Hh. Bartolomeus Rasul' },
+    { m:7,  d:25, name:'Hb. Ludovikus IX / Yosefa Kalasans' },
+    { m:7,  d:27, name:'Hb. Monika' },
+    { m:7,  d:28, name:'Hb. Agustinus dari Hippo' },
+    { m:7,  d:29, name:'Hb. Yohanes Pembaptis — Kemartiran' },
+    { m:8,  d:3,  name:'Hb. Gregorius Agung, Paus & Pujangga' },
+    { m:8,  d:9,  name:'Hb. Petrus Claver' },
+    { m:8,  d:12, name:'Hb. Yohanes Krisostomus' },
+    { m:8,  d:13, name:'Hb. Kornelius & Siprianus' },
+    { m:8,  d:15, name:'Hb. Katarina dari Aleksandria / Paus Kornelus' },
+    { m:8,  d:16, name:'Hb. Ludovika Bertrand / Kornelius & Siprianus' },
+    { m:8,  d:17, name:'Hb. Robert Bellarminus' },
+    { m:8,  d:19, name:'Hb. Yanuarius' },
+    { m:8,  d:20, name:'Hb. Andreas Kim Taegon & Paulus Chong Hasang' },
+    { m:8,  d:21, name:'Hb. Matius Rasul & Penginjil' },
+    { m:8,  d:23, name:'Hb. Pius dari Pietrelcina (Padre Pio)' },
+    { m:8,  d:26, name:'Hh. Kosmas dan Damianus' },
+    { m:8,  d:27, name:'Hb. Vinsensius de Paoli' },
+    { m:8,  d:28, name:'Hb. Wenseslaus / Laurensius Ruiz' },
+    { m:8,  d:29, name:'Hh. Mikael, Gabriel, dan Rafael Malaikat Agung' },
+    { m:8,  d:30, name:'Hb. Hieronymus (Pendeta & Pujangga)' },
+    { m:9,  d:1,  name:'Hb. Teresia dari Kanak Yesus (Lisieux)' },
+    { m:9,  d:2,  name:'Malaikat Pelindung' },
+    { m:9,  d:4,  name:'Hb. Fransiskus dari Assisi' },
+    { m:9,  d:5,  name:'Hb. Teresia dari Kalkuta (Bunda Teresa)' },
+    { m:9,  d:6,  name:'Hb. Bruno' },
+    { m:9,  d:7,  name:'Hb. Perawan Maria Rosario (Our Lady of Rosary)' },
+    { m:9,  d:9,  name:'Hb. Dionisios & Rekan' },
+    { m:9,  d:14, name:'Hb. Kallistus I, Paus & Martir' },
+    { m:9,  d:15, name:'Hb. Teresia dari Avila' },
+    { m:9,  d:16, name:'Hb. Hedwig / Margareta Maria Alacoque' },
+    { m:9,  d:17, name:'Hb. Ignatius dari Antiokhia' },
+    { m:9,  d:18, name:'Hb. Lukas Penginjil' },
+    { m:9,  d:19, name:'Hh. Yohanes de Brebeuf & Rekan Martir Amerika Utara' },
+    { m:9,  d:22, name:'Hb. Yohanes Paulus II, Paus' },
+    { m:9,  d:23, name:'Hb. Antonius Maria Claret' },
+    { m:9,  d:24, name:'Hh. Simon dan Yudas Rasul' },
+    { m:9,  d:28, name:'Hb. Martinus dari Tours' },
+    { m:10, d:3,  name:'Hb. Martinus de Porres' },
+    { m:10, d:4,  name:'Hb. Karolus Borromeus' },
+    { m:10, d:9,  name:'Hb. Dedikasi Basilika Lateran' },
+    { m:10, d:10, name:'Hb. Leo Agung, Paus & Pujangga' },
+    { m:10, d:11, name:'Hb. Martinus I, Paus' },
+    { m:10, d:12, name:'Hb. Yosafat' },
+    { m:10, d:13, name:'Hb. Albertus Agung' },
+    { m:10, d:15, name:'Hb. Margareta dari Skotlandia / Gertrude' },
+    { m:10, d:16, name:'Hb. Elisabet dari Hungaria' },
+    { m:10, d:17, name:'Hb. Dedikasi Basilika Petrus & Paulus' },
+    { m:10, d:21, name:'Hb. Sesilia (Pelindung Musisi)' },
+    { m:10, d:22, name:'Hb. Klemens I, Paus & Martir' },
+    { m:10, d:23, name:'Hb. Kolumbanus' },
+    { m:10, d:24, name:'Hh. Andreas Dung Lac & Rekan Martir Vietnam' },
+    { m:10, d:25, name:'Hb. Katarina dari Aleksandria' },
+    { m:10, d:30, name:'Hb. Andreas Rasul (Vigili)' },
+  ];
+
+  // ── CARI APAKAH HARI INI ADALAH HARI RAYA/PESTA KHUSUS ───
+  // Termasuk hari-hari Paskah yang bergerak
+  const PestaGerak = [
+    { date: rabuAbu,       name: 'Rabu Abu',                     desc: 'Awal Masa Prapaskah. Umat menerima abu sebagai tanda tobat dan kefanaan.', warna: '#7a7a7a', musim: 'Prapaskah', warnaNama: 'Abu-abu' },
+    { date: mingguPalma,   name: 'Minggu Palma',                  desc: 'Yesus memasuki Yerusalem disambut sorak sorai. Pekan Suci dimulai.',      warna: '#8B0000', musim: 'Pekan Suci', warnaNama: 'Merah'   },
+    { date: kamisPutih,    name: 'Kamis Putih',                   desc: 'Perjamuan Terakhir: Ekaristi dan imamat sakramental ditetapkan.',        warna: '#FFFFFF', musim: 'Pekan Suci', warnaNama: 'Putih'   },
+    { date: jumatAgung,    name: 'Jumat Agung',                   desc: 'Sengsara dan wafat Tuhan Yesus Kristus. Puasa dan pantang wajib.',       warna: '#8B0000', musim: 'Pekan Suci', warnaNama: 'Merah'   },
+    { date: sabtuSuci,     name: 'Sabtu Suci',                    desc: 'Yesus terbaring dalam kubur. Gereja menantikan Vigili Paskah.',          warna: '#7a7a7a', musim: 'Pekan Suci', warnaNama: 'Abu-abu' },
+    { date: paskah,        name: 'Hari Raya Paskah',              desc: 'Kristus bangkit! Alleluia! Puncak iman Kristiani sepanjang masa.',       warna: '#FFD700', musim: 'Paskah',     warnaNama: 'Putih'   },
+    { date: mingguIlahi,   name: 'Minggu Kerahiman Ilahi',        desc: 'Yesus menampakkan diri kepada para murid. Kerahiman-Nya tidak terbatas.', warna: '#FFD700', musim: 'Paskah', warnaNama: 'Putih'  },
+    { date: kenaikanTuhan, name: 'Hari Raya Kenaikan Tuhan',      desc: 'Empat puluh hari setelah Paskah, Yesus naik ke surga dalam kemuliaan.', warna: '#FFFFFF', musim: 'Paskah',     warnaNama: 'Putih'   },
+    { date: pentakosta,    name: 'Hari Raya Pentakosta',          desc: 'Roh Kudus turun atas para rasul. Gereja Katolik lahir dan diutus.',      warna: '#FF2200', musim: 'Paskah',     warnaNama: 'Merah'   },
+    { date: trinitasMinggu,name: 'Hari Raya Tritunggal Mahakudus',desc: 'Merayakan misteri satu Allah dalam tiga Pribadi: Bapa, Putra, Roh Kudus.', warna: '#FFFFFF', musim: 'Biasa',  warnaNama: 'Putih'   },
+    { date: corpusChristi, name: 'Hari Raya Tubuh dan Darah Kristus (Corpus Christi)', desc: 'Menghormati kehadiran nyata Yesus dalam Ekaristi Mahakudus.', warna: '#FFFFFF', musim: 'Biasa', warnaNama: 'Putih' },
+    { date: hatiKudus,     name: 'Hari Raya Hati Kudus Yesus',   desc: 'Merenungkan kasih Yesus yang tak terbatas bagi umat manusia.',          warna: '#FFFFFF', musim: 'Biasa',     warnaNama: 'Putih'   },
+    { date: pembaptisanTuhan, name: 'Pesta Pembaptisan Tuhan',    desc: 'Yesus dibaptis di Sungai Yordan. Roh Kudus turun dan Bapa bersaksi.',   warna: '#FFFFFF', musim: 'Natal',     warnaNama: 'Putih'   },
+    { date: pembaptisanTuhanPrev, name: 'Pesta Pembaptisan Tuhan',desc: 'Yesus dibaptis di Sungai Yordan. Roh Kudus turun dan Bapa bersaksi.',   warna: '#FFFFFF', musim: 'Natal',     warnaNama: 'Putih'   },
+  ];
+
+  // ── CEK HARI RAYA GERAK ───────────────────────────────────
+  let hasil = null;
+  for (const p of PestaGerak) {
+    if (sameDay(todayD, p.date)) { hasil = { ...p, tipe: 'Hari Raya' }; break; }
+  }
+
+  // ── CEK HARI RAYA TETAP ───────────────────────────────────
+  if (!hasil) {
+    for (const h of HariRayaTetap) {
+      if (M === h.m && D === h.d) {
+        hasil = { name: h.name, desc: h.desc, warna: h.warna,
+                  musim: h.musimLabel || '', warnaNama: 'Putih', tipe: 'Hari Raya' };
+        break;
+      }
     }
   }
 
-  if (!isSpecial) {
-    // Adven
-    const advenEnd = new Date(year, 11, 24);
-    const advenPrevYear = (function(){
-      const nov30 = new Date(year-1, 10, 30);
-      const wd = nov30.getDay();
-      return addDays(nov30, -wd);
-    })();
-
-    if ((afterOrEq(todayD, adven1) && before(todayD, new Date(year+1,0,1))) ||
-        (afterOrEq(todayD, advenPrevYear) && before(todayD, new Date(year,0,1)))) {
-      musim = 'Adven'; warna = '#6a0dad';
-      namaPesta = 'Masa Adven'; desc = 'Masa penantian dan persiapan menyambut kedatangan Tuhan.';
+  // ── TENTUKAN MUSIM LITURGI (jika bukan Hari Raya khusus) ──
+  function getMusim() {
+    // Masa Natal: 25 Des s/d Pembaptisan Tuhan
+    if ((M === 11 && D >= 25) || sameDay(todayD, new Date(Y, 11, 25))) {
+      return { musim: 'Natal', warna: '#d4af37', desc: 'Masa Natal: merayakan inkarnasi Putra Allah.', warnaNama: 'Putih' };
     }
-    // Natal (25 Des – Pembaptisan Tuhan, kira² Jan 12)
-    else if ((afterOrEq(todayD, new Date(year,11,25))) ||
-             (afterOrEq(todayD, new Date(year,0,1)) && before(todayD, new Date(year,0,13)))) {
-      musim = 'Natal'; warna = '#FFD700';
-      namaPesta = 'Masa Natal'; desc = 'Merayakan misteri inkarnasi Putra Allah yang menjadi manusia.';
+    // Awal tahun masih dalam Natal (1 Jan – Pembaptisan Tuhan)
+    if (onOrAfter(todayD, new Date(Y, 0, 1)) && before(todayD, addDays(pembaptisanTuhan, 1))) {
+      return { musim: 'Natal', warna: '#d4af37', desc: 'Masa Natal: merayakan inkarnasi Putra Allah.', warnaNama: 'Putih' };
+    }
+    // Adven (dari Adven 1 sampai 24 Des, termasuk dari tahun lalu)
+    if (onOrAfter(todayD, adven1ThisYear) && before(todayD, new Date(Y, 11, 25))) {
+      return { musim: 'Adven', warna: '#6a0dad', desc: 'Masa Adven: menantikan dan mempersiapkan diri menyambut kedatangan Tuhan.', warnaNama: 'Ungu' };
+    }
+    if (onOrAfter(todayD, adven1PrevYear) && before(todayD, new Date(Y, 0, 1))) {
+      return { musim: 'Adven', warna: '#6a0dad', desc: 'Masa Adven: menantikan dan mempersiapkan diri menyambut kedatangan Tuhan.', warnaNama: 'Ungu' };
     }
     // Prapaskah (Rabu Abu – Sabtu Suci)
-    else if (afterOrEq(todayD, rabuAbu) && before(todayD, paskah)) {
-      musim = 'Prapaskah'; warna = '#6B3A9C';
-      namaPesta = 'Masa Prapaskah'; desc = 'Masa pertobatan, doa, dan puasa selama 40 hari sebelum Paskah.';
+    if (onOrAfter(todayD, rabuAbu) && before(todayD, paskah)) {
+      return { musim: 'Prapaskah', warna: '#6B3A9C', desc: 'Masa Prapaskah: 40 hari bertobat, berdoa, berpuasa, dan berpantang.', warnaNama: 'Ungu' };
     }
-    // Paskah (Paskah – Pentakosta)
-    else if (afterOrEq(todayD, paskah) && before(todayD, addDays(pentakosta,1))) {
-      musim = 'Paskah'; warna = '#FFD700';
-      namaPesta = 'Masa Paskah'; desc = 'Lima puluh hari perayaan kebangkitan Tuhan Yesus Kristus.';
+    // Masa Paskah (Paskah – Pentakosta)
+    if (onOrAfter(todayD, paskah) && before(todayD, addDays(pentakosta, 1))) {
+      return { musim: 'Paskah', warna: '#c8a800', desc: 'Masa Paskah: 50 hari sukacita merayakan kebangkitan Tuhan. Alleluia!', warnaNama: 'Putih' };
     }
-    // Biasa
-    else {
-      musim = 'Biasa'; warna = '#2d7a3a';
-      namaPesta = 'Masa Biasa'; desc = 'Masa merenungkan hidup dan ajaran Yesus sehari-hari.';
+    // Masa Biasa
+    return { musim: 'Biasa', warna: '#2d7a3a', desc: 'Masa Biasa: merenungkan kehidupan dan pengajaran Yesus sehari-hari.', warnaNama: 'Hijau' };
+  }
+
+  const musimData = getMusim();
+
+  // ── HITUNG PEKAN LITURGI ──────────────────────────────────
+  function getPekanInfo() {
+    const dow = todayD.getDay(); // 0=Minggu
+    const hariNama = ['Minggu','Senin','Selasa','Rabu','Kamis','Jumat','Sabtu'][dow];
+
+    if (musimData.musim === 'Adven') {
+      // Adven: Pekan I–IV (dari Adven 1)
+      const advenStart = onOrAfter(todayD, adven1ThisYear) ? adven1ThisYear : adven1PrevYear;
+      const diff = Math.floor((todayD - advenStart) / 86400000);
+      const pekan = Math.min(Math.floor(diff / 7) + 1, 4);
+      const romawi = ['I','II','III','IV'][pekan - 1];
+      // Minggu ketiga = Minggu Gaudete (merah muda)
+      if (dow === 0 && pekan === 3) {
+        return { label: `${hariNama} Adven III (Minggu Gaudete)`, warna: '#c47dbf', warnaNama: 'Merah Muda' };
+      }
+      return { label: `${hariNama} Adven Pekan ${romawi}`, warna: musimData.warna, warnaNama: musimData.warnaNama };
+    }
+
+    if (musimData.musim === 'Natal') {
+      // Hari-hari khusus Natal
+      if (M === 11 && D === 26) return { label: 'Hari Natal II – Oktaf Natal', warna: '#d4af37', warnaNama: 'Putih' };
+      if (M === 11 && D >= 26 && D <= 31) {
+        const hariKeNatal = D - 25;
+        // Minggu dalam Oktaf Natal = Pesta Keluarga Kudus
+        const mingguDalamOktaf = (new Date(Y, 11, 26).getDay() === 0) ? new Date(Y, 11, 26) :
+                                  (() => { for(let i=26;i<=31;i++) { if(new Date(Y,11,i).getDay()===0) return new Date(Y,11,i); } return null; })();
+        if (mingguDalamOktaf && sameDay(todayD, mingguDalamOktaf)) {
+          return { label: 'Pesta Keluarga Kudus Yesus, Maria, Yusuf', warna: '#d4af37', warnaNama: 'Putih', override: true };
+        }
+        return { label: `${hariNama} dalam Oktaf Natal`, warna: '#d4af37', warnaNama: 'Putih' };
+      }
+      if (M === 0 && D >= 2 && D <= 5) return { label: `${hariNama} sebelum Epifani`, warna: '#d4af37', warnaNama: 'Putih' };
+      if (M === 0 && D >= 7 && before(todayD, pembaptisanTuhan)) return { label: `${hariNama} setelah Epifani`, warna: '#d4af37', warnaNama: 'Putih' };
+      return { label: `${hariNama} Masa Natal`, warna: '#d4af37', warnaNama: 'Putih' };
+    }
+
+    if (musimData.musim === 'Prapaskah') {
+      // Rabu Abu = hari pertama; hari I–IV sebelum Minggu Palma
+      const diff = Math.floor((todayD - rabuAbu) / 86400000);
+      if (diff < 4) {
+        return { label: `${hariNama} setelah Rabu Abu`, warna: musimData.warna, warnaNama: 'Ungu' };
+      }
+      // Pekan I Prapaskah dimulai Minggu pertama setelah Rabu Abu
+      const minggu1Prapaskah = addDays(rabuAbu, 7 - rabuAbu.getDay() === 0 ? 7 : 7 - rabuAbu.getDay());
+      const diffMinggu = Math.floor((todayD - addDays(rabuAbu, 4)) / 86400000);
+      const pekan = Math.min(Math.floor(diffMinggu / 7) + 1, 5);
+      const romawi = ['I','II','III','IV','V'][pekan - 1];
+      // Minggu IV Prapaskah = Laetare (merah muda)
+      if (dow === 0 && pekan === 4) {
+        return { label: 'Minggu Laetare (Prapaskah IV)', warna: '#c47dbf', warnaNama: 'Merah Muda' };
+      }
+      return { label: `${hariNama} Prapaskah Pekan ${romawi}`, warna: musimData.warna, warnaNama: 'Ungu' };
+    }
+
+    if (musimData.musim === 'Paskah') {
+      if (sameDay(todayD, paskah)) return { label: 'Hari Raya Paskah', warna: '#c8a800', warnaNama: 'Putih' };
+      const diff = Math.floor((todayD - paskah) / 86400000);
+      const pekan = Math.min(Math.floor(diff / 7) + 1, 7);
+      const romawi = ['I','II','III','IV','V','VI','VII'][pekan - 1];
+      if (sameDay(todayD, pentakosta)) return { label: 'Hari Raya Pentakosta', warna: '#c01010', warnaNama: 'Merah' };
+      return { label: `${hariNama} Paskah Pekan ${romawi}`, warna: musimData.warna, warnaNama: 'Putih' };
+    }
+
+    // Masa Biasa — hitung pekan biasa
+    // Pekan Biasa I dimulai Senin setelah Pembaptisan Tuhan
+    // Pekan Biasa dilanjutkan setelah Pentakosta, dimulai dari pekan yang tepat
+    function getPekanBiasa() {
+      // Setelah Pentakosta
+      if (onOrAfter(todayD, addDays(pentakosta, 1))) {
+        // Hitung mundur dari Adven: Adven selalu mulai Pekan I Adven
+        // Total pekan biasa = 34; hitung dari sisa pekan sebelum Adven
+        const senin = addDays(todayD, -(dow === 0 ? 6 : dow - 1));
+        const seninAdven = addDays(adven1ThisYear, -(adven1ThisYear.getDay() === 0 ? 6 : adven1ThisYear.getDay() - 1));
+        const pekanSisaKeAdven = Math.ceil((seninAdven - senin) / 604800000);
+        const pekan = Math.max(1, 34 - pekanSisaKeAdven + 1);
+        return Math.min(pekan, 34);
+      }
+      // Setelah Pembaptisan Tuhan – Rabu Abu
+      const seninSetelahPembaptisan = addDays(pembaptisanTuhan, pembaptisanTuhan.getDay() === 0 ? 1 : 8 - pembaptisanTuhan.getDay());
+      const diff = Math.floor((todayD - seninSetelahPembaptisan) / 86400000);
+      return Math.max(1, Math.min(Math.floor(diff / 7) + 1, 9));
+    }
+
+    const pekan = getPekanBiasa();
+    const romawi = ['I','II','III','IV','V','VI','VII','VIII','IX','X','XI','XII','XIII','XIV','XV','XVI','XVII','XVIII','XIX','XX','XXI','XXII','XXIII','XXIV','XXV','XXVI','XXVII','XXVIII','XXIX','XXX','XXXI','XXXII','XXXIII','XXXIV'][pekan - 1] || pekan;
+    return { label: `${hariNama} Biasa Pekan ${romawi}`, warna: '#2d7a3a', warnaNama: 'Hijau' };
+  }
+
+  // ── KELUARGA KUDUS (Minggu dalam Oktaf Natal) ─────────────
+  function getKeluargaKudus(y) {
+    // Minggu pertama antara 26-31 Desember
+    for (let d = 26; d <= 31; d++) {
+      if (new Date(y, 11, d).getDay() === 0) return new Date(y, 11, d);
+    }
+    // Jika tidak ada Minggu → 30 Des
+    return new Date(y, 11, 30);
+  }
+  const keluargaKudus = getKeluargaKudus(Y);
+
+  // ── KRISTUS RAJA SEMESTA ALAM (Minggu terakhir Masa Biasa) ─
+  // = Minggu sebelum Adven 1
+  const kristusRaja = addDays(adven1ThisYear, -7);
+
+  // Tambahkan ke pesta gerak
+  const pestaGerakTambahan = [
+    { date: keluargaKudus, name: 'Pesta Keluarga Kudus Yesus, Maria, Yusuf', desc: 'Keluarga Kudus menjadi teladan kehidupan keluarga Kristen dalam kasih, doa, dan pengorbanan.', warna: '#FFFFFF', musim: 'Natal', warnaNama: 'Putih' },
+    { date: kristusRaja,   name: 'Hari Raya Kristus Raja Semesta Alam',      desc: 'Menutup Tahun Liturgi dengan merayakan Kristus sebagai Raja seluruh alam semesta.', warna: '#FFFFFF', musim: 'Biasa', warnaNama: 'Putih' },
+  ];
+
+  // Cek pesta gerak tambahan (jika belum ketemu)
+  if (!hasil) {
+    for (const p of pestaGerakTambahan) {
+      if (sameDay(todayD, p.date)) { hasil = { ...p, tipe: 'Hari Raya' }; break; }
     }
   }
 
-  // Render
-  const bulanID = ['Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'];
-  const hariID  = ['Minggu','Senin','Selasa','Rabu','Kamis','Jumat','Sabtu'];
-  document.getElementById('liturgiTanggal').textContent =
-    hariID[todayD.getDay()] + ', ' + day + ' ' + bulanID[month] + ' ' + year;
-  document.getElementById('liturgiNama').textContent    = namaPesta;
-  document.getElementById('liturgiDesc').textContent    = desc;
-  document.getElementById('liturgiMusim').textContent   = musim;
-  const dot = document.getElementById('liturgiWarna');
-  dot.style.background = warna;
-  dot.style.border = warna === '#ffffff' || warna === '#FFFFFF' ? '1.5px solid #ccc' : 'none';
+  // ── CARI SANTO/SANTA HARI INI ─────────────────────────────
+  let santoHariIni = null;
+  if (!hasil) { // Hanya tampilkan santo jika bukan Hari Raya besar
+    for (const s of SantoTetap) {
+      if (s.m === M && s.d === D) { santoHariIni = s.name; break; }
+    }
+  }
+
+  // ── SUSUN HASIL AKHIR ─────────────────────────────────────
+  const pekanInfo = getPekanInfo();
+
+  let musimFinal  = hasil ? hasil.musim : musimData.musim;
+  let warnaHex    = hasil ? hasil.warna : pekanInfo.warna;
+  let warnaNama   = hasil ? hasil.warnaNama : pekanInfo.warnaNama;
+  let namaHari    = hasil ? hasil.name : pekanInfo.label;
+  let descHari    = hasil ? hasil.desc : musimData.desc;
+
+  // Warna hex dari nama
+  const warnaHexMap = {
+    'Putih': '#FFFFFF', 'Hijau': '#2d7a3a', 'Ungu': '#6B3A9C',
+    'Merah': '#c0392b', 'Merah Muda': '#c47dbf', 'Abu-abu': '#7a7a7a',
+    'Emas': '#d4af37', 'Hitam': '#1a1a1a'
+  };
+
+  // ── RENDER KE DOM ─────────────────────────────────────────
+  const BULAN_ID = ['Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'];
+  const HARI_ID  = ['Minggu','Senin','Selasa','Rabu','Kamis','Jumat','Sabtu'];
+
+  const elTanggal = document.getElementById('liturgiTanggal');
+  const elNama    = document.getElementById('liturgiNama');
+  const elDesc    = document.getElementById('liturgiDesc');
+  const elMusim   = document.getElementById('liturgiMusim');
+  const elWarna   = document.getElementById('liturgiWarna');
+
+  if (elTanggal) elTanggal.textContent = HARI_ID[todayD.getDay()] + ', ' + D + ' ' + BULAN_ID[M] + ' ' + Y;
+  if (elNama)    elNama.textContent    = namaHari;
+  if (elDesc) {
+    let descTeks = descHari;
+    if (santoHariIni) descTeks += ' — ' + santoHariIni + '.';
+    elDesc.textContent = descTeks;
+  }
+
+  // Musim + tahun liturgi + warna
+  const tahunLabel = ' · Tahun ' + tahunLiturgi;
+  if (elMusim) elMusim.textContent = musimFinal + tahunLabel;
+
+  if (elWarna) {
+    const hexFinal = warnaHexMap[warnaNama] || warnaHex;
+    elWarna.style.background = hexFinal;
+    elWarna.style.border = (hexFinal === '#FFFFFF' || hexFinal === '#ffffff') ? '1.5px solid #ccc' : 'none';
+    elWarna.title = 'Warna liturgi: ' + (warnaNama || '');
+  }
+
+  // Tambahkan label warna di bawah musim jika elemen mendukung
+  const elHeader = document.getElementById('liturgiHeader');
+  if (elHeader && warnaNama) {
+    // Hapus label warna lama jika ada
+    const oldLabel = elHeader.querySelector('.liturgi-warna-label');
+    if (oldLabel) oldLabel.remove();
+    const span = document.createElement('span');
+    span.className = 'liturgi-warna-label';
+    span.style.cssText = 'font-size:11px;color:#999;font-family:Poppins,sans-serif;margin-left:4px;';
+    span.textContent = warnaNama;
+    elHeader.appendChild(span);
+  }
 })();
 </script>
 
 <!-- ═══════════════════════════════════════
      GALERI ALBUM — MODAL PILIH FOTO
 ═══════════════════════════════════════ -->
-<div id="galeriModal" class="editor-modal-overlay hidden">
-  <div class="galeri-box">
-    <div class="galeri-head">
-      <div class="galeri-breadcrumb" id="galeriBreadcrumb">
-        <span class="galeri-bc-root" onclick="galeriGoRoot()">📁 Album</span>
-      </div>
-      <button class="editor-panel-close" onclick="closeGaleri()">✕</button>
-    </div>
-
-    <!-- VIEW: DAFTAR ALBUM -->
-    <div id="galeriAlbumView">
-      <p class="galeri-hint">Pilih album untuk melihat foto</p>
-      <div class="galeri-album-grid" id="galeriAlbumGrid">
-        <!-- Diisi JS -->
-      </div>
-    </div>
-
-    <!-- VIEW: ISI FOTO -->
-    <div id="galeriFotoView" class="hidden">
-      <div class="galeri-foto-grid" id="galeriFotoGrid">
-        <!-- Diisi JS -->
-      </div>
-    </div>
-
-    <div class="galeri-footer">
-      <span id="galeriSelectedLabel" class="galeri-selected-label"></span>
-      <button class="editor-save-btn galeri-pakai-btn" onclick="pakaiGambar()">Gunakan Foto Ini</button>
-    </div>
-  </div>
-</div>
 <!-- FAB — Tombol + Tambah Konten (hanya muncul saat editor aktif) -->
 <div id="fabMenu" class="fab-menu fab-hidden">
   <button class="fab-item fab-item-pastoral" onclick="editorBuka('pastoral')" title="Tambah Kegiatan Pastoral">
@@ -1062,6 +1514,12 @@ reveals.forEach(el => revealObs.observe(el));
 </div>
 <button id="fabMain" class="fab-main fab-hidden" onclick="toggleFab()" title="Tambah Konten">
   <svg id="fabIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg>
+</button>
+
+<!-- TOMBOL KELUAR MODE EDITOR — kanan bawah, hanya muncul saat editor aktif -->
+<button id="btnKeluarEditor" class="fab-keluar-editor fab-hidden" onclick="doEditorLogout()" title="Keluar Mode Editor">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" width="16" height="16"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+  Keluar Editor
 </button>
 
 </body>
