@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>pertemuan app 1</title>
+
+  <style>
+ body{
+  font-family: Arial, sans-serif;
+  margin:0;
+  background:#f6f7fb;
+}
+
+.container{
+  max-width:1100px;
+  margin:60px auto;
+  background:white;
+  padding:30px;
+  border-radius:12px;
+  box-shadow:0 4px 16px rgba(0,0,0,0.1);
+}
+
+h1{
+  font-size:32px;
+  margin-bottom:10px;
+  color:#1a1a1a;
+}
+
+.meta{
+  color:#666;
+  font-size:14px;
+  margin-bottom:25px;
+}
+
+.artikel-img{
+  width:100%;
+  margin:20px 0;
+  border-radius:8px;
+}
+
+p{
+  font-size:18px;
+  line-height:1.7;
+  color:#222;
+  margin-bottom:18px;
+}
+
+h2{
+  margin-top:35px;
+  color:#1a1a1a;
+}
+
+blockquote{
+  border-left:4px solid #4a67ff;
+  padding-left:15px;
+  font-style:italic;
+  color:#444;
+  margin:25px 0;
+}
+
+/* ===== BACK BUTTON ===== */
+.back-full{
+  position:fixed;
+  top:20px;
+  left:20px;
+
+  width:46px;
+  height:46px;
+
+  background:#662d17;
+  border:none;
+  border-radius:50%;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  cursor:pointer;
+
+  box-shadow:0 6px 15px rgba(0,0,0,0.25);
+  z-index:9999;
+
+  transition:0.2s;
+}
+
+.back-full svg{
+  width:22px;
+  height:22px;
+  stroke:#fff;
+  stroke-width:2.5;
+  fill:none;
+}
+
+.back-full:hover{
+  background:#7c371b;
+  transform:scale(1.08);
+}
+
+/* ===== RELATED ARTIKEL ===== */
+.related-section{
+  margin-top:40px;
+  padding-top:20px;
+  border-top:2px solid #eee;
+}
+
+.related-list{
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+}
+
+.related-item{
+  text-decoration:none;
+  padding:15px 18px;
+  background:#f5f6ff;
+  border-radius:10px;
+  box-shadow:0 3px 10px rgba(0,0,0,0.05);
+  transition:0.2s;
+}
+
+.related-item:hover{
+  background:#e7e9ff;
+  transform:translateX(3px);
+}
+
+.related-title{
+  font-size:17px;
+  font-weight:bold;
+  color:#1a1a1a;
+}
+
+.related-date{
+  font-size:13px;
+  color:#777;
+  margin-top:4px;
+}
+
+/* ===== RESPONSIVE HP ===== */
+@media (max-width:600px){
+
+.container{
+  padding:18px;
+}
+
+h1{
+  font-size:24px;
+}
+
+p{
+  font-size:15px;
+}
+
+.related-item{
+  padding:12px 14px;
+}
+
+.related-title{
+  font-size:15px;
+}
+
+}
+
+  </style>
+</head>
+<body>
+<button class="back-full" onclick="history.back()" aria-label="Kembali">
+  <svg viewBox="0 0 24 24">
+    <path d="M15 18l-6-6 6-6"/>
+  </svg>
+</button>
+
+  <div class="container">
+    
+    <h1>PERTEMUAN APP MINGGU KEDUA
+    </h1>
+
+    <div class="meta">1 Maret 2026 • Paroki Kristus Raja Karawang</div>
+
+    
+
+    <p>Dalam semangat Masa Prapaskah, umat Katolik diajak untuk semakin memperdalam iman melalui doa, puasa, dan karya kasih. Salah satu wujud nyata dari semangat tersebut adalah melalui kegiatan Aksi Puasa Pembangunan (APP) yang setiap tahunnya menjadi sarana pembinaan iman sekaligus solidaritas umat.
+
+Pada tahun ini, APP mengusung tema “Gerakan Misioner Gereja dalam Menghadirkan Pengharapan.” Tema ini mengajak seluruh umat untuk menyadari panggilan sebagai murid-murid Kristus yang diutus untuk menjadi pembawa harapan di tengah masyarakat. Melalui semangat misioner, setiap umat diajak untuk tidak hanya bertumbuh dalam iman secara pribadi, tetapi juga menghadirkan kasih, kepedulian, serta pengharapan bagi sesama, terutama bagi mereka yang membutuhkan.
+
+Sebagai bagian dari perjalanan iman tersebut, umat di berbagai lingkungan berkumpul untuk melaksanakan pertemuan APP secara bersama-sama. Dalam kebersamaan itulah, umat saling meneguhkan iman, mendalami Sabda Tuhan, serta merefleksikan panggilan hidup sebagai Gereja yang hadir dan melayani di tengah dunia.
+
+Melalui kegiatan ini diharapkan semangat kebersamaan, kepedulian, dan pelayanan semakin tumbuh dalam kehidupan umat, sehingga Gereja sungguh menjadi tanda kehadiran Kristus yang membawa pengharapan bagi semua orang.</p>
+      
+   
+     
+
+    <blockquote>
+      “Dengan acara ini diharapkan umat paroki Kristus Raja Karawang dapat berjalan bersama sehati sejiwa berbagi sukacita.”
+    </blockquote>
+ 
+
+  <!-- 1 -->
+  <div class="lingkungan">
+    <h2>1. Duren-st. Benediktus</h2>
+    <img class="artikel-img" src="apppduren.jpg" alt="Lingkungan 2">
+  </div>
+
+  
+ 
+
+  <!-- 2 -->
+  <div class="lingkungan">
+    <h2>2. Terangsari-st. Benediktus</h2>
+    <img class="artikel-img" src="apppterasari.jpg" alt="Lingkungan 3">
+  </div>
+
+  <!-- 3 -->
+  <div class="lingkungan">
+    <h2>3. Cengkong 2-ST BENEDIKTUS</h2>
+    <img class="artikel-img" src="apppceko2.jpg" alt="Lingkungan 9">
+  </div>
+
+  <!-- 4 -->
+  <div class="lingkungan">
+    <h2>4. St Edmundus mustika prakarsa-ST BENEDIKTUS</h2>
+    <img class="artikel-img" src="apppmus.jpg" alt="Lingkungan 4">
+  </div>
+
+  <!-- 5 -->
+  <div class="lingkungan">
+    <h2>5. St. Paulus Citra Kebun Mas 2-Santa Bunda Teresa</h2>
+    <img class="artikel-img" src="apppckm2.jpg" alt="Lingkungan 11">
+  </div>
+
+  <!-- 6 -->
+  <div class="lingkungan">
+    <h2>6. Lingkungan St. Stefanus CKM 3-Santa Bunda Teresa</h2>
+    <img class="artikel-img" src="apppsfanus.jpg" alt="Lingkungan 8">
+  </div>
+
+   <!-- 7 -->
+  <div class="lingkungan">
+    <h2>7. St. Yosafat Majalaya 2-Santa Bunda Teresa</h2>
+    <img class="artikel-img" src="appmaja2.jpg" alt="Lingkungan 6">
+  </div>
+
+  <!-- 8 -->
+  <div class="lingkungan">
+    <h2>8. Yohanes Bosco Majalaya 1-Santa Bunda Teresa</h2>
+    <img class="artikel-img" src="apppbosco.jpeg" alt="Lingkungan 5">
+  </div>
+
+ <!-- 9 -->
+  <div class="lingkungan">
+    <h2>9. St. Anna Kondang Jaya-Santo paskalis </h2>
+    <img class="artikel-img" src="apppkonda.jpg" alt="Lingkungan 11">
+  </div>
+
+  <!-- 10 -->
+  <div class="lingkungan">
+    <h2>10. Santo Rafael anggadita-Santo paskalis</h2>
+    <img class="artikel-img" src="appprafaelanggadita.jpg" alt="Lingkungan 1">
+  </div>
+
+  <!-- 11 -->
+  <div class="lingkungan">
+    <h2>11. Santa Perawan Maria Kartika-Paskalis</h2>
+    <img class="artikel-img" src="apppanestobink.jpg" alt="Lingkungan 7">
+  </div>
+
+  <!-- 12 -->
+  <div class="lingkungan">
+    <h2>12. Lingkungan Dominikus Gading Elok-St. Yoseph </h2>
+    <img class="artikel-img" src="apppdominikus.jpg" alt="Lingkungan 10">
+  </div>
+
+  <!-- 13 -->
+  <div class="lingkungan">
+    <h2>13. Santa Theresia Buana Tamansari-St. Yoseph </h2>
+    <img class="artikel-img" src="apppbts.jpg" alt="Lingkungan 11">
+  </div>
+
+  <!-- 14 -->
+  <div class="lingkungan">
+    <h2>14. Peruri-St. Mikael</h2>
+    <img class="artikel-img" src="apppperuri.jpeg" alt="Lingkungan 11">
+  </div>
+
+  <!-- 15 -->
+  <div class="lingkungan">
+    <h2>15. St. Yoakim BBC-Fransiskus Xaverius</h2>
+    <img class="artikel-img" src="apppbbc.jpg" alt="Lingkungan 11">
+  </div>
+   
+  </div>
+
+</body>
+</html>
+
+
