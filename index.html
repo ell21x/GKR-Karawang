@@ -420,7 +420,7 @@
           <span class="pastoral-tanggal">22 Feb 2026</span>
         </div>
         <h4>APP Lingkungan Pekan Pertama</h4>
-        <p>Aksi Puasa Pembangunan (APP) di tingkat lingkungan mengajak umat untuk merefleksikan iman melalui doa bersama dan aksi sosial nyata.</p>
+        <p>Doa Sumber Gerakan Aksi Puasa Pembangunan Dalam Bermisi.</p>
         <span class="pastoral-baca-link">Baca Selengkapnya</span>
       </div>
     </a>
@@ -436,7 +436,7 @@
           <span class="pastoral-tanggal">22 Feb 2026</span>
         </div>
         <h4>APP Lingkungan Pekan Kedua</h4>
-        <p>Aksi Puasa Pembangunan (APP) di tingkat lingkungan mengajak umat untuk merefleksikan iman melalui doa bersama dan aksi sosial nyata.</p>
+        <p>Pertobatan Ekologis Awal Adaptasi Perubahan Iklim.</p>
         <span class="pastoral-baca-link">Baca Selengkapnya</span>
       </div>
     </a>
@@ -499,12 +499,12 @@
 <!-- LOGIN MODAL -->
 <div id="editorLoginModal" class="editor-modal-overlay hidden">
   <div class="editor-modal-box">
-    <div class="editor-modal-logo">✝</div>
+    <div class="editor-modal-logo"></div>
     <h3>Mode Editor</h3>
     <p>Masuk untuk mengelola konten website</p>
     <div class="editor-form-group">
       <label>Username</label>
-      <input type="text" id="editorUsername" placeholder="admin" autocomplete="off">
+      <input type="text" id="editorUsername" placeholder="masukan username anda" autocomplete="off">
     </div>
     <div class="editor-form-group">
       <label>Password</label>
@@ -578,19 +578,6 @@
           <label>Judul</label>
           <input type="text" id="artJudul" placeholder="Judul artikel...">
         </div>
-        <div class="ep-row3">
-          <div class="ep-field">
-            <label>Kategori</label>
-            <select id="artKategori">
-              <option>Berita Paroki</option>
-              <option>Pastoral</option>
-              <option>Liturgi &amp; Perayaan</option>
-              <option>Renungan</option>
-              <option>Pengumuman</option>
-              <option>Komsos</option>
-              <option>Sejarah</option>
-            </select>
-          </div>
           <div class="ep-field">
             <label>Penulis</label>
             <input type="text" id="artPenulis" value="Komsos GKR">
@@ -604,10 +591,7 @@
           <label>Ringkasan <span class="ep-hint">(tampil di kartu)</span></label>
           <textarea id="artRingkasan" rows="2" placeholder="Ringkasan singkat..."></textarea>
         </div>
-        <div class="ep-field">
-          <label>Isi Artikel</label>
-          <textarea id="artIsi" rows="7" placeholder="Tulis isi artikel di sini..."></textarea>
-        </div>
+      
 
         <!-- Slot Foto -->
         <div class="ep-section-label" style="margin-top:20px;">
@@ -618,14 +602,6 @@
           <div class="ep-foto-slot" id="artSlot0" onclick="bukaGaleriSlot(0,'art')">
             <div class="ep-slot-empty"><span>+</span><small>Foto Utama</small></div>
           </div>
-          <div class="ep-foto-slot ep-slot-sm" id="artSlot1" onclick="bukaGaleriSlot(1,'art')">
-            <div class="ep-slot-empty"><span>+</span><small>Foto 2</small></div>
-          </div>
-          <div class="ep-foto-slot ep-slot-sm" id="artSlot2" onclick="bukaGaleriSlot(2,'art')">
-            <div class="ep-slot-empty"><span>+</span><small>Foto 3</small></div>
-          </div>
-          <div class="ep-foto-slot ep-slot-sm" id="artSlot3" onclick="bukaGaleriSlot(3,'art')">
-            <div class="ep-slot-empty"><span>+</span><small>Foto 4</small></div>
           </div>
         </div>
 
@@ -636,7 +612,7 @@
         <div class="ep-section-label">Preview Kartu</div>
         <div class="ep-live-card" id="artLiveCard">
           <div class="ep-live-img" id="artLiveImg">
-            <div class="ep-live-placeholder">🖼️</div>
+            <div class="ep-live-placeholder">card image</div>
           </div>
           <div class="ep-live-info">
             <div class="ep-live-kat" id="artLiveKat">Kategori</div>
@@ -674,7 +650,7 @@
 
     <div class="ep-header">
       <div class="ep-header-left">
-        <span class="ep-badge ep-badge-green">🕊️ Kegiatan Baru</span>
+        <span class="ep-badge ep-badge-green">Kegiatan Baru</span>
         <h2>Tambah Kegiatan Pastoral</h2>
       </div>
       <button class="ep-close" onclick="editorTutup('pastoral')">✕</button>

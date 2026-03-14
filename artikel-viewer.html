@@ -3,72 +3,829 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Memuat Artikel...</title>
+  <title>Memuat...</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=DM+Serif+Display&display=swap" rel="stylesheet">
   <style>
-    *{box-sizing:border-box;margin:0;padding:0}
-    body{font-family:Arial,sans-serif;background:#f6f7fb}
-    #viewer-wrap{min-height:100vh}
-    /* Loading sederhana */
-    #viewer-loading{
-      display:flex;flex-direction:column;align-items:center;justify-content:center;
-      min-height:60vh;gap:12px;color:#888;font-size:15px;
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --brand: #662d17; --brand2: #c8791e; --bg: #f5f5f0;
+      --text: #1a1a1a; --muted: #666; --border: #ddd;
+      --ebar: #1e1e2e; --eacc: #7dd3fc;
     }
-    .ld-bar{
-      width:180px;height:4px;background:#eee;border-radius:4px;overflow:hidden;
+    body { font-family: 'Poppins', sans-serif; background: var(--bg); color: var(--text); }
+
+    /* ── LOADING ── */
+    #viewer-loading {
+      display: flex; flex-direction: column; align-items: center;
+      justify-content: center; min-height: 100vh; gap: 14px; color: #999; font-size: 13px;
     }
-    .ld-bar-inner{
-      height:100%;width:0%;background:#662d17;border-radius:4px;
-      animation:ldanim 0.6s ease forwards;
+    .ld-bar { width: 180px; height: 3px; background: #eee; border-radius: 4px; overflow: hidden; }
+    .ld-bar-inner { height: 100%; width: 0%; background: var(--brand); animation: ldgo .8s ease forwards; }
+    @keyframes ldgo { to { width: 100% } }
+
+    /* ── ERROR ── */
+    #viewer-error { display: none; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; gap: 12px; }
+    .back-link { display: inline-flex; align-items: center; gap: 6px; background: var(--brand); color: #fff; border: none; padding: 9px 20px; border-radius: 8px; font-size: 13px; font-weight: 600; cursor: pointer; text-decoration: none; margin-top: 8px; }
+
+    /* ── CONTENT ── */
+    #viewer-content { display: none; }
+
+    /* ── BACK BUTTON ── */
+    .btn-back {
+      position: fixed; top: 16px; left: 12px;
+      width: 36px; height: 36px; border-radius: 50%;
+      background: rgba(0,0,0,0.5); border: none;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; z-index: 8000;
+      backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
+      transition: background .2s, transform .2s; text-decoration: none;
     }
-    @keyframes ldanim{to{width:100%}}
-    /* Error */
-    #viewer-error{display:none;flex-direction:column;align-items:center;justify-content:center;min-height:60vh;gap:12px;color:#888;font-size:15px}
-    .back-btn{display:inline-flex;align-items:center;gap:6px;margin-top:8px;background:#662d17;color:#fff;border:none;padding:10px 20px;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;text-decoration:none}
+    .btn-back:hover { background: rgba(0,0,0,.75); transform: scale(1.07); }
+    .btn-back svg { width: 18px; height: 18px; stroke: #fff; stroke-width: 2.5; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+    body.editor-active .btn-back { top: 62px; }
+
+    /* ─────────────────────────────────────────
+       ARTIKEL — NEWSPAPER STYLE
+       Mirip kegiatan4.html: max-width 600px,
+       centered, font compact, foto inline
+    ───────────────────────────────────────── */
+    .art-page {
+      max-width: 600px;
+      margin: 0 auto;
+      background: #fff;
+      padding: 40px 32px 80px;
+      min-height: 100vh;
+    }
+    @media (max-width: 640px) { .art-page { padding: 32px 18px 70px; } }
+
+    /* Kategori + tanggal */
+    .art-cat-row {
+      font-size: 11px; font-weight: 700; letter-spacing: .8px;
+      text-transform: uppercase; color: var(--brand);
+      margin-bottom: 8px;
+    }
+    .art-cat-row span { color: var(--muted); font-weight: 400; text-transform: none; letter-spacing: 0; margin-left: 8px; }
+
+    /* Judul */
+    .art-judul {
+      font-family: 'DM Serif Display', serif;
+      font-size: 22px; line-height: 1.3; color: #111;
+      margin-bottom: 6px;
+    }
+
+    /* Sub / penulis */
+    .art-sub { font-size: 12px; color: var(--muted); margin-bottom: 18px; }
+
+    /* Foto utama */
+    .art-hero-wrap { position: relative; margin-bottom: 18px; }
+    .art-hero-wrap img { width: 100%; display: block; max-height: 360px; object-fit: cover; }
+
+    /* Ringkasan / lead */
+    .art-lead {
+      font-size: 13px; font-weight: 600; color: #333;
+      line-height: 1.7; border-left: 3px solid var(--brand);
+      padding-left: 12px; margin-bottom: 16px;
+    }
+
+    /* Isi artikel */
+    .art-body { font-size: 13.5px; line-height: 1.85; color: #222; }
+    .art-body p { margin-bottom: 14px; }
+    .art-body h2 { font-family: 'DM Serif Display', serif; font-size: 17px; margin: 22px 0 8px; color: #111; }
+    .art-body blockquote {
+      border-left: 3px solid var(--brand2); padding: 8px 14px;
+      margin: 16px 0; background: #fffaf5; color: #555;
+      font-style: italic; font-size: 13px;
+    }
+
+    /* Foto grid */
+    .art-foto-grid { display: grid; gap: 8px; margin: 20px 0; }
+    .art-foto-1 { grid-template-columns: 1fr; }
+    .art-foto-2 { grid-template-columns: 1fr 1fr; }
+    .art-foto-3 { grid-template-columns: 1fr 1fr 1fr; }
+    .art-foto-grid img { width: 100%; height: 180px; object-fit: cover; display: block; }
+    @media (max-width:480px) { .art-foto-2,.art-foto-3 { grid-template-columns: 1fr 1fr; } .art-foto-grid img { height: 120px; } }
+
+    /* Divider */
+    .art-divider { border: none; border-top: 1px solid var(--border); margin: 24px 0; }
+
+    /* Tags */
+    .art-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+    .art-tag { background: #f5f0ea; color: #7a5535; font-size: 11px; padding: 4px 12px; border-radius: 20px; font-weight: 500; }
+
+    /* Footer */
+    .art-footer { background: #3a1800; color: rgba(255,255,255,.65); text-align: center; padding: 18px; font-size: 12px; margin-top: 0; }
+
+    /* ═══════════════════════════════════════
+       EDITOR MODE
+    ═══════════════════════════════════════ */
+    #editorBar {
+      display: none; position: fixed; top: 0; left: 0; right: 0; z-index: 9999;
+      background: var(--ebar); align-items: center; gap: 8px;
+      padding: 9px 16px; box-shadow: 0 2px 14px rgba(0,0,0,.5);
+    }
+    #editorBar.on { display: flex; }
+    .ebar-badge { font-size: 11px; font-weight: 700; letter-spacing: 1.2px; color: #555; text-transform: uppercase; }
+    .ebar-mode { font-size: 12px; color: var(--eacc); font-weight: 600; background: #0f172a; padding: 3px 10px; border-radius: 20px; }
+    .ebar-sp { flex: 1; }
+    .ebar-btn {
+      display: flex; align-items: center; gap: 5px;
+      padding: 7px 14px; border-radius: 7px; border: none;
+      font-size: 12px; font-weight: 700; cursor: pointer;
+      font-family: 'Poppins',sans-serif; transition: .15s;
+    }
+    .ebar-btn:active { transform: scale(.97); }
+    .ebar-btn.save { background: linear-gradient(135deg,#552604,#d4853c); color: #fff; box-shadow: 0 2px 10px rgba(140,70,20,.4); }
+    .ebar-btn.save:hover { opacity: .87; }
+    .ebar-btn.exit { background: rgba(255,255,255,.07); color: #aaa; border: 1px solid rgba(255,255,255,.1); }
+    .ebar-btn.exit:hover { background: rgba(255,255,255,.13); color: #fff; }
+    .ebar-btn svg { stroke: currentColor; fill: none; stroke-width: 2.5; }
+
+    /* Editable */
+    body.editor-active [contenteditable="true"] { outline: none; cursor: text; transition: background .15s; }
+    body.editor-active [contenteditable="true"]:hover { background: rgba(255,200,80,.1); border-radius: 3px; }
+    body.editor-active [contenteditable="true"]:focus { background: rgba(255,200,80,.18); border-radius: 3px; outline: none; }
+
+    /* Editor-only elements */
+    .e-label {
+      display: none; font-size: 9px; font-weight: 700; letter-spacing: 1.4px;
+      color: #ccc; text-transform: uppercase; margin: 18px 0 6px;
+      align-items: center; gap: 6px;
+    }
+    .e-label::after { content:''; flex:1; height:1px; background: #e8e8e8; }
+    body.editor-active .e-label { display: flex; }
+
+    .add-para {
+      display: none; width: 100%; margin: 6px 0; padding: 8px;
+      border: 1.5px dashed #ddd; border-radius: 5px;
+      background: none; color: #ccc; font-size: 12px; cursor: pointer;
+      transition: .15s; font-family: 'Poppins',sans-serif;
+    }
+    .add-para:hover { border-color: #aaa; color: #888; background: #fafafa; }
+    body.editor-active .add-para { display: block; }
+
+    /* Foto overlay controls */
+    .foto-wrap { position: relative; }
+    .foto-overlay {
+      display: none; position: absolute; inset: 0; background: rgba(0,0,0,.42);
+      flex-direction: column; align-items: center; justify-content: center;
+      gap: 7px; opacity: 0; transition: opacity .2s;
+    }
+    body.editor-active .foto-wrap:hover .foto-overlay { opacity: 1; display: flex; }
+    /* Fix: always layout flex in editor, just toggle opacity */
+    body.editor-active .foto-overlay { display: flex; }
+    .foto-overlay-btn {
+      background: #fff; color: #222; border: none; padding: 5px 11px;
+      border-radius: 5px; font-size: 11px; font-weight: 700; cursor: pointer;
+      font-family: 'Poppins',sans-serif;
+    }
+    .foto-overlay-btn.del { background: #fee2e2; color: #b91c1c; }
+
+    /* Empty foto slot */
+    .foto-empty {
+      display: none; width: 100%; height: 160px; background: #f5f5f5;
+      border: 1.5px dashed #ccc; border-radius: 6px;
+      align-items: center; justify-content: center; font-size: 13px;
+      color: #aaa; cursor: pointer; margin-bottom: 18px;
+      transition: background .15s, border-color .15s;
+    }
+    .foto-empty:hover { background: #eeeeee; border-color: #999; }
+    body.editor-active .foto-empty { display: flex; }
+
+    .slot-empty-box {
+      display: none; height: 160px; border: 1.5px dashed #ccc; border-radius: 6px;
+      align-items: center; justify-content: center; cursor: pointer;
+      color: #aaa; font-size: 12px; font-weight: 600;
+      transition: background .15s, border-color .15s;
+    }
+    .slot-empty-box:hover { background: #f5f5f5; border-color: #999; }
+    body.editor-active .slot-empty-box { display: flex; }
+    body.editor-active .art-foto-grid { display: grid !important; }
+
+    /* Editor hint */
+    #eHint {
+      display: none; position: fixed; bottom: 90px; right: 90px;
+      background: var(--ebar); color: var(--eacc); font-size: 11px;
+      padding: 7px 12px; border-radius: 7px; opacity: .85;
+      pointer-events: none; z-index: 8000; font-family: 'Poppins',sans-serif;
+    }
+    body.editor-active #eHint { display: block; }
+
+    /* ── FAB FOTO (kanan bawah, editor only) ── */
+    #fabFoto {
+      display: none; position: fixed; bottom: 22px; right: 22px; z-index: 9100;
+      width: 52px; height: 52px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--brand), var(--brand2));
+      border: none; cursor: pointer; align-items: center; justify-content: center;
+      box-shadow: 0 4px 18px rgba(102,45,23,.5);
+      transition: transform .2s, box-shadow .2s;
+    }
+    #fabFoto:hover { transform: scale(1.08); box-shadow: 0 6px 24px rgba(102,45,23,.6); }
+    #fabFoto:active { transform: scale(.95); }
+    #fabFoto svg { stroke: #fff; fill: none; stroke-width: 2; width: 22px; height: 22px; }
+    body.editor-active #fabFoto { display: flex; }
+
+    #fabTip {
+      display: none; position: fixed; bottom: 84px; right: 22px;
+      background: rgba(0,0,0,.75); color: #fff; font-size: 10px; font-weight: 600;
+      padding: 5px 10px; border-radius: 6px; pointer-events: none; z-index: 9101;
+      white-space: nowrap; font-family: 'Poppins',sans-serif;
+    }
+    body.editor-active #fabTip { display: block; }
+
+    #fabMenu {
+      display: none; position: fixed; bottom: 84px; right: 22px;
+      background: var(--ebar); border-radius: 12px; padding: 10px; z-index: 9102;
+      box-shadow: 0 8px 28px rgba(0,0,0,.45); min-width: 200px;
+    }
+    #fabMenu.open { display: block; }
+    .fab-menu-hd { font-size: 9px; font-weight: 700; letter-spacing: 1.4px; color: #555; text-transform: uppercase; padding: 2px 10px 8px; }
+    .fab-slot {
+      display: flex; align-items: center; gap: 9px; padding: 8px 10px;
+      border-radius: 7px; cursor: pointer; color: #ccc; font-size: 12px; font-weight: 500;
+      transition: background .15s; font-family: 'Poppins',sans-serif;
+    }
+    .fab-slot:hover { background: rgba(255,255,255,.09); color: #fff; }
+    .fab-thumb {
+      width: 36px; height: 36px; border-radius: 5px; background: rgba(255,255,255,.07);
+      overflow: hidden; flex-shrink: 0; display: flex; align-items: center;
+      justify-content: center; font-size: 14px;
+    }
+    .fab-thumb img { width: 100%; height: 100%; object-fit: cover; }
+
+    /* Toast */
+    #toast {
+      position: fixed; top: 60px; left: 50%; transform: translateX(-50%);
+      background: #15803d; color: #fff; padding: 9px 18px;
+      border-radius: 7px; font-size: 13px; font-weight: 600;
+      z-index: 10000; opacity: 0; transition: opacity .3s;
+      pointer-events: none; font-family: 'Poppins',sans-serif;
+      box-shadow: 0 3px 14px rgba(0,0,0,.3); white-space: nowrap;
+    }
+    #toast.show { opacity: 1; }
+    #quotaWarn {
+      display: none; position: fixed; bottom: 86px; left: 50%; transform: translateX(-50%);
+      background: #7f1d1d; color: #fecaca; padding: 9px 16px; border-radius: 7px;
+      font-size: 12px; z-index: 9500; font-family: 'Poppins',sans-serif;
+      max-width: calc(100vw - 40px); text-align: center;
+    }
   </style>
 </head>
 <body>
-<div id="viewer-wrap">
-  <div id="viewer-loading">
-    <div class="ld-bar"><div class="ld-bar-inner"></div></div>
-    <span>Memuat artikel...</span>
-  </div>
-  <div id="viewer-error">
-    <span>Artikel tidak ditemukan.</span>
-    <a href="index.html" class="back-btn">← Kembali</a>
-  </div>
-  <div id="viewer-content"></div>
+
+<!-- BACK -->
+<a id="btnBack" href="index.html" class="btn-back" title="Kembali">
+  <svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg>
+</a>
+
+<!-- EDITOR BAR -->
+<div id="editorBar">
+  <span class="ebar-badge">Mode</span>
+  <span class="ebar-mode">✏️ Edit</span>
+  <div class="ebar-sp"></div>
+  <button class="ebar-btn exit" onclick="doExit()">
+    <svg viewBox="0 0 24 24" width="13" height="13"><path d="M18 6L6 18M6 6l12 12"/></svg>
+    Selesai
+  </button>
+  <button class="ebar-btn save" onclick="doSave(false)">
+    <svg viewBox="0 0 24 24" width="13" height="13"><path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z"/><polyline points="17 21 17 13 7 13"/><polyline points="7 3 7 8 15 8"/></svg>
+    Simpan & Publish
+  </button>
 </div>
 
+<div id="eHint">✏️ Klik teks untuk mengedit</div>
+<div id="toast">✅ Artikel dipublish!</div>
+<div id="quotaWarn">⚠️ Penyimpanan hampir penuh — foto mungkin terpotong.</div>
+
+<!-- FAB FOTO -->
+<div id="fabMenu">
+  <div class="fab-menu-hd">Tambah / Ganti Foto</div>
+  <div id="fabSlots"></div>
+</div>
+<div id="fabTip">📷 Foto dari perangkat</div>
+<button id="fabFoto" onclick="toggleFabMenu()" title="Tambah foto dari perangkat">
+  <svg viewBox="0 0 24 24">
+    <rect x="2" y="5" width="20" height="15" rx="2"/>
+    <circle cx="12" cy="12.5" r="3.5"/>
+    <path d="M8 5V3h8v2"/>
+  </svg>
+</button>
+<input type="file" id="hiddenFile" accept="image/*" style="display:none" onchange="onHiddenFile(this)">
+
+<!-- LOADING -->
+<div id="viewer-loading">
+  <div class="ld-bar"><div class="ld-bar-inner"></div></div>
+  <span>Memuat artikel...</span>
+</div>
+
+<!-- ERROR -->
+<div id="viewer-error">
+  <span style="font-size:14px;color:#999;">Artikel tidak ditemukan.</span>
+  <a href="index.html" class="back-link">← Kembali</a>
+</div>
+
+<!-- CONTENT -->
+<div id="viewer-content"></div>
+
 <script>
-  (function() {
-    const params   = new URLSearchParams(window.location.search);
-    const pageFile = params.get('page');
+/* ════════════════════════════════════════════
+   GKR Artikel Viewer v5
+   · Tampilan newspaper compact (max 600px)
+   · Mode editor: ?mode=edit
+   · FAB + kanan bawah → pilih slot foto
+   · Edit paragraf langsung di halaman
+   · Simpan & Publish → langsung bisa diakses
+   · Unlimited — auto-prune + kompresi
+════════════════════════════════════════════ */
 
-    if (!pageFile) { showError(); return; }
+const qs       = new URLSearchParams(location.search);
+const pageFile = qs.get('page');
+const isEdit   = qs.get('mode') === 'edit';
 
+let state = { judul:'', kat:'', penulis:'', tgl:'', lead:'', isiParas:[], pageFile:'' };
+let fotos = [null, null, null, null]; // [utama, 2, 3, 4]
+let fabOpen = false;
+let fabTarget = null;
+
+/* ── INIT ── */
+(function() {
+  if (!pageFile) { showErr(); return; }
+  try {
+    const html = loadPages()[pageFile];
+    if (!html) { showErr(); return; }
+    const tm = html.match(/<title>(.*?)<\/title>/i);
+    if (tm) document.title = tm[1];
+    parseAndRender(html);
+  } catch(e) { console.error(e); showErr(); }
+})();
+
+/* ── STORAGE ── */
+function loadPages() {
+  try { return JSON.parse(localStorage.getItem('gkr_pages')||'{}'); } catch(e) { return {}; }
+}
+function savePage(fn, html) {
+  if (tryStore(fn, html)) return true;
+  pruneOld(3);
+  if (tryStore(fn, html)) return true;
+  const s2 = stripB64(html, 25000);
+  if (tryStore(fn, s2)) { warnQuota(); return true; }
+  pruneOld(8);
+  if (tryStore(fn, s2)) { warnQuota(); return true; }
+  warnQuota(); return false;
+}
+function tryStore(fn, html) {
+  try { const p=loadPages(); p[fn]=html; localStorage.setItem('gkr_pages',JSON.stringify(p)); return true; }
+  catch(e) { return false; }
+}
+function pruneOld(n) {
+  try {
+    const k=JSON.parse(localStorage.getItem('gkr_konten')||'[]');
+    const p=loadPages();
+    k.sort((a,b)=>(a.ts||0)-(b.ts||0)).slice(0,n).forEach(d=>{ if(d.pageFile) delete p[d.pageFile]; });
+    localStorage.setItem('gkr_pages',JSON.stringify(p));
+  } catch(e) {}
+}
+function stripB64(html, max) {
+  return html.replace(new RegExp('src="data:image/[^;]+;base64,[^"]{'+max+',}"','g'),'src=""');
+}
+function warnQuota() {
+  const w=document.getElementById('quotaWarn');
+  if(w){ w.style.display='block'; setTimeout(()=>w.style.display='none',5000); }
+}
+
+/* ── PARSE HTML & RENDER ── */
+function parseAndRender(html) {
+  const doc = new DOMParser().parseFromString(html, 'text/html');
+
+  // Ambil field dari HTML tersimpan
+  const judul   = tx(doc,'#editJudul')   || tx(doc,'.art-judul') || tx(doc,'.gen-judul') || tx(doc,'h1') || '';
+  const kat     = tx(doc,'.art-cat')     || tx(doc,'.art-kat')   || tx(doc,'.gen-kat')   || tx(doc,'.kat-badge') || '';
+  const penulis = tx(doc,'.art-sub')     || tx(doc,'.art-penulis')|| 'Komsos GKR';
+  const tgl     = tx(doc,'.art-tgl')     || tx(doc,'.art-date')  || tx(doc,'.gen-date')  || '';
+  const lead    = tx(doc,'.art-lead')    || tx(doc,'.art-ringkasan')|| tx(doc,'.gen-ringkasan') || '';
+
+  // Paragraf isi
+  let paras = [];
+  const isiEl = doc.getElementById('isiArtikel') || doc.querySelector('.art-body') || doc.querySelector('.gen-isi');
+  if (isiEl) isiEl.querySelectorAll('p').forEach(p => { if(p.textContent.trim()) paras.push(p.innerHTML); });
+  if (!paras.length) {
+    doc.querySelectorAll('p').forEach(p => { if(p.textContent.trim().length > 20) paras.push(p.innerHTML); });
+  }
+
+  // Foto
+  const fotoMainEl = doc.getElementById('fotoUtamaImg') || doc.querySelector('.art-hero-wrap img') || doc.querySelector('.gen-hero img');
+  fotos[0] = fotoMainEl ? (fotoMainEl.getAttribute('src')||null) : null;
+  if (fotos[0] === '') fotos[0] = null;
+
+  const gridEl = doc.querySelector('.art-foto-grid') || doc.querySelector('.gen-foto-grid');
+  if (gridEl) {
+    const imgs = gridEl.querySelectorAll('img');
+    imgs.forEach((img, i) => { if(i<3) { const s=img.getAttribute('src'); fotos[i+1]=s&&s!==''?s:null; } });
+  }
+
+  state = { judul, kat, penulis, tgl, lead, isiParas: paras, pageFile };
+  buildUI();
+
+  document.getElementById('viewer-loading').style.display = 'none';
+  document.getElementById('viewer-content').style.display = 'block';
+  if (isEdit) activateEdit();
+}
+
+function tx(doc, sel) {
+  const el = doc.querySelector(sel);
+  return el ? el.textContent.trim() : '';
+}
+
+/* ── BUILD UI (newspaper style) ── */
+function buildUI() {
+  const { judul, kat, penulis, tgl, lead, isiParas } = state;
+
+  const isiHTML = isiParas.length
+    ? isiParas.map(p=>`<p contenteditable="false" class="ep">${p}</p>`).join('\n')
+    : '<p contenteditable="false" class="ep">Isi artikel belum tersedia.</p>';
+
+  // Foto extra slots
+  function makeSlot(i) {
+    const src = fotos[i];
+    return src
+      ? `<div class="foto-wrap" id="fSlot${i}">
+          <img src="${src}" alt="" id="fSlotImg${i}">
+          <div class="foto-overlay">
+            <label class="foto-overlay-btn" style="cursor:pointer">🔄 Ganti
+              <input type="file" accept="image/*" style="display:none" onchange="onSlotFile(this,${i})">
+            </label>
+            <button class="foto-overlay-btn del" onclick="delSlot(${i})">🗑 Hapus</button>
+          </div>
+        </div>`
+      : `<div class="slot-empty-box" id="fSlot${i}" onclick="trigSlot(${i})">+ Foto ${i}
+          <input type="file" accept="image/*" style="display:none" onchange="onSlotFile(this,${i})">
+        </div>`;
+  }
+
+  const hasExtra = fotos.slice(1).some(Boolean);
+  const extraCount = Math.min(fotos.slice(1).filter(Boolean).length, 3);
+  const gridCls = ['','art-foto-1','art-foto-2','art-foto-3'][extraCount] || 'art-foto-3';
+
+  document.getElementById('viewer-content').innerHTML = `
+    <div class="art-page" id="artPage">
+
+      <!-- Kat + Tanggal -->
+      <div class="art-cat-row">
+        <span class="art-cat" contenteditable="false">${kat||'ARTIKEL'}</span>
+        <span class="art-tgl" contenteditable="false">${tgl}</span>
+      </div>
+
+      <!-- Judul -->
+      <h1 class="art-judul" id="editJudul" contenteditable="false">${judul}</h1>
+
+      <!-- Sub / Penulis -->
+      <div class="art-sub" id="editPenulis" contenteditable="false">${penulis}</div>
+
+      <!-- Foto Utama -->
+      <div class="e-label">Foto Utama</div>
+      <div class="foto-wrap" id="fMainWrap">
+        ${fotos[0]
+          ? `<div class="art-hero-wrap" id="artHero">
+              <img src="${fotos[0]}" alt="${judul}" id="fotoUtamaImg">
+              <div class="foto-overlay">
+                <label class="foto-overlay-btn" style="cursor:pointer">🔄 Ganti
+                  <input type="file" accept="image/*" style="display:none" onchange="onMainFile(this)">
+                </label>
+                <button class="foto-overlay-btn del" onclick="delMain()">🗑 Hapus</button>
+              </div>
+            </div>`
+          : `<div id="artHero" class="art-hero-wrap" style="display:none">
+              <img src="" alt="" id="fotoUtamaImg">
+              <div class="foto-overlay">
+                <label class="foto-overlay-btn" style="cursor:pointer">🔄 Ganti
+                  <input type="file" accept="image/*" style="display:none" onchange="onMainFile(this)">
+                </label>
+              </div>
+            </div>
+            <div class="foto-empty" id="fEmptyMain" onclick="document.getElementById('fInputMain').click()">
+              📷 Tambah Foto Utama
+            </div>`
+        }
+        <input type="file" id="fInputMain" accept="image/*" style="display:none" onchange="onMainFile(this)">
+      </div>
+
+      <!-- Lead / Ringkasan -->
+      ${lead ? `<div class="e-label">Ringkasan</div>
+      <div class="art-lead" id="editLead" contenteditable="false">${lead}</div>` : ''}
+
+      <!-- Isi -->
+      <div class="e-label">Isi Artikel</div>
+      <div class="art-body" id="isiArtikel">${isiHTML}</div>
+      <button class="add-para" onclick="addPara()">+ Tambah Paragraf</button>
+
+      <!-- Foto Tambahan -->
+      <div class="e-label">Foto Tambahan</div>
+      <div class="art-foto-grid ${gridCls}" id="fGrid" style="${hasExtra?'':'display:none'}">
+        ${makeSlot(1)}${makeSlot(2)}${makeSlot(3)}
+      </div>
+
+      <hr class="art-divider">
+
+      <div class="art-tags">
+        ${kat ? `<span class="art-tag">${kat}</span>` : ''}
+        <span class="art-tag">Paroki Kristus Raja</span>
+        <span class="art-tag">Karawang</span>
+      </div>
+    </div>
+
+    <footer class="art-footer">
+      © 2025 Gereja Katolik Kristus Raja Karawang – Keuskupan Bandung
+    </footer>
+  `;
+
+  refreshFabSlots();
+}
+
+/* ── EDITOR ── */
+function activateEdit() {
+  document.body.classList.add('editor-active');
+  document.getElementById('editorBar').classList.add('on');
+  // Tampilkan foto grid meski kosong
+  const fg = document.getElementById('fGrid'); if(fg) fg.style.display='grid';
+  // Enable contenteditable
+  document.querySelectorAll('[contenteditable="false"]').forEach(el => el.setAttribute('contenteditable','true'));
+  refreshFabSlots();
+}
+
+function doExit() { doSave(true); }
+
+function doSave(andExit) {
+  const judul   = etx('editJudul');
+  const penulis = etx('editPenulis');
+  const lead    = etx('editLead');
+  const kat     = etx('.art-cat') || state.kat;
+  const tgl     = etx('.art-tgl') || state.tgl;
+
+  const paras = [];
+  document.querySelectorAll('#isiArtikel .ep').forEach(p => { if(p.textContent.trim()) paras.push(p.innerHTML); });
+
+  const html = makeHTML({ judul, penulis, lead, kat, tgl, paras });
+  const ok = savePage(pageFile, html);
+  syncKonten(judul, lead, penulis);
+  showToast(ok ? '✅ Dipublish! Bisa diakses umum.' : '⚠️ Tersimpan (foto mungkin terpotong)');
+
+  if (andExit) {
+    setTimeout(() => {
+      const u = new URL(location.href);
+      u.searchParams.delete('mode');
+      history.replaceState({},'',$u.toString());
+      document.body.classList.remove('editor-active');
+      document.getElementById('editorBar').classList.remove('on');
+      document.querySelectorAll('[contenteditable="true"]').forEach(el => el.setAttribute('contenteditable','false'));
+      const fg=document.getElementById('fGrid');
+      if(fg && !fotos.slice(1).some(Boolean)) fg.style.display='none';
+    }, 1400);
+  }
+}
+
+function etx(sel) {
+  const el = typeof sel === 'string' && sel.startsWith('#')
+    ? document.getElementById(sel.slice(1))
+    : document.querySelector(sel);
+  return el ? el.textContent.trim() : '';
+}
+
+function addPara() {
+  const div = document.getElementById('isiArtikel'); if(!div) return;
+  const p = document.createElement('p');
+  p.contentEditable = 'true'; p.className = 'ep'; p.textContent = '';
+  div.appendChild(p); p.focus();
+}
+
+/* ── FOTO ── */
+function onMainFile(input) {
+  if(!input.files[0]) return;
+  compress(input.files[0], src => {
+    fotos[0] = src;
+    const hero  = document.getElementById('artHero');
+    const img   = document.getElementById('fotoUtamaImg');
+    const empty = document.getElementById('fEmptyMain');
+    if(hero)  { hero.style.display='block'; }
+    if(img)   { img.src = src; }
+    if(empty) { empty.style.display='none'; }
+    refreshFabSlots();
+  });
+}
+function delMain() {
+  fotos[0] = null;
+  const hero  = document.getElementById('artHero');
+  const empty = document.getElementById('fEmptyMain');
+  const img   = document.getElementById('fotoUtamaImg');
+  if(hero)  hero.style.display='none';
+  if(img)   img.src='';
+  if(empty) empty.style.display='flex';
+  refreshFabSlots();
+}
+
+function onSlotFile(input, idx) {
+  if(!input.files[0]) return;
+  compress(input.files[0], src => {
+    fotos[idx] = src;
+    const fg = document.getElementById('fGrid'); if(fg) fg.style.display='grid';
+    const slot = document.getElementById('fSlot'+idx);
+    if(slot) {
+      slot.className = 'foto-wrap';
+      slot.onclick = null;
+      slot.innerHTML = `<img src="${src}" alt="" id="fSlotImg${idx}">
+        <div class="foto-overlay">
+          <label class="foto-overlay-btn" style="cursor:pointer">🔄 Ganti
+            <input type="file" accept="image/*" style="display:none" onchange="onSlotFile(this,${idx})">
+          </label>
+          <button class="foto-overlay-btn del" onclick="delSlot(${idx})">🗑 Hapus</button>
+        </div>`;
+    }
+    refreshFabSlots();
+  });
+}
+function delSlot(idx) {
+  fotos[idx] = null;
+  const slot = document.getElementById('fSlot'+idx);
+  if(slot) {
+    slot.className = 'slot-empty-box';
+    slot.onclick = () => trigSlot(idx);
+    slot.innerHTML = `+ Foto ${idx}<input type="file" accept="image/*" style="display:none" onchange="onSlotFile(this,${idx})">`;
+  }
+  if(!fotos.slice(1).some(Boolean)) {
+    const fg=document.getElementById('fGrid');
+    if(fg && !document.body.classList.contains('editor-active')) fg.style.display='none';
+  }
+  refreshFabSlots();
+}
+function trigSlot(idx) {
+  const el=document.getElementById('fSlot'+idx); if(!el) return;
+  const inp=el.querySelector('input[type=file]'); if(inp) inp.click();
+}
+
+/* ── FAB ── */
+function toggleFabMenu() {
+  fabOpen = !fabOpen;
+  const m=document.getElementById('fabMenu'), t=document.getElementById('fabTip');
+  if(fabOpen) { m.classList.add('open'); if(t) t.style.display='none'; refreshFabSlots(); }
+  else        { m.classList.remove('open'); if(t) t.style.display='block'; }
+}
+function refreshFabSlots() {
+  const c=document.getElementById('fabSlots'); if(!c) return;
+  const labels=['Foto Utama','Foto 2','Foto 3','Foto 4'];
+  c.innerHTML = labels.map((lbl,i) => {
+    const src=fotos[i];
+    return `<div class="fab-slot" onclick="fabPick(${i})">
+      <div class="fab-thumb">${src?`<img src="${src}" alt="">`:['🖼️','2','3','4'][i]}</div>
+      <span>${lbl} ${src?'<span style="color:#4ade80">✓</span>':'<span style="color:#444">—</span>'}</span>
+    </div>`;
+  }).join('');
+}
+function fabPick(idx) {
+  fabTarget = idx; fabOpen = false;
+  document.getElementById('fabMenu').classList.remove('open');
+  document.getElementById('fabTip').style.display='block';
+  const inp=document.getElementById('hiddenFile'); inp.value=''; inp.click();
+}
+function onHiddenFile(input) {
+  if(!input.files[0] || fabTarget===null) return;
+  const t=fabTarget; fabTarget=null;
+  if(t===0) onMainFile({files:input.files});
+  else onSlotFile({files:input.files},t);
+}
+
+/* ── COMPRESS ── */
+function compress(file, cb) {
+  const r=new FileReader();
+  r.onload=e=>{
+    const img=new Image();
+    img.onload=()=>{
+      const MAX=1200; let w=img.width,h=img.height;
+      if(w>MAX||h>MAX){ if(w>=h){h=Math.round(h*MAX/w);w=MAX;}else{w=Math.round(w*MAX/h);h=MAX;} }
+      const cv=document.createElement('canvas'); cv.width=w; cv.height=h;
+      cv.getContext('2d').drawImage(img,0,0,w,h);
+      cb(cv.toDataURL('image/jpeg',0.82));
+    };
+    img.src=e.target.result;
+  };
+  r.readAsDataURL(file);
+}
+
+/* ── GENERATE CLEAN HTML (untuk disimpan & diakses publik) ── */
+function makeHTML({ judul, penulis, lead, kat, tgl, paras }) {
+  const fUtama = fotos[0]||'';
+  const extras = fotos.slice(1).filter(Boolean);
+  const gc = ['','art-foto-1','art-foto-2','art-foto-3'][Math.min(extras.length,3)]||'';
+  const fGridHTML = extras.length
+    ? `<div class="art-foto-grid ${gc}">${extras.slice(0,3).map(f=>`<img src="${f}" alt="">`).join('')}</div>` : '';
+  const isiHTML = paras.map(p=>`<p>${p}</p>`).join('\n    ');
+
+  return `<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>${judul} – Gereja Katolik Kristus Raja Karawang</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=DM+Serif+Display&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--brand:#662d17;--brand2:#c8791e}
+body{font-family:'Poppins',sans-serif;background:#f5f5f0;color:#1a1a1a}
+.btn-back{position:fixed;top:16px;left:12px;width:36px;height:36px;border-radius:50%;background:rgba(0,0,0,.5);border:none;display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:8000;backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);transition:background .2s,transform .2s;text-decoration:none}
+.btn-back:hover{background:rgba(0,0,0,.75);transform:scale(1.07)}
+.btn-back svg{width:18px;height:18px;stroke:#fff;stroke-width:2.5;fill:none;stroke-linecap:round;stroke-linejoin:round}
+.art-page{max-width:600px;margin:0 auto;background:#fff;padding:40px 32px 80px;min-height:100vh}
+@media(max-width:640px){.art-page{padding:32px 18px 70px}}
+.art-cat-row{font-size:11px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;color:var(--brand);margin-bottom:8px}
+.art-cat-row span{color:#666;font-weight:400;text-transform:none;letter-spacing:0;margin-left:8px}
+.art-judul{font-family:'DM Serif Display',serif;font-size:22px;line-height:1.3;color:#111;margin-bottom:6px}
+.art-sub{font-size:12px;color:#666;margin-bottom:18px}
+.art-hero-wrap{margin-bottom:18px}
+.art-hero-wrap img{width:100%;display:block;max-height:360px;object-fit:cover}
+.art-lead{font-size:13px;font-weight:600;color:#333;line-height:1.7;border-left:3px solid var(--brand);padding-left:12px;margin-bottom:16px}
+.art-body{font-size:13.5px;line-height:1.85;color:#222}
+.art-body p{margin-bottom:14px}
+.art-foto-grid{display:grid;gap:8px;margin:20px 0}
+.art-foto-1{grid-template-columns:1fr}
+.art-foto-2{grid-template-columns:1fr 1fr}
+.art-foto-3{grid-template-columns:1fr 1fr 1fr}
+.art-foto-grid img{width:100%;height:180px;object-fit:cover;display:block}
+@media(max-width:480px){.art-foto-2,.art-foto-3{grid-template-columns:1fr 1fr}.art-foto-grid img{height:120px}}
+hr{border:none;border-top:1px solid #ddd;margin:24px 0}
+.art-tags{display:flex;flex-wrap:wrap;gap:6px}
+.art-tag{background:#f5f0ea;color:#7a5535;font-size:11px;padding:4px 12px;border-radius:20px;font-weight:500}
+footer{background:#3a1800;color:rgba(255,255,255,.65);text-align:center;padding:18px;font-size:12px}
+</style>
+</head>
+<body>
+<a href="index.html" class="btn-back" title="Kembali"><svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg></a>
+<div class="art-page">
+  <div class="art-cat-row"><span class="art-cat">${kat||'ARTIKEL'}</span><span class="art-tgl">${tgl}</span></div>
+  <h1 class="art-judul" id="editJudul">${judul}</h1>
+  <div class="art-sub" id="editPenulis">${penulis}</div>
+  ${fUtama?`<div class="art-hero-wrap"><img src="${fUtama}" alt="${judul}" id="fotoUtamaImg"></div>`:''}
+  ${lead?`<div class="art-lead" id="editLead">${lead}</div>`:''}
+  <div class="art-body" id="isiArtikel">
+    ${isiHTML}
+  </div>
+  ${fGridHTML}
+  <hr>
+  <div class="art-tags">${kat?`<span class="art-tag">${kat}</span>`:''}<span class="art-tag">Paroki Kristus Raja</span><span class="art-tag">Karawang</span></div>
+</div>
+<footer>© 2025 Gereja Katolik Kristus Raja Karawang – Keuskupan Bandung</footer>
+</body>
+</html>`;
+}
+
+/* ── SYNC KONTEN ── */
+function syncKonten(judul, lead, penulis) {
+  try {
+    const k=JSON.parse(localStorage.getItem('gkr_konten')||'[]');
+    const i=k.findIndex(d=>d.pageFile===pageFile);
+    if(i>=0){
+      k[i].judul=judul; k[i].ringkasan=lead; k[i].penulis=penulis;
+      if(fotos[0]) k[i].fotos=[fotos[0],...(k[i].fotos||[]).slice(1)];
+      localStorage.setItem('gkr_konten',JSON.stringify(k));
+    }
+  } catch(e) {}
+}
+
+/* ── TOAST ── */
+function showToast(msg) {
+  const t=document.getElementById('toast'); if(!t) return;
+  t.textContent=msg; t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),3500);
+}
+
+/* ── ERROR ── */
+function showErr() {
+  document.getElementById('viewer-loading').style.display='none';
+  document.getElementById('viewer-error').style.display='flex';
+}
+
+/* ── CLOSE FAB ON OUTSIDE CLICK ── */
+document.addEventListener('click', e => {
+  if(!fabOpen) return;
+  const fab=document.getElementById('fabFoto'), m=document.getElementById('fabMenu');
+  if(fab&&m&&!fab.contains(e.target)&&!m.contains(e.target)) {
+    fabOpen=false; m.classList.remove('open');
+    document.getElementById('fabTip').style.display='block';
+  }
+});
+
+/* Fix: doExit URL replace typo */
+window.doExit = function() {
+  doSave(false);
+  setTimeout(()=>{
     try {
-      const pages = JSON.parse(localStorage.getItem('gkr_pages') || '{}');
-      const html  = pages[pageFile];
-      if (!html) { showError(); return; }
-
-      // Ambil <title>
-      const titleMatch = html.match(/<title>(.*?)<\/title>/i);
-      if (titleMatch) document.title = titleMatch[1];
-
-      // Render langsung ke halaman — ganti seluruh body dengan konten artikel
-      document.open();
-      document.write(html);
-      document.close();
-
-    } catch(e) {
-      showError();
-    }
-
-    function showError() {
-      document.getElementById('viewer-loading').style.display = 'none';
-      document.getElementById('viewer-error').style.display  = 'flex';
-    }
-  })();
+      const u=new URL(location.href);
+      u.searchParams.delete('mode');
+      history.replaceState({},'',(u).toString());
+    } catch(e) {}
+    document.body.classList.remove('editor-active');
+    document.getElementById('editorBar').classList.remove('on');
+    document.querySelectorAll('[contenteditable="true"]').forEach(el=>el.setAttribute('contenteditable','false'));
+    const fg=document.getElementById('fGrid');
+    if(fg&&!fotos.slice(1).some(Boolean)) fg.style.display='none';
+  }, 1400);
+};
 </script>
 </body>
 </html>

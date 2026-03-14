@@ -1718,30 +1718,22 @@ function pasNext() {
 function generatePastoralArtikelPage(d) {
   const fotos = (d.fotos || []).filter(Boolean);
   const foto1 = fotos[0] || '';
-  const foto2 = fotos[1] || '';
-  const foto3 = fotos[2] || '';
-  const foto4 = fotos[3] || '';
 
-  const isiHtml = (d.isi || d.desc || '')
+  // Build paragraf blocks — tiap paragraf punya tombol sisip foto di bawahnya
+  const paraBlocks = (d.isi || d.desc || 'Tulis isi artikel di sini...')
     .split(/\n\n+/)
-    .map(p => `<p contenteditable="true" class="editable-p">${p.replace(/\n/g,'<br>')}</p>`)
-    .join('\n    ');
-
-  const fotoSlotHtml = (src, idx) => src
-    ? `<div class="foto-slot" data-slot="${idx}">
-        <img src="${src}" alt="" class="slot-img">
-        <div class="foto-slot-overlay">
-          <label class="foto-slot-btn">
-            🔄 Ganti Foto
-            <input type="file" accept="image/*" onchange="gantiSlotFoto(this,${idx})" style="display:none">
-          </label>
-          <button class="foto-slot-btn del" onclick="hapusSlotFoto(${idx})">🗑 Hapus</button>
-        </div>
-      </div>`
-    : `<div class="foto-slot foto-slot-empty" data-slot="${idx}" onclick="this.querySelector('input').click()">
-        <div class="foto-slot-add">+ Tambah Foto</div>
-        <input type="file" accept="image/*" onchange="gantiSlotFoto(this,${idx})" style="display:none">
-      </div>`;
+    .map((p, i) => `<div class="para-block" data-para="${i}">
+      <p contenteditable="true" class="editable-p">${p.replace(/\n/g,'<br>')}</p>
+      <div class="para-insert-row">
+        <button class="para-ins-foto-btn" onclick="insertFotoSetelahPara(this)" title="Sisipkan foto di sini">
+          <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+          + Foto di sini
+        </button>
+        <button class="para-del-btn" onclick="hapusPara(this)" title="Hapus paragraf ini">
+          <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4h6v2"/></svg>
+        </button>
+      </div>
+    </div>`).join('');
 
   return `<!DOCTYPE html>
 <html lang="id">
@@ -1749,11 +1741,27 @@ function generatePastoralArtikelPage(d) {
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>${d.judul}</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=DM+Serif+Display&display=swap" rel="stylesheet">
   <style>
     *{box-sizing:border-box;margin:0;padding:0}
-    body{font-family:Arial,sans-serif;background:#f0f2f5}
+    body{font-family:'Poppins',Arial,sans-serif;background:#f0f2f5}
 
-    /* ── EDITOR TOOLBAR (fixed top) ── */
+    /* ── TOPBAR ── */
+    .gen-topbar{background:#7a4b00;color:rgba(255,255,255,.9);text-align:center;padding:8px 12px;font-size:12px;font-family:'Poppins',sans-serif;}
+
+    /* ── NAVBAR ── */
+    .gen-navbar{background:#fff;box-shadow:0 2px 12px rgba(0,0,0,.08);padding:0 24px;height:60px;display:flex;align-items:center;position:sticky;top:0;z-index:100;}
+    .gen-nav-brand{display:flex;align-items:center;gap:10px;text-decoration:none;}
+    .gen-nav-logo{width:38px;height:38px;border-radius:50%;background:#5a2100;display:flex;align-items:center;justify-content:center;font-size:18px;color:#fff;font-weight:700;}
+    .gen-nav-name{font-family:'DM Serif Display',serif;font-size:16px;color:#2a1000;line-height:1.2;}
+    .gen-nav-name small{display:block;font-family:'Poppins',sans-serif;font-size:10px;color:#999;font-weight:400;}
+
+    /* ── BACK BUTTON ── */
+    .btn-back{position:fixed;top:80px;left:16px;width:44px;height:44px;border-radius:50%;background:rgba(0,0,0,.55);border:none;display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:9999;backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);transition:.2s;text-decoration:none;}
+    .btn-back:hover{background:rgba(0,0,0,.78);transform:scale(1.07)}
+    .btn-back svg{width:22px;height:22px;stroke:#fff;stroke-width:2.5;fill:none;stroke-linecap:round;stroke-linejoin:round;pointer-events:none;}
+
+    /* ── EDITOR TOOLBAR (fixed top, above topbar) ── */
     .editor-bar{
       position:fixed;top:0;left:0;right:0;z-index:9999;
       background:#1e1e2e;
@@ -1761,132 +1769,135 @@ function generatePastoralArtikelPage(d) {
       padding:10px 20px;
       box-shadow:0 2px 12px rgba(0,0,0,.35);
     }
-    .editor-bar-label{
-      font-size:12px;font-weight:700;letter-spacing:1px;
-      color:#aaa;text-transform:uppercase;margin-right:6px;
-    }
-    .editor-bar-mode{
-      font-size:13px;color:#7dd3fc;font-weight:600;
-      background:#0f172a;padding:4px 12px;border-radius:20px;
-    }
+    .editor-bar-label{font-size:12px;font-weight:700;letter-spacing:1px;color:#aaa;text-transform:uppercase;margin-right:6px;}
+    .editor-bar-mode{font-size:13px;color:#7dd3fc;font-weight:600;background:#0f172a;padding:4px 12px;border-radius:20px;}
     .bar-spacer{flex:1}
-    .bar-btn{
-      display:flex;align-items:center;gap:6px;
-      padding:8px 18px;border-radius:8px;border:none;
-      font-size:13px;font-weight:700;cursor:pointer;transition:.15s;
-    }
-    .bar-btn.upload{
-      background:linear-gradient(135deg,#552604,#d4853c);
-      color:#fff;box-shadow:0 3px 12px rgba(160,82,26,.4);
-    }
+    .bar-btn{display:flex;align-items:center;gap:6px;padding:8px 18px;border-radius:8px;border:none;font-size:13px;font-weight:700;cursor:pointer;transition:.15s;font-family:'Poppins',sans-serif;}
+    .bar-btn.upload{background:linear-gradient(135deg,#552604,#d4853c);color:#fff;box-shadow:0 3px 12px rgba(160,82,26,.4);}
     .bar-btn.upload:hover{opacity:.88}
     .bar-btn.upload:active{transform:scale(.97)}
     .bar-btn svg{stroke:currentColor;fill:none;stroke-width:2.5}
 
     /* ── CONTAINER ── */
-    .container{
-      max-width:850px;margin:74px auto 60px;
-      background:#fff;padding:36px;
-      border-radius:12px;box-shadow:0 4px 16px rgba(0,0,0,.10);
+    .gen-wrap{
+      max-width:780px;margin:0 auto;padding:40px 24px 80px;
     }
 
     /* ── EDIT HINTS ── */
     [contenteditable="true"]{outline:none;cursor:text}
     [contenteditable="true"]:hover{background:#fffbf0;border-radius:4px}
-    [contenteditable="true"]:focus{
-      background:#fffdf5;
-      box-shadow:0 0 0 2px #f59e0b44;
-      border-radius:4px;outline:none;
-    }
-    .editable-hint{
-      position:fixed;bottom:18px;right:18px;
-      background:#1e1e2e;color:#7dd3fc;
-      font-size:12px;padding:8px 14px;border-radius:8px;
-      opacity:.85;pointer-events:none;z-index:9998;
-    }
+    [contenteditable="true"]:focus{background:#fffdf5;box-shadow:0 0 0 2px #f59e0b44;border-radius:4px;outline:none;}
+    .editable-hint{position:fixed;bottom:18px;right:18px;background:#1e1e2e;color:#7dd3fc;font-size:12px;padding:8px 14px;border-radius:8px;opacity:.85;pointer-events:none;z-index:9998;}
 
-    /* ── ARTIKEL STYLES ── */
-    .kat-badge{
-      display:inline-block;background:#662d17;color:#fff;
-      font-size:12px;font-weight:700;letter-spacing:.6px;
-      padding:4px 12px;border-radius:20px;text-transform:uppercase;margin-bottom:14px;
-    }
-    h1{font-size:30px;margin-bottom:10px;color:#1a1a1a;line-height:1.35;min-height:1em}
-    .meta{color:#666;font-size:14px;margin-bottom:22px}
-    p{font-size:17px;line-height:1.75;color:#222;margin-bottom:14px}
-    blockquote{
-      border-left:4px solid #662d17;padding:10px 16px;
-      font-style:italic;color:#555;margin:24px 0;
-      background:#fdf8f5;border-radius:0 6px 6px 0;
-    }
+    /* ── BREADCRUMB ── */
+    .gen-breadcrumb{font-size:12px;color:#aaa;margin-bottom:28px;font-family:'Poppins',sans-serif;}
+    .gen-breadcrumb a{color:#c8791e;text-decoration:none;}
+
+    /* ── META ── */
+    .gen-meta-row{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:16px;}
+    .gen-kat{background:#fff3e8;color:#c8791e;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:5px 14px;border-radius:30px;font-family:'Poppins',sans-serif;}
+    .gen-author,.gen-date{font-size:13px;color:#999;font-family:'Poppins',sans-serif;}
+
+    /* ── JUDUL ── */
+    .gen-judul{font-family:'DM Serif Display',serif;font-size:clamp(26px,4vw,38px);color:#1a0a00;line-height:1.22;margin-bottom:20px;min-height:1em;}
 
     /* ── FOTO UTAMA ── */
-    .foto-utama-wrap{position:relative;margin:20px 0}
-    .foto-utama-wrap img{width:100%;border-radius:8px;object-fit:cover;max-height:480px;display:block}
-    .foto-utama-wrap .foto-change-btn{
-      position:absolute;bottom:12px;right:12px;
-      background:rgba(0,0,0,.6);color:#fff;border:none;
-      padding:7px 14px;border-radius:8px;font-size:13px;
-      font-weight:600;cursor:pointer;display:flex;align-items:center;gap:6px;
-    }
-    .foto-utama-wrap .foto-change-btn:hover{background:rgba(0,0,0,.8)}
-    .foto-utama-empty{
-      width:100%;height:220px;background:#f5f5f5;border:2px dashed #ccc;
-      border-radius:8px;display:flex;align-items:center;justify-content:center;
-      font-size:15px;color:#999;cursor:pointer;margin:20px 0;
-    }
+    .gen-hero{width:100%;border-radius:18px;overflow:hidden;margin-bottom:32px;max-height:480px;position:relative;}
+    .gen-hero img{width:100%;height:100%;object-fit:cover;display:block;}
+    .foto-change-btn{position:absolute;bottom:12px;right:12px;background:rgba(0,0,0,.6);color:#fff;border:none;padding:7px 14px;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:6px;font-family:'Poppins',sans-serif;}
+    .foto-change-btn:hover{background:rgba(0,0,0,.8)}
+    .foto-utama-empty{width:100%;height:220px;background:#f5f5f5;border:2px dashed #ccc;border-radius:18px;display:flex;align-items:center;justify-content:center;font-size:15px;color:#999;cursor:pointer;margin-bottom:32px;}
     .foto-utama-empty:hover{background:#eee}
 
-    /* ── FOTO GRID (foto 2-4) ── */
-    .foto-grid-editor{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:20px 0}
-    .foto-slot{position:relative;border-radius:8px;overflow:hidden;background:#f0f0f0}
-    .foto-slot .slot-img{width:100%;height:200px;object-fit:cover;display:block}
-    .foto-slot-overlay{
-      position:absolute;inset:0;background:rgba(0,0,0,.45);
-      display:flex;flex-direction:column;align-items:center;justify-content:center;
-      gap:8px;opacity:0;transition:.2s;
-    }
-    .foto-slot:hover .foto-slot-overlay{opacity:1}
-    .foto-slot-btn{
-      background:#fff;color:#222;border:none;
-      padding:6px 12px;border-radius:6px;font-size:12px;
-      font-weight:600;cursor:pointer;
-    }
-    .foto-slot-btn.del{background:#fee2e2;color:#c0392b}
-    .foto-slot-empty{
-      height:200px;border:2px dashed #ccc;border-radius:8px;
-      display:flex;align-items:center;justify-content:center;
-      cursor:pointer;color:#aaa;font-size:14px;font-weight:600;
-    }
-    .foto-slot-empty:hover{background:#f5f5f5;border-color:#999}
+    /* ── RINGKASAN / BLOCKQUOTE ── */
+    .gen-ringkasan{font-family:'Poppins',sans-serif;font-size:17px;color:#5a3a1a;line-height:1.75;margin-bottom:28px;padding-bottom:28px;border-bottom:2px solid #e8ddd0;font-weight:500;}
+    blockquote{border-left:4px solid #662d17;padding:10px 16px;font-style:italic;color:#555;margin:24px 0;background:#fdf8f5;border-radius:0 6px 6px 0;}
 
-    /* ── TAMBAH PARAGRAF ── */
-    .add-para-btn{
-      width:100%;margin:8px 0;padding:10px;
-      border:2px dashed #e0e0e0;border-radius:6px;
-      background:none;color:#bbb;font-size:13px;
-      cursor:pointer;transition:.15s;
+    /* ── ISI ARTIKEL (paragraf blok) ── */
+    .gen-isi{font-family:'Poppins',sans-serif;font-size:15px;color:#333;line-height:1.9;}
+    .para-block{position:relative;}
+    .gen-isi p,.para-block p{font-size:15px;line-height:1.9;color:#222;margin-bottom:16px;font-family:'Poppins',sans-serif;}
+
+    /* ── TOMBOL INSERT FOTO ANTAR PARAGRAF ── */
+    .para-insert-row{
+      display:flex;align-items:center;gap:8px;
+      margin:4px 0 12px;opacity:0;
+      transition:opacity .2s;
     }
+    .para-block:hover .para-insert-row{opacity:1}
+    .para-ins-foto-btn{
+      display:flex;align-items:center;gap:5px;
+      background:#fff3e8;color:#c8791e;border:1.5px dashed #f0a060;
+      padding:5px 12px;border-radius:20px;font-size:12px;font-weight:600;
+      cursor:pointer;font-family:'Poppins',sans-serif;transition:.15s;
+    }
+    .para-ins-foto-btn:hover{background:#ffe8cc;border-color:#c8791e}
+    .para-del-btn{
+      background:#fff0f0;color:#c0392b;border:1.5px solid #fca5a5;
+      padding:5px 10px;border-radius:20px;font-size:12px;cursor:pointer;
+      display:flex;align-items:center;gap:4px;font-family:'Poppins',sans-serif;transition:.15s;
+    }
+    .para-del-btn:hover{background:#fee2e2}
+
+    /* ── FOTO INLINE (disisipkan di antara paragraf) ── */
+    .inline-foto-block{
+      margin:20px 0;border-radius:14px;overflow:hidden;position:relative;
+      box-shadow:0 2px 12px rgba(0,0,0,.08);
+    }
+    .inline-foto-block img{width:100%;max-height:420px;object-fit:cover;display:block;}
+    .inline-foto-caption{
+      font-size:13px;color:#888;font-style:italic;text-align:center;
+      padding:8px 12px;background:#fafaf8;
+      font-family:'Poppins',sans-serif;
+    }
+    .inline-foto-caption[contenteditable]:empty:before{content:'Keterangan foto (opsional)...';color:#ccc;}
+    .inline-foto-actions{
+      position:absolute;top:8px;right:8px;
+      display:flex;gap:6px;opacity:0;transition:.2s;
+    }
+    .inline-foto-block:hover .inline-foto-actions{opacity:1}
+    .inline-foto-act-btn{
+      background:rgba(0,0,0,.6);color:#fff;border:none;
+      padding:5px 10px;border-radius:6px;font-size:12px;
+      font-weight:600;cursor:pointer;font-family:'Poppins',sans-serif;
+    }
+    .inline-foto-act-btn:hover{background:rgba(0,0,0,.85)}
+    .inline-foto-act-btn.del{background:rgba(180,30,30,.75)}
+    .inline-foto-act-btn.del:hover{background:rgba(180,30,30,.95)}
+
+    /* ── TAMBAH PARAGRAF / FOTO BAWAH ── */
+    .add-para-btn{width:100%;margin:8px 0;padding:10px;border:2px dashed #e0e0e0;border-radius:6px;background:none;color:#bbb;font-size:13px;cursor:pointer;transition:.15s;font-family:'Poppins',sans-serif;}
     .add-para-btn:hover{border-color:#aaa;color:#888;background:#fafafa}
 
     /* ── SECTION LABEL ── */
-    .section-editor-label{
-      font-size:11px;font-weight:700;letter-spacing:1px;
-      color:#aaa;text-transform:uppercase;margin:24px 0 10px;
-      display:flex;align-items:center;gap:8px;
-    }
+    .section-editor-label{font-size:11px;font-weight:700;letter-spacing:1px;color:#aaa;text-transform:uppercase;margin:24px 0 10px;display:flex;align-items:center;gap:8px;}
     .section-editor-label::after{content:'';flex:1;height:1px;background:#eee}
 
-    /* Sembunyikan elemen editor di tampilan umum (artikel-viewer) */
-    .editor-bar,.editable-hint,.add-para-btn,.section-editor-label,.foto-change-btn,.foto-slot-overlay,.foto-slot-empty,.para-insert-row{display:none!important}
-    [contenteditable]{cursor:default!important;background:none!important;box-shadow:none!important}
+    /* ── DIVIDER & TAGS ── */
+    .gen-divider{height:2px;background:linear-gradient(90deg,#e8ddd0,transparent);margin:32px 0;border-radius:2px;}
+    .gen-tags{display:flex;flex-wrap:wrap;gap:8px;margin-top:32px;}
+    .gen-tag{background:#f0ece4;color:#7a5535;font-size:12px;font-family:'Poppins',sans-serif;font-weight:500;padding:5px 14px;border-radius:30px;}
+
+    footer{background:linear-gradient(135deg,#4a2400,#7b3f00);color:rgba(255,255,255,.75);text-align:center;padding:22px;font-family:'Poppins',sans-serif;font-size:13px;margin-top:60px;}
+
+    /* ── MODE VIEWER: sembunyikan semua elemen editor ── */
+    body.viewer-mode .editor-bar,
+    body.viewer-mode .editable-hint,
+    body.viewer-mode .add-para-btn,
+    body.viewer-mode .section-editor-label,
+    body.viewer-mode .foto-change-btn,
+    body.viewer-mode .inline-foto-actions,
+    body.viewer-mode .para-insert-row{display:none!important}
+    body.viewer-mode [contenteditable]{cursor:default!important;background:none!important;box-shadow:none!important;outline:none!important;}
 
     @media(max-width:600px){
-      .container{margin:64px 0 0;border-radius:0;padding:18px}
-      h1{font-size:22px}
-      p{font-size:15px}
-      .foto-grid-editor{grid-template-columns:1fr 1fr}
-      .foto-slot .slot-img,.foto-slot-empty{height:140px}
+      .gen-wrap{padding:28px 16px 60px;}
+      .gen-judul{font-size:22px}
+      .gen-isi p,.para-block p{font-size:14px}
+      .editor-bar{padding:8px 12px;gap:6px;}
+      .bar-btn.upload{padding:7px 12px;font-size:12px;}
+      .btn-back{width:40px;height:40px;top:74px;left:12px;}
+      .btn-back svg{width:20px;height:20px;}
     }
   </style>
 </head>
@@ -1903,21 +1914,50 @@ function generatePastoralArtikelPage(d) {
   </button>
 </div>
 
-<div class="container" id="artikelContainer">
+<!-- TOPBAR -->
+<div class="gen-topbar">Gereja Katolik Kristus Raja Karawang – Keuskupan Bandung</div>
 
-  <span class="kat-badge">${d.kat}</span>
+<!-- NAVBAR -->
+<nav class="gen-navbar">
+  <a href="index.html" class="gen-nav-brand">
+    <div class="gen-nav-logo">✝</div>
+    <div class="gen-nav-name">Kristus Raja Karawang<small>Keuskupan Bandung</small></div>
+  </a>
+</nav>
 
-  <h1 contenteditable="true" id="editJudul">${d.judul}</h1>
-  <div class="meta" contenteditable="true" id="editMeta">${d.tglFmt} &nbsp;•&nbsp; Paroki Kristus Raja Karawang</div>
+<!-- Tombol Back -->
+<a href="index.html#kegiatan" class="btn-back" title="Kembali">
+  <svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg>
+</a>
+
+<div class="gen-wrap" id="artikelContainer">
+
+  <!-- Breadcrumb -->
+  <div class="gen-breadcrumb">
+    <a href="index.html">Beranda</a> &rsaquo;
+    <a href="index.html#kegiatan">Kegiatan Pastoral</a> &rsaquo;
+    ${d.judul}
+  </div>
+
+  <!-- Meta -->
+  <div class="gen-meta-row">
+    <span class="gen-kat">${d.kat}</span>
+    <span class="gen-author">·</span>
+    <span class="gen-date" contenteditable="true" id="editMeta">${d.tglFmt}</span>
+    <span class="gen-author">· Paroki Kristus Raja Karawang</span>
+  </div>
+
+  <!-- Judul -->
+  <h1 class="gen-judul" contenteditable="true" id="editJudul">${d.judul}</h1>
 
   <!-- FOTO UTAMA -->
   <div class="section-editor-label">Foto Utama</div>
-  <div class="foto-utama-wrap" id="fotoUtamaWrap">
+  <div id="fotoUtamaWrap">
     ${foto1
-      ? `<img src="${foto1}" alt="" id="fotoUtamaImg">
-         <button class="foto-change-btn" onclick="document.getElementById('inputFoto0').click()">
-           🔄 Ganti Foto
-         </button>`
+      ? `<div class="gen-hero">
+           <img src="${foto1}" alt="" id="fotoUtamaImg">
+           <button class="foto-change-btn" onclick="document.getElementById('inputFoto0').click()">🔄 Ganti Foto</button>
+         </div>`
       : `<div class="foto-utama-empty" onclick="document.getElementById('inputFoto0').click()">+ Tambah Foto Utama</div>`
     }
     <input type="file" id="inputFoto0" accept="image/*" style="display:none" onchange="handleFotoUtama(this)">
@@ -1925,28 +1965,35 @@ function generatePastoralArtikelPage(d) {
 
   <!-- KUTIPAN / DESKRIPSI -->
   ${d.desc
-    ? `<blockquote contenteditable="true" id="editDesc">${d.desc}</blockquote>`
-    : `<blockquote contenteditable="true" id="editDesc" style="color:#bbb;font-style:italic">Tambahkan kutipan atau deskripsi singkat...</blockquote>`
+    ? `<p class="gen-ringkasan" contenteditable="true" id="editDesc">${d.desc}</p>`
+    : `<p class="gen-ringkasan" contenteditable="true" id="editDesc" style="color:#bbb;font-style:italic">Tambahkan ringkasan atau deskripsi singkat...</p>`
   }
 
   <!-- ISI ARTIKEL -->
-  <div class="section-editor-label">Isi Artikel</div>
-  <div id="isiArtikel">
-    ${isiHtml || '<p contenteditable="true" class="editable-p">Tulis isi artikel di sini...</p>'}
+  <div class="section-editor-label">Isi Artikel &nbsp;<small style="font-weight:400;letter-spacing:0;font-size:10px;color:#ccc">Arahkan kursor ke paragraf → klik "+ Foto di sini" untuk sisipkan foto</small></div>
+  <div class="gen-isi" id="isiArtikel">
+    ${paraBlocks}
   </div>
-  <button class="add-para-btn" onclick="tambahParagraf()">+ Tambah Paragraf</button>
-
-  <!-- FOTO TAMBAHAN (2-4) -->
-  <div class="section-editor-label">Foto Tambahan</div>
-  <div class="foto-grid-editor" id="fotoGridEditor">
-    ${fotoSlotHtml(foto2, 1)}
-    ${fotoSlotHtml(foto3, 2)}
-    ${fotoSlotHtml(foto4, 3)}
+  <div style="display:flex;gap:8px;margin-top:4px;">
+    <button class="add-para-btn" style="flex:1" onclick="tambahParagraf()">+ Tambah Paragraf</button>
+    <button class="add-para-btn" style="flex:0 0 auto;width:auto;padding:10px 16px" onclick="tambahFotoAkhir()" title="Tambah foto di akhir">🖼 + Foto</button>
   </div>
 
 </div>
 
-<div class="editable-hint">✏️ Klik teks untuk mengedit langsung</div>
+<!-- TAGS & FOOTER -->
+<div class="gen-wrap" style="padding-top:0" id="tagsWrap">
+  <div class="gen-divider"></div>
+  <div class="gen-tags">
+    <span class="gen-tag">${d.kat}</span>
+    <span class="gen-tag">Paroki Kristus Raja</span>
+    <span class="gen-tag">Karawang</span>
+  </div>
+</div>
+
+<footer>© 2025 Gereja Katolik Kristus Raja Karawang – Keuskupan Bandung</footer>
+
+<div class="editable-hint">✏️ Klik teks untuk edit · Arahkan paragraf untuk sisip foto</div>
 
 <script>
   // ── FOTO UTAMA ──
@@ -1956,89 +2003,174 @@ function generatePastoralArtikelPage(d) {
     reader.onload = e => {
       const wrap = document.getElementById('fotoUtamaWrap');
       wrap.innerHTML = \`
-        <img src="\${e.target.result}" alt="" id="fotoUtamaImg">
-        <button class="foto-change-btn" onclick="document.getElementById('inputFoto0').click()">🔄 Ganti Foto</button>
+        <div class="gen-hero">
+          <img src="\${e.target.result}" alt="" id="fotoUtamaImg">
+          <button class="foto-change-btn" onclick="document.getElementById('inputFoto0').click()">🔄 Ganti Foto</button>
+        </div>
         <input type="file" id="inputFoto0" accept="image/*" style="display:none" onchange="handleFotoUtama(this)">
       \`;
     };
     reader.readAsDataURL(input.files[0]);
   }
 
-  // ── FOTO SLOT 1-3 ──
-  function gantiSlotFoto(input, idx) {
+  // ── SISIPKAN FOTO SETELAH PARAGRAF ──
+  function insertFotoSetelahPara(btn) {
+    const paraBlock = btn.closest('.para-block');
+    const input = document.createElement('input');
+    input.type = 'file'; input.accept = 'image/*';
+    input.onchange = function() {
+      if (!this.files[0]) return;
+      const reader = new FileReader();
+      reader.onload = e => {
+        const fotoBlock = document.createElement('div');
+        fotoBlock.className = 'inline-foto-block';
+        fotoBlock.innerHTML = \`
+          <img src="\${e.target.result}" alt="">
+          <div class="inline-foto-caption" contenteditable="true"></div>
+          <div class="inline-foto-actions">
+            <label class="inline-foto-act-btn">
+              🔄 Ganti
+              <input type="file" accept="image/*" style="display:none" onchange="gantiInlineFoto(this)">
+            </label>
+            <button class="inline-foto-act-btn del" onclick="this.closest('.inline-foto-block').remove()">🗑 Hapus</button>
+          </div>
+        \`;
+        paraBlock.after(fotoBlock);
+      };
+      reader.readAsDataURL(this.files[0]);
+    };
+    input.click();
+  }
+
+  // ── GANTI FOTO INLINE ──
+  function gantiInlineFoto(input) {
     if (!input.files[0]) return;
     const reader = new FileReader();
     reader.onload = e => {
-      const grid = document.getElementById('fotoGridEditor');
-      const slots = grid.querySelectorAll('.foto-slot, .foto-slot-empty');
-      const slot = slots[idx - 1];
-      if (!slot) return;
-      slot.className = 'foto-slot';
-      slot.setAttribute('data-slot', idx);
-      slot.innerHTML = \`
-        <img src="\${e.target.result}" alt="" class="slot-img">
-        <div class="foto-slot-overlay">
-          <label class="foto-slot-btn">
-            🔄 Ganti Foto
-            <input type="file" accept="image/*" onchange="gantiSlotFoto(this,\${idx})" style="display:none">
-          </label>
-          <button class="foto-slot-btn del" onclick="hapusSlotFoto(\${idx})">🗑 Hapus</button>
-        </div>
-      \`;
+      input.closest('.inline-foto-block').querySelector('img').src = e.target.result;
     };
     reader.readAsDataURL(input.files[0]);
   }
 
-  function hapusSlotFoto(idx) {
-    const grid = document.getElementById('fotoGridEditor');
-    const slots = grid.querySelectorAll('.foto-slot, .foto-slot-empty');
-    const slot = slots[idx - 1];
-    if (!slot) return;
-    slot.className = 'foto-slot foto-slot-empty';
-    slot.setAttribute('data-slot', idx);
-    slot.innerHTML = \`
-      <div class="foto-slot-add" style="pointer-events:none">+ Tambah Foto</div>
-      <input type="file" accept="image/*" onchange="gantiSlotFoto(this,\${idx})" style="display:none">
-    \`;
-    slot.onclick = () => slot.querySelector('input').click();
+  // ── TAMBAH FOTO DI AKHIR ──
+  function tambahFotoAkhir() {
+    const input = document.createElement('input');
+    input.type = 'file'; input.accept = 'image/*';
+    input.onchange = function() {
+      if (!this.files[0]) return;
+      const reader = new FileReader();
+      reader.onload = e => {
+        const isi = document.getElementById('isiArtikel');
+        const fotoBlock = document.createElement('div');
+        fotoBlock.className = 'inline-foto-block';
+        fotoBlock.innerHTML = \`
+          <img src="\${e.target.result}" alt="">
+          <div class="inline-foto-caption" contenteditable="true"></div>
+          <div class="inline-foto-actions">
+            <label class="inline-foto-act-btn">
+              🔄 Ganti
+              <input type="file" accept="image/*" style="display:none" onchange="gantiInlineFoto(this)">
+            </label>
+            <button class="inline-foto-act-btn del" onclick="this.closest('.inline-foto-block').remove()">🗑 Hapus</button>
+          </div>
+        \`;
+        isi.appendChild(fotoBlock);
+      };
+      reader.readAsDataURL(this.files[0]);
+    };
+    input.click();
   }
 
   // ── TAMBAH PARAGRAF ──
   function tambahParagraf() {
-    const div = document.getElementById('isiArtikel');
-    const p = document.createElement('p');
-    p.contentEditable = 'true';
-    p.className = 'editable-p';
-    p.textContent = '';
-    div.appendChild(p);
-    p.focus();
+    const isi = document.getElementById('isiArtikel');
+    const block = document.createElement('div');
+    block.className = 'para-block';
+    const uid = Date.now();
+    block.innerHTML = \`
+      <p contenteditable="true" class="editable-p"></p>
+      <div class="para-insert-row">
+        <button class="para-ins-foto-btn" onclick="insertFotoSetelahPara(this)" title="Sisipkan foto di sini">
+          <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+          + Foto di sini
+        </button>
+        <button class="para-del-btn" onclick="hapusPara(this)">
+          <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4h6v2"/></svg>
+        </button>
+      </div>
+    \`;
+    isi.appendChild(block);
+    block.querySelector('p').focus();
   }
 
-  // ── UPLOAD ──
+  // ── HAPUS PARAGRAF ──
+  function hapusPara(btn) {
+    const block = btn.closest('.para-block');
+    if (document.querySelectorAll('.para-block').length <= 1) { alert('Minimal satu paragraf harus ada.'); return; }
+    if (confirm('Hapus paragraf ini?')) block.remove();
+  }
+
+  // ── UPLOAD & SIMPAN ──
   function doUpload() {
     const btn = document.querySelector('.bar-btn.upload');
+    btn.disabled = true;
+    btn.innerHTML = '⏳ Menyimpan...';
 
-    // Kumpulkan HTML bersih dari DOM saat ini
-    const clone = document.getElementById('artikelContainer').cloneNode(true);
-    clone.querySelectorAll('[contenteditable]').forEach(el => el.removeAttribute('contenteditable'));
-    clone.querySelectorAll('.section-editor-label,.add-para-btn,.para-insert-row,.foto-slot-overlay,.foto-slot-empty,.foto-change-btn,.editor-bar,.editable-hint').forEach(el => el.remove());
-    clone.querySelectorAll('[style*="color:#bbb"]').forEach(el => el.removeAttribute('style'));
+    // Clone seluruh body content untuk versi publik
+    const bodyClone = document.body.cloneNode(true);
+
+    // Hapus semua elemen editor-only
+    bodyClone.querySelectorAll('.editor-bar,.editable-hint,.add-para-btn,.section-editor-label,.para-insert-row,.foto-change-btn,.inline-foto-actions,.para-del-btn').forEach(el => el.remove());
+    bodyClone.querySelectorAll('input[type=file]').forEach(el => el.remove());
+
+    // Strip contenteditable
+    bodyClone.querySelectorAll('[contenteditable]').forEach(el => {
+      el.removeAttribute('contenteditable');
+      // Hapus placeholder warna bbb
+      if (el.style.color === 'rgb(187, 187, 187)' || el.getAttribute('style') === 'color:#bbb;font-style:italic') el.removeAttribute('style');
+    });
 
     const css = document.querySelector('style') ? document.querySelector('style').textContent : '';
-    const cleanHTML = '<!DOCTYPE html><html lang="id"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>' + document.title + '</title><style>' + css + '</style></head><body><button class="back-full" onclick="history.back()" aria-label="Kembali"><svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg></button>' + clone.outerHTML + '</body></html>';
+    const cleanHTML = \`<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>\${document.title}</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=DM+Serif+Display&display=swap" rel="stylesheet">
+<style>\${css}</style>
+</head>
+<body class="viewer-mode">\${bodyClone.innerHTML}</body>
+</html>\`;
 
-    // Simpan ke gkr_pages via opener
-    const pf = window._pageFile || document.title;
-    if (window.opener && !window.opener.closed) {
-      try { window.opener.savePageToStorage(pf, cleanHTML); } catch(e){}
+    // Simpan ke gkr_pages via opener atau localStorage langsung
+    const pf = window._pageFile;
+    let saved = false;
+    if (pf) {
+      // Coba via opener dulu
+      if (window.opener && !window.opener.closed) {
+        try { window.opener.savePageToStorage(pf, cleanHTML); saved = true; } catch(e){}
+      }
+      // Juga simpan langsung ke localStorage window ini (fallback)
+      if (!saved) {
+        try {
+          const pages = JSON.parse(localStorage.getItem('gkr_pages') || '{}');
+          pages[pf] = cleanHTML;
+          localStorage.setItem('gkr_pages', JSON.stringify(pages));
+          saved = true;
+        } catch(e){}
+      }
     }
 
-    btn.textContent = '✅ Tersimpan!';
+    btn.disabled = false;
+    btn.innerHTML = saved
+      ? \`✅ Tersimpan! &nbsp;<a href="artikel-viewer.html?page=\${encodeURIComponent(pf)}" target="_blank" style="color:#fff;text-decoration:underline;font-size:12px;">Buka →</a>\`
+      : '✅ Tersimpan!';
     btn.style.background = '#166534';
     setTimeout(() => {
       btn.innerHTML = \`<svg viewBox="0 0 24 24" width="15" height="15" style="stroke:#fff;fill:none;stroke-width:2.5"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg> Upload & Tampilkan\`;
       btn.style.background = '';
-    }, 2500);
+    }, 4000);
   }
 <\/script>
 </body>
