@@ -4076,7 +4076,6 @@ button {
   display: flex;
   flex-direction: column;
   background: #fff;
-  border-radius: 18px;
   overflow: hidden;
   text-decoration: none;
   color: #2c1400;
@@ -6239,7 +6238,6 @@ section.lokasi h2,
   }
   .artikel-card-pro {
     flex-direction: row !important;
-    border-radius: 14px !important;
     min-height: 120px !important;
   }
   .artikel-img-wrap {
@@ -7691,3 +7689,27 @@ body.editor-active .fab-keluar-editor {
   }
 }
 
+
+/* ── TOMBOL NEXT & KELUAR EDITOR ── */
+.ep-btn-next {
+  display: flex; align-items: center; gap: 8px;
+  padding: 12px 26px; border-radius: 10px; border: none;
+  background: linear-gradient(135deg, #1a4f8a, #2d7dd2);
+  color: white; font-family: 'DM Sans', sans-serif;
+  font-size: 14px; font-weight: 700; cursor: pointer;
+  transition: opacity 0.2s; box-shadow: 0 4px 16px rgba(26,79,138,0.35);
+}
+.ep-btn-next:hover { opacity: 0.88; }
+.ep-btn-next svg { stroke: white; }
+
+.ep-btn-exit {
+  display: flex; align-items: center; gap: 6px;
+  background: #fff0ec; color: #c0392b; border: 1.5px solid #f5c6be;
+}
+.ep-btn-exit:hover { background: #fce4e0; }
+
+/* ── TEXTAREA ISI ARTIKEL ── */
+#pasIsi {
+  min-height: 160px;
+  resize: vertical;
+}

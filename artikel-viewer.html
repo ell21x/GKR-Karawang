@@ -4,112 +4,71 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Memuat Artikel...</title>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=DM+Serif+Display&display=swap" rel="stylesheet">
   <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { font-family: 'Poppins', sans-serif; background: #f8f5f0; min-height: 100vh; display: flex; align-items: center; justify-content: center; }
-    .loading {
-      text-align: center;
-      padding: 60px 24px;
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:Arial,sans-serif;background:#f6f7fb}
+    #viewer-wrap{min-height:100vh}
+    /* Loading sederhana */
+    #viewer-loading{
+      display:flex;flex-direction:column;align-items:center;justify-content:center;
+      min-height:60vh;gap:12px;color:#888;font-size:15px;
     }
-    .loading-icon {
-      font-size: 48px;
-      margin-bottom: 16px;
-      animation: spin 1.2s linear infinite;
-      display: block;
+    .ld-bar{
+      width:180px;height:4px;background:#eee;border-radius:4px;overflow:hidden;
     }
-    @keyframes spin { to { transform: rotate(360deg); } }
-    .loading h2 {
-      font-family: 'DM Serif Display', serif;
-      color: #4a2400;
-      font-size: 22px;
-      margin-bottom: 8px;
+    .ld-bar-inner{
+      height:100%;width:0%;background:#662d17;border-radius:4px;
+      animation:ldanim 0.6s ease forwards;
     }
-    .loading p { color: #888; font-size: 14px; }
-
-    /* Not found */
-    .not-found {
-      text-align: center;
-      padding: 60px 24px;
-      max-width: 480px;
-    }
-    .not-found-icon { font-size: 64px; margin-bottom: 20px; display: block; }
-    .not-found h2 {
-      font-family: 'DM Serif Display', serif;
-      color: #4a2400;
-      font-size: 26px;
-      margin-bottom: 12px;
-    }
-    .not-found p { color: #666; font-size: 15px; line-height: 1.65; margin-bottom: 28px; }
-    .back-btn-nf {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      background: #c8791e;
-      color: #fff;
-      text-decoration: none;
-      padding: 12px 24px;
-      border-radius: 30px;
-      font-weight: 600;
-      font-size: 14px;
-      transition: background 0.2s;
-    }
-    .back-btn-nf:hover { background: #a5620f; }
+    @keyframes ldanim{to{width:100%}}
+    /* Error */
+    #viewer-error{display:none;flex-direction:column;align-items:center;justify-content:center;min-height:60vh;gap:12px;color:#888;font-size:15px}
+    .back-btn{display:inline-flex;align-items:center;gap:6px;margin-top:8px;background:#662d17;color:#fff;border:none;padding:10px 20px;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;text-decoration:none}
   </style>
 </head>
 <body>
-  <div class="loading" id="loadingState">
-    <span class="loading-icon">✝</span>
-    <h2>Memuat artikel...</h2>
-    <p>Mohon tunggu sebentar</p>
+<div id="viewer-wrap">
+  <div id="viewer-loading">
+    <div class="ld-bar"><div class="ld-bar-inner"></div></div>
+    <span>Memuat artikel...</span>
   </div>
+  <div id="viewer-error">
+    <span>Artikel tidak ditemukan.</span>
+    <a href="index.html" class="back-btn">← Kembali</a>
+  </div>
+  <div id="viewer-content"></div>
+</div>
 
-  <script>
-    (function() {
-      // Get the page filename from ?page= param
-      const params = new URLSearchParams(window.location.search);
-      const pageKey = params.get('page');
+<script>
+  (function() {
+    const params   = new URLSearchParams(window.location.search);
+    const pageFile = params.get('page');
 
-      if (!pageKey) {
-        showNotFound('Parameter halaman tidak ditemukan.');
-        return;
-      }
+    if (!pageFile) { showError(); return; }
 
-      // Try to load from localStorage
-      let html = null;
-      try {
-        const pages = JSON.parse(localStorage.getItem('gkr_pages') || '{}');
-        html = pages[pageKey] || null;
-      } catch(e) {
-        showNotFound('Gagal membaca data halaman.');
-        return;
-      }
+    try {
+      const pages = JSON.parse(localStorage.getItem('gkr_pages') || '{}');
+      const html  = pages[pageFile];
+      if (!html) { showError(); return; }
 
-      if (!html) {
-        showNotFound('Halaman "' + pageKey + '" tidak ditemukan.<br>Pastikan Anda membuka halaman ini dari browser yang sama tempat artikel dibuat.');
-        return;
-      }
+      // Ambil <title>
+      const titleMatch = html.match(/<title>(.*?)<\/title>/i);
+      if (titleMatch) document.title = titleMatch[1];
 
-      // Replace current page with the stored HTML
+      // Render langsung ke halaman — ganti seluruh body dengan konten artikel
       document.open();
       document.write(html);
       document.close();
-    })();
 
-    function showNotFound(msg) {
-      document.getElementById('loadingState').style.display = 'none';
-      const div = document.createElement('div');
-      div.className = 'not-found';
-      div.innerHTML = `
-        <span class="not-found-icon">📄</span>
-        <h2>Halaman Tidak Ditemukan</h2>
-        <p>${msg}</p>
-        <a href="index.html" class="back-btn-nf">
-          ← Kembali ke Beranda
-        </a>
-      `;
-      document.body.appendChild(div);
+    } catch(e) {
+      showError();
     }
-  </script>
+
+    function showError() {
+      document.getElementById('viewer-loading').style.display = 'none';
+      document.getElementById('viewer-error').style.display  = 'flex';
+    }
+  })();
+</script>
 </body>
 </html>
