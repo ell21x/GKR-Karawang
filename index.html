@@ -683,30 +683,17 @@
           </div>
         </div>
         <div class="ep-field">
-          <label>Deskripsi</label>
-          <textarea id="pasDesc" rows="4" placeholder="Ceritakan kegiatan ini..."></textarea>
-        </div>
-        <div class="ep-field">
-          <label>Isi Artikel <span class="ep-hint">— konten lengkap halaman</span></label>
-          <textarea id="pasIsi" rows="6" placeholder="Tulis isi artikel lengkap di sini...&#10;&#10;Paragraf baru dipisahkan dengan baris kosong."></textarea>
+          <label>Deskripsi <span class="ep-hint">(tampil di kartu)</span></label>
+          <textarea id="pasDesc" rows="5" placeholder="Ceritakan kegiatan ini..."></textarea>
         </div>
 
         <div class="ep-section-label" style="margin-top:20px;">
           Foto Kegiatan
-          <span class="ep-hint">— pilih hingga 4 foto</span>
+          <span class="ep-hint">— foto utama untuk kartu</span>
         </div>
         <div class="ep-foto-slots" id="pasFotoSlots">
-          <div class="ep-foto-slot" id="pasSlot0" onclick="bukaGaleriSlot(0,'pas')">
+          <div class="ep-foto-slot ep-slot-single" id="pasSlot0" onclick="bukaGaleriSlot(0,'pas')">
             <div class="ep-slot-empty"><span>+</span><small>Foto Utama</small></div>
-          </div>
-          <div class="ep-foto-slot ep-slot-sm" id="pasSlot1" onclick="bukaGaleriSlot(1,'pas')">
-            <div class="ep-slot-empty"><span>+</span><small>Foto 2</small></div>
-          </div>
-          <div class="ep-foto-slot ep-slot-sm" id="pasSlot2" onclick="bukaGaleriSlot(2,'pas')">
-            <div class="ep-slot-empty"><span>+</span><small>Foto 3</small></div>
-          </div>
-          <div class="ep-foto-slot ep-slot-sm" id="pasSlot3" onclick="bukaGaleriSlot(3,'pas')">
-            <div class="ep-slot-empty"><span>+</span><small>Foto 4</small></div>
           </div>
         </div>
 
@@ -741,9 +728,9 @@
         Keluar Editor
       </button>
       <button class="ep-btn-secondary" onclick="editorTutup('pastoral')">Batal</button>
-      <button class="ep-btn-primary ep-btn-next" onclick="pasNext()">
-        Lanjut
-        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+      <button class="ep-btn-primary" onclick="pasUpload()">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+        Upload & Tampilkan
       </button>
     </div>
 

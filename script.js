@@ -575,11 +575,9 @@ function resetPasForm() {
   pasFotos = [null, null, null, null];
   document.getElementById('pasJudul').value = '';
   document.getElementById('pasDesc').value = '';
-  const pasIsiEl = document.getElementById('pasIsi');
-  if (pasIsiEl) pasIsiEl.value = '';
   document.getElementById('pasTanggal').valueAsDate = new Date();
   document.getElementById('pasUploadMsg').classList.add('hidden');
-  for (let i = 0; i < 4; i++) renderFotoSlot(i, 'pas', null);
+  renderFotoSlot(0, 'pas', null);
   updateFotoPreview('pas');
   updatePasLiveCard();
 }
@@ -1625,7 +1623,7 @@ function artUpload() {
   // Feedback
   document.getElementById('artUploadMsg').classList.remove('hidden');
   document.getElementById('artUploadMsg').innerHTML =
-    '✅ Berhasil! Artikel tersimpan. &nbsp;<a class="ep-sim-quick-btn" href="' + pageUrl(pageFile) + '" target="_blank">🔗 Buka Halaman</a>';
+    '✅ Berhasil! Artikel tersimpan. &nbsp;<a class="ep-sim-quick-btn" href="' + pageUrl(pageFile) + '&mode=edit" target="_blank">✏️ Edit & Publish</a>';
   setTimeout(() => {
     document.getElementById('artUploadMsg').classList.add('hidden');
     editorTutup('artikel');
@@ -1638,7 +1636,6 @@ function pasUpload() {
   const kat   = document.getElementById('pasKategori').value;
   const tgl   = document.getElementById('pasTanggal').value;
   const desc  = document.getElementById('pasDesc').value.trim();
-  const link  = document.getElementById('pasLink').value.trim() || '#kegiatan';
 
   if (!judul) { alert('Judul kegiatan wajib diisi.'); return; }
 
@@ -1647,7 +1644,7 @@ function pasUpload() {
   const slug = makeSlug(judul);
   const pageFile = 'kegiatan-' + slug + '.html';
 
-  const data = { id, judul, kat, tgl, tglFmt, desc, link: pageFile, fotos: [...pasFotos], type: 'pastoral', ts: Date.now(), pageFile };
+  const data = { id, judul, kat, tgl, tglFmt, desc, link: pageFile, fotos: [pasFotos[0], null, null, null], type: 'pastoral', ts: Date.now(), pageFile };
 
   // Generate & save HTML page
   const pageHTML = generatePastoralPage(data);
@@ -1709,7 +1706,8 @@ function pasNext() {
   savePageToStorage(data.pageFile, pageHTML);
 
   editorTutup('pastoral');
-  const editorWin = window.open(pageUrl(data.pageFile), '_blank');
+  const editUrl = pageUrl(data.pageFile) + '&mode=edit';
+  const editorWin = window.open(editUrl, '_blank');
   if (editorWin) setTimeout(() => { try { editorWin._pageFile = data.pageFile; } catch(e){} }, 600);
   document.querySelector('#kegiatan').scrollIntoView({ behavior: 'smooth' });
 }
@@ -1996,6 +1994,24 @@ function generatePastoralArtikelPage(d) {
 <div class="editable-hint">✏️ Klik teks untuk edit · Arahkan paragraf untuk sisip foto</div>
 
 <script>
+  // ── CEK MODE: jika bukan dari editor, masuk viewer-mode (sembunyikan toolbar) ──
+  (function() {
+    // Halaman ini hanya boleh tampil editor-bar jika dibuka dari pasNext() via window.open
+    // yang menyuntikkan window._pageFile. Kalau tidak ada, berarti akses publik.
+    function checkEditorMode() {
+      if (!window._pageFile) {
+        document.body.classList.add('viewer-mode');
+      }
+    }
+    // Cek setelah DOM ready (agar _pageFile sudah di-set oleh opener)
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', checkEditorMode);
+    } else {
+      // Tunggu sebentar untuk beri kesempatan opener set _pageFile
+      setTimeout(checkEditorMode, 300);
+    }
+  })();
+
   // ── FOTO UTAMA ──
   function handleFotoUtama(input) {
     if (!input.files[0]) return;
@@ -2203,6 +2219,15 @@ function renderArtikelCard(d, animate) {
     </div>`;
   wrap.appendChild(a);
 
+  // Tombol Edit — hanya muncul saat editor aktif
+  const editBtn = document.createElement('a');
+  editBtn.href = pageUrl(d.pageFile) + '&mode=edit';
+  editBtn.target = '_blank';
+  editBtn.className = 'ep-edit-btn' + (editorOn ? '' : ' ep-del-hidden');
+  editBtn.innerHTML = '✏️ Edit';
+  editBtn.addEventListener('click', e => e.stopPropagation());
+  wrap.appendChild(editBtn);
+
   // Tombol hapus — hanya muncul saat editor aktif
   const delBtn = document.createElement('button');
   delBtn.className = 'ep-del-btn' + (editorOn ? '' : ' ep-del-hidden');
@@ -2244,6 +2269,14 @@ function renderPastoralCard(d, animate) {
 
   wrap.appendChild(a);
 
+  const editBtn = document.createElement('a');
+  editBtn.href = pageUrl(d.pageFile) + '&mode=edit';
+  editBtn.target = '_blank';
+  editBtn.className = 'ep-edit-btn' + (editorOn ? '' : ' ep-del-hidden');
+  editBtn.innerHTML = '✏️ Edit';
+  editBtn.addEventListener('click', e => e.stopPropagation());
+  wrap.appendChild(editBtn);
+
   const delBtn = document.createElement('button');
   delBtn.className = 'ep-del-btn' + (editorOn ? '' : ' ep-del-hidden');
   delBtn.innerHTML = '🗑 Hapus';
@@ -2267,9 +2300,9 @@ function hapusKonten(id, wrap) {
   setTimeout(() => wrap.remove(), 320);
 }
 
-/* ─── TAMPILKAN / SEMBUNYIKAN TOMBOL HAPUS ── */
+/* ─── TAMPILKAN / SEMBUNYIKAN TOMBOL HAPUS & EDIT ── */
 function toggleDelButtons(show) {
-  document.querySelectorAll('.ep-del-btn').forEach(btn => {
+  document.querySelectorAll('.ep-del-btn, .ep-edit-btn').forEach(btn => {
     btn.classList.toggle('ep-del-hidden', !show);
   });
 }
