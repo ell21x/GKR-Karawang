@@ -557,18 +557,11 @@ function resetArtForm() {
   artFotos = [null, null, null, null];
   document.getElementById('artJudul').value = '';
   document.getElementById('artRingkasan').value = '';
-  document.getElementById('artIsi').value = '';
-  document.getElementById('artPenulis').value = 'Komsos GKR';
   document.getElementById('artTanggal').valueAsDate = new Date();
   document.getElementById('artUploadMsg').classList.add('hidden');
-  // reset slot UI
-  for (let i = 0; i < 4; i++) renderFotoSlot(i, 'art', null);
+  renderFotoSlot(0, 'art', null);
   updateFotoPreview('art');
   updateArtLiveCard();
-  // template default
-  document.querySelectorAll('.ep-tpl').forEach(t => t.classList.remove('active'));
-  document.querySelector('.ep-tpl').classList.add('active');
-  artPilihTemplate(document.querySelector('.ep-tpl'), 'berita');
 }
 
 function resetPasForm() {
@@ -634,21 +627,20 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 function updateArtLiveCard() {
-  const judul = document.getElementById('artJudul').value || 'Judul artikel';
-  const kat   = document.getElementById('artKategori').value || 'Kategori';
-  const ring  = document.getElementById('artRingkasan').value || 'Ringkasan artikel...';
-  const penulis = document.getElementById('artPenulis').value || 'Penulis';
-  const tgl   = document.getElementById('artTanggal').value;
+  const judul = document.getElementById('artJudul') ? document.getElementById('artJudul').value || 'Judul artikel' : 'Judul artikel';
+  const kat   = document.getElementById('artKategori') ? document.getElementById('artKategori').value || 'Kategori' : 'Kategori';
+  const ring  = document.getElementById('artRingkasan') ? document.getElementById('artRingkasan').value || 'Ringkasan...' : 'Ringkasan...';
+  const tgl   = document.getElementById('artTanggal') ? document.getElementById('artTanggal').value : '';
   const tglFmt = tgl ? new Date(tgl).toLocaleDateString('id-ID',{day:'numeric',month:'short',year:'numeric'}) : 'Tanggal';
 
-  document.getElementById('artLiveKat').textContent   = kat;
-  document.getElementById('artLiveJudul').textContent = judul;
-  document.getElementById('artLiveRing').textContent  = ring;
-  document.getElementById('artLiveMeta').textContent  = penulis + ' · ' + tglFmt;
+  const lKat  = document.getElementById('artLiveKat');   if (lKat)  lKat.textContent  = kat;
+  const lJudul= document.getElementById('artLiveJudul'); if (lJudul) lJudul.textContent = judul;
+  const lRing = document.getElementById('artLiveRing');  if (lRing)  lRing.textContent  = ring;
+  const lMeta = document.getElementById('artLiveMeta');  if (lMeta)  lMeta.textContent  = tglFmt;
 
   const foto = artFotos[0];
   const imgEl = document.getElementById('artLiveImg');
-  imgEl.innerHTML = foto
+  if (imgEl) imgEl.innerHTML = foto
     ? `<img src="${foto}" alt="">`
     : `<div class="ep-live-placeholder">🖼️</div>`;
 }
@@ -1666,13 +1658,11 @@ function pasUpload() {
   }, 1800);
 }
 
-/* ─── NEXT: BUKA TEMPLATE ARTIKEL KEGIATAN ── */
 function pasNext() {
   const judul = document.getElementById('pasJudul').value.trim();
   const kat   = document.getElementById('pasKategori').value;
   const tgl   = document.getElementById('pasTanggal').value;
   const desc  = document.getElementById('pasDesc').value.trim();
-  const isi   = document.getElementById('pasIsi').value.trim();
 
   if (!judul) { alert('Judul kegiatan wajib diisi.'); return; }
 
@@ -1685,23 +1675,20 @@ function pasNext() {
   const pageFile = 'kegiatan-' + slug + '.html';
 
   const data = {
-    id, judul, kat, tgl, tglFmt, desc, isi,
-    fotos: [...pasFotos],
+    id, judul, kat, tgl, tglFmt, desc, isi: desc,
+    fotos: [pasFotos[0], null, null, null],
     type: 'pastoral',
     ts: Date.now(),
     pageFile
   };
 
-  // Simpan ke localStorage (untuk card di grid)
   const stored = JSON.parse(localStorage.getItem('gkr_konten') || '[]');
   stored.unshift(data);
   localStorage.setItem('gkr_konten', JSON.stringify(stored));
 
-  // Render card di halaman utama
   renderPastoralCard(data, true);
   toggleDelButtons(true);
 
-  // Generate, simpan ke gkr_pages, buka via artikel-viewer
   const pageHTML = generatePastoralArtikelPage(data);
   savePageToStorage(data.pageFile, pageHTML);
 
@@ -1710,6 +1697,50 @@ function pasNext() {
   const editorWin = window.open(editUrl, '_blank');
   if (editorWin) setTimeout(() => { try { editorWin._pageFile = data.pageFile; } catch(e){} }, 600);
   document.querySelector('#kegiatan').scrollIntoView({ behavior: 'smooth' });
+}
+
+/* ─── ARTIKEL NEXT: sama persis pasNext, output ke grid artikel ── */
+function artNext() {
+  const judul = document.getElementById('artJudul').value.trim();
+  const kat   = document.getElementById('artKategori').value;
+  const tgl   = document.getElementById('artTanggal').value;
+  const ring  = document.getElementById('artRingkasan').value.trim();
+
+  if (!judul) { alert('Judul artikel wajib diisi.'); return; }
+
+  const tglFmt = tgl
+    ? new Date(tgl).toLocaleDateString('id-ID',{day:'numeric',month:'long',year:'numeric'})
+    : new Date().toLocaleDateString('id-ID',{day:'numeric',month:'long',year:'numeric'});
+
+  const id = 'art_' + Date.now();
+  const slug = makeSlug(judul);
+  const pageFile = 'artikel-' + slug + '.html';
+
+  const data = {
+    id, judul, kat, tgl, tglFmt,
+    ringkasan: ring, desc: ring, isi: ring,
+    penulis: 'Komsos GKR',
+    fotos: [artFotos[0], null, null, null],
+    type: 'artikel',
+    ts: Date.now(),
+    pageFile
+  };
+
+  const stored = JSON.parse(localStorage.getItem('gkr_konten') || '[]');
+  stored.unshift(data);
+  localStorage.setItem('gkr_konten', JSON.stringify(stored));
+
+  renderArtikelCard(data, true);
+  toggleDelButtons(true);
+
+  const pageHTML = generatePastoralArtikelPage(data);
+  savePageToStorage(data.pageFile, pageHTML);
+
+  editorTutup('artikel');
+  const editUrl = pageUrl(data.pageFile) + '&mode=edit';
+  const editorWin = window.open(editUrl, '_blank');
+  if (editorWin) setTimeout(() => { try { editorWin._pageFile = data.pageFile; } catch(e){} }, 600);
+  document.querySelector('#artikel').scrollIntoView({ behavior: 'smooth' });
 }
 
 /* ─── GENERATE HALAMAN ARTIKEL KEGIATAN (EDITABLE) ──── */

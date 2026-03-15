@@ -542,45 +542,35 @@
 <div id="panelArtikel" class="ep-overlay hidden">
   <div class="ep-container">
 
-    <!-- Header -->
     <div class="ep-header">
       <div class="ep-header-left">
-        <span class="ep-badge">✍️ Artikel Baru</span>
-        <h2>Buat Artikel</h2>
+        <span class="ep-badge">Artikel Baru</span>
+        <h2>Tambah Artikel</h2>
       </div>
       <button class="ep-close" onclick="editorTutup('artikel')">✕</button>
     </div>
 
     <div class="ep-body">
-      <!-- KIRI: Form -->
       <div class="ep-form-col">
 
-        <!-- Pilih Template -->
-        <div class="ep-section-label">Pilih Template</div>
-        <div class="ep-tpl-row">
-          <div class="ep-tpl active" onclick="artPilihTemplate(this,'berita')">
-            <span class="ep-tpl-ico">📰</span><span>Berita</span>
-          </div>
-          <div class="ep-tpl" onclick="artPilihTemplate(this,'renungan')">
-            <span class="ep-tpl-ico">✝️</span><span>Renungan</span>
-          </div>
-          <div class="ep-tpl" onclick="artPilihTemplate(this,'pengumuman')">
-            <span class="ep-tpl-ico">📣</span><span>Pengumuman</span>
-          </div>
-          <div class="ep-tpl" onclick="artPilihTemplate(this,'sejarah')">
-            <span class="ep-tpl-ico">🏛️</span><span>Sejarah</span>
-          </div>
-        </div>
-
-        <!-- Info Artikel -->
-        <div class="ep-section-label" style="margin-top:20px;">Informasi Artikel</div>
+        <div class="ep-section-label">Informasi Artikel</div>
         <div class="ep-field">
-          <label>Judul</label>
+          <label>Judul Artikel</label>
           <input type="text" id="artJudul" placeholder="Judul artikel...">
         </div>
+        <div class="ep-row3">
           <div class="ep-field">
-            <label>Penulis</label>
-            <input type="text" id="artPenulis" value="Komsos GKR">
+            <label>Kategori</label>
+            <select id="artKategori">
+              <option>Liturgi &amp; Perayaan</option>
+              <option>Program Paroki</option>
+              <option>Komsos</option>
+              <option>Lingkungan</option>
+              <option>OMK</option>
+              <option>Misdinar</option>
+              <option>Sosial</option>
+              <option>Sejarah</option>
+            </select>
           </div>
           <div class="ep-field">
             <label>Tanggal</label>
@@ -589,53 +579,53 @@
         </div>
         <div class="ep-field">
           <label>Ringkasan <span class="ep-hint">(tampil di kartu)</span></label>
-          <textarea id="artRingkasan" rows="2" placeholder="Ringkasan singkat..."></textarea>
+          <textarea id="artRingkasan" rows="5" placeholder="Ringkasan singkat artikel..."></textarea>
         </div>
-      
 
-        <!-- Slot Foto -->
         <div class="ep-section-label" style="margin-top:20px;">
           Foto Artikel
-          <span class="ep-hint">— pilih hingga 4 foto</span>
+          <span class="ep-hint">— foto utama untuk kartu</span>
         </div>
         <div class="ep-foto-slots" id="artFotoSlots">
-          <div class="ep-foto-slot" id="artSlot0" onclick="bukaGaleriSlot(0,'art')">
+          <div class="ep-foto-slot ep-slot-single" id="artSlot0" onclick="bukaGaleriSlot(0,'art')">
             <div class="ep-slot-empty"><span>+</span><small>Foto Utama</small></div>
-          </div>
           </div>
         </div>
 
-      </div><!-- end form-col -->
+      </div>
 
-      <!-- KANAN: Live Preview -->
+      <!-- Preview -->
       <div class="ep-preview-col">
         <div class="ep-section-label">Preview Kartu</div>
         <div class="ep-live-card" id="artLiveCard">
           <div class="ep-live-img" id="artLiveImg">
-            <div class="ep-live-placeholder">card image</div>
+            <div class="ep-live-placeholder">🖼️</div>
           </div>
           <div class="ep-live-info">
             <div class="ep-live-kat" id="artLiveKat">Kategori</div>
-            <div class="ep-live-judul" id="artLiveJudul">Judul artikel akan muncul di sini</div>
-            <div class="ep-live-ring" id="artLiveRing">Ringkasan artikel...</div>
-            <div class="ep-live-meta" id="artLiveMeta">Penulis · Tanggal</div>
+            <div class="ep-live-judul" id="artLiveJudul">Judul artikel</div>
+            <div class="ep-live-ring" id="artLiveRing">Ringkasan...</div>
+            <div class="ep-live-meta" id="artLiveMeta">Tanggal</div>
           </div>
         </div>
-        <div class="ep-section-label" style="margin-top:20px;">Preview Isi Foto</div>
+        <div class="ep-section-label" style="margin-top:20px;">Preview Foto</div>
         <div class="ep-foto-preview-grid" id="artFotoPreviewGrid">
           <div class="ep-fp-empty">Belum ada foto dipilih</div>
         </div>
       </div>
 
-    </div><!-- end body -->
+    </div>
 
-    <!-- Footer actions -->
     <div class="ep-footer">
-      <span id="artUploadMsg" class="ep-upload-msg hidden">✅ Berhasil! Artikel muncul di halaman.</span>
+      <span id="artUploadMsg" class="ep-upload-msg hidden">✅ Berhasil!</span>
+      <button class="ep-btn-secondary ep-btn-exit" onclick="editorTutup('artikel')">
+        <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+        Keluar Editor
+      </button>
       <button class="ep-btn-secondary" onclick="editorTutup('artikel')">Batal</button>
-      <button class="ep-btn-primary" onclick="artUpload()">
-        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
-        Upload & Tampilkan
+      <button class="ep-btn-primary ep-btn-next" onclick="artNext()">
+        Lanjut
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
       </button>
     </div>
 
@@ -728,9 +718,9 @@
         Keluar Editor
       </button>
       <button class="ep-btn-secondary" onclick="editorTutup('pastoral')">Batal</button>
-      <button class="ep-btn-primary" onclick="pasUpload()">
-        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
-        Upload & Tampilkan
+      <button class="ep-btn-primary ep-btn-next" onclick="pasNext()">
+        Lanjut
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
       </button>
     </div>
 
