@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+
+# Blok file yang tidak perlu diindeks
+Disallow: /datadpp.html
+
+# Sitemap
+Sitemap: https://gkr-karawang.org/sitemap.xml
