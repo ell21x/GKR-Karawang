@@ -1,8 +1,17 @@
 User-agent: *
 Allow: /
 
-# Blok file yang tidak perlu diindeks
+# Blok halaman yang tidak perlu diindeks
 Disallow: /datadpp.html
+Disallow: /admin/
+Disallow: /*.json$
+
+# Izin akses asset publik
+Allow: /*.css$
+Allow: /*.js$
+Allow: /*.png$
+Allow: /*.jpg$
+Allow: /*.webp$
 
 # Sitemap
-Sitemap: https://gkr-karawang.org/sitemap.xml
+Sitemap: https://parokikristusrajakarawang.org/sitemap.xml

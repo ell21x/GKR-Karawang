@@ -8,16 +8,17 @@
   <!-- ═══════════════════════════════════════════
        SEO — Meta Tags Dasar
   ═══════════════════════════════════════════ -->
-  <meta name="description" content="Website resmi Gereja Katolik Paroki Kristus Raja Karawang, Keuskupan Bandung. Informasi jadwal misa, kegiatan pastoral, pengumuman, artikel gereja, dan peta lokasi.">
-  <meta name="keywords" content="gereja katolik karawang, gereja katolik kristus raja karawang, paroki kristus raja karawang, jadwal misa karawang, keuskupan bandung, gereja karawang, misa minggu karawang, paroki karawang, gereja kristus raja">
+  <meta name="description" content="Website resmi Gereja Katolik Paroki Kristus Raja Karawang, Keuskupan Bandung. Lihat jadwal misa, kegiatan pastoral, pengumuman, artikel rohani, dan peta lokasi gereja.">
+  <meta name="keywords" content="gereja katolik karawang, gereja kristus raja karawang, paroki kristus raja karawang, jadwal misa karawang, misa minggu karawang, gereja katolik keuskupan bandung, paroki karawang, misa karawang, gereja karawang jawa barat, GKR karawang">
   <meta name="author" content="Paroki Kristus Raja Karawang">
-  <meta name="robots" content="index, follow">
+  <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
   <meta name="language" content="Indonesian">
+  <meta name="theme-color" content="#7B1C2E">
   <meta name="geo.region" content="ID-JB">
   <meta name="geo.placename" content="Karawang, Jawa Barat, Indonesia">
   <meta name="geo.position" content="-6.315867;107.308994">
   <meta name="ICBM" content="-6.315867, 107.308994">
-  <link rel="canonical" href="https://parokikristusrajakarawang.org">
+  <link rel="canonical" href="https://parokikristusrajakarawang.org/">
 
   <!-- ═══════════════════════════════════════════
        SEO — Open Graph (Facebook, WhatsApp, dll)
@@ -25,41 +26,48 @@
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://parokikristusrajakarawang.org/">
   <meta property="og:title" content="Gereja Katolik Kristus Raja Karawang | Paroki Keuskupan Bandung">
-  <meta property="og:description" content="Website resmi Paroki Kristus Raja Karawang. Jadwal misa, kegiatan pastoral, pengumuman, dan informasi lengkap seputar paroki.">
+  <meta property="og:description" content="Website resmi Paroki Kristus Raja Karawang. Lihat jadwal misa, kegiatan pastoral, pengumuman, dan informasi lengkap seputar paroki.">
   <meta property="og:image" content="https://parokikristusrajakarawang.org/logoparoki.png">
   <meta property="og:image:width" content="512">
   <meta property="og:image:height" content="512">
+  <meta property="og:image:type" content="image/png">
   <meta property="og:image:alt" content="Logo Paroki Kristus Raja Karawang">
   <meta property="og:site_name" content="Paroki Kristus Raja Karawang">
   <meta property="og:locale" content="id_ID">
 
   <!-- ═══════════════════════════════════════════
-       SEO — Twitter Card
+       SEO — Twitter / X Card
   ═══════════════════════════════════════════ -->
-  <meta name="twitter:card" content="summary">
-  <meta name="twitter:title" content="Gereja Katolik Kristus Raja Karawang">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Gereja Katolik Kristus Raja Karawang | Paroki Keuskupan Bandung">
   <meta name="twitter:description" content="Website resmi Paroki Kristus Raja Karawang — jadwal misa, kegiatan pastoral, dan informasi paroki.">
   <meta name="twitter:image" content="https://parokikristusrajakarawang.org/logoparoki.png">
+  <meta name="twitter:image:alt" content="Logo Paroki Kristus Raja Karawang">
 
   <!-- ═══════════════════════════════════════════
-       SEO — Schema.org JSON-LD (Google Rich Results)
-       Gereja Lokal + Organisasi + Breadcrumb
+       SEO — Schema.org JSON-LD: Church (Local Business)
   ═══════════════════════════════════════════ -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
     "@type": "Church",
     "name": "Gereja Katolik Paroki Kristus Raja Karawang",
-    "alternateName": "Paroki Kristus Raja Karawang",
+    "alternateName": ["Paroki Kristus Raja Karawang", "GKR Karawang"],
     "url": "https://parokikristusrajakarawang.org",
-    "logo": "https://parokikristusrajakarawang.org/logoparoki.png",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://parokikristusrajakarawang.org/logoparoki.png",
+      "width": 512,
+      "height": 512
+    },
     "image": "https://parokikristusrajakarawang.org/logoparoki.png",
-    "description": "Paroki Kristus Raja Karawang adalah komunitas Gereja Katolik yang melayani kehidupan iman umat melalui liturgi, pewartaan, dan karya pastoral. Paroki ini menjadi wadah pembinaan iman serta persaudaraan umat Katolik di wilayah Karawang melalui berbagai kegiatan rohani, pelayanan, dan karya sosial.",
-"address": {
+    "description": "Paroki Kristus Raja Karawang adalah komunitas Gereja Katolik yang melayani kehidupan iman umat melalui liturgi, pewartaan, dan karya pastoral di wilayah Karawang, Jawa Barat.",
+    "address": {
       "@type": "PostalAddress",
       "streetAddress": "Karawang",
       "addressLocality": "Karawang",
       "addressRegion": "Jawa Barat",
+      "postalCode": "41300",
       "addressCountry": "ID"
     },
     "geo": {
@@ -67,24 +75,35 @@
       "latitude": -6.315867,
       "longitude": 107.308994
     },
-    "telephone": "",
-    "openingHours": "Su 06:00-19:00",
-    "sameAs": [],
+    "openingHoursSpecification": [
+      {
+        "@type": "OpeningHoursSpecification",
+        "dayOfWeek": "Sunday",
+        "opens": "06:00",
+        "closes": "19:00"
+      }
+    ],
     "parentOrganization": {
       "@type": "Organization",
-      "name": "Keuskupan Bandung"
+      "name": "Keuskupan Bandung",
+      "url": "https://keuskupanbandung.org"
     },
-    "hasMap": "https://www.google.com/maps/place/Gereja+Katolik+Paroki+Kristus+Raja,+Karawang"
+    "hasMap": "https://www.google.com/maps/place/Gereja+Katolik+Paroki+Kristus+Raja,+Karawang",
+    "inLanguage": "id"
   }
   </script>
 
+  <!-- ═══════════════════════════════════════════
+       SEO — Schema.org JSON-LD: WebSite + SearchAction
+  ═══════════════════════════════════════════ -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
     "@type": "WebSite",
     "name": "Paroki Kristus Raja Karawang",
-    "alternateName": Paroki Kristus Raja Karawang",
+    "alternateName": "GKR Karawang",
     "url": "https://parokikristusrajakarawang.org",
+    "inLanguage": "id",
     "potentialAction": {
       "@type": "SearchAction",
       "target": {
@@ -94,18 +113,11 @@
       "query-input": "required name=search_term_string"
     }
   }
-  <script type="application/ld+json">
-{
- "@context": "https://schema.org",
- "@type": "Organization",
- "name": "Paroki Kristus Raja Karawang",
- "alternateName": "GKR Karawang",
- "url": "https://parokikristusrajakarawang.org",
- "logo": "https://parokikristusrajakarawang.org/logoparoki.png"
-}
-</script>
   </script>
 
+  <!-- ═══════════════════════════════════════════
+       SEO — Schema.org JSON-LD: BreadcrumbList
+  ═══════════════════════════════════════════ -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -116,6 +128,42 @@
         "position": 1,
         "name": "Beranda",
         "item": "https://parokikristusrajakarawang.org/"
+      }
+    ]
+  }
+  </script>
+
+  <!-- ═══════════════════════════════════════════
+       SEO — Schema.org JSON-LD: FAQ (Rich Snippet)
+  ═══════════════════════════════════════════ -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "Di mana lokasi Gereja Katolik Kristus Raja Karawang?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Gereja Katolik Paroki Kristus Raja Karawang berlokasi di Karawang, Jawa Barat, Indonesia. Koordinat: -6.315867, 107.308994. Lihat peta di: https://www.google.com/maps/place/Gereja+Katolik+Paroki+Kristus+Raja,+Karawang"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Kapan jadwal misa di Paroki Kristus Raja Karawang?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Jadwal misa lengkap tersedia di website resmi Paroki Kristus Raja Karawang di https://parokikristusrajakarawang.org. Misa Minggu umumnya berlangsung pukul 06:00–19:00 WIB."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Paroki Kristus Raja Karawang termasuk keuskupan apa?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Paroki Kristus Raja Karawang berada di bawah Keuskupan Bandung."
+        }
       }
     ]
   }
