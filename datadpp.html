@@ -33,9 +33,6 @@
       overflow-x: hidden;
     }
 
-    /* ══════════════════════════════
-       NOISE TEXTURE OVERLAY
-    ══════════════════════════════ */
     body::before {
       content: '';
       position: fixed;
@@ -46,9 +43,7 @@
       opacity: 0.5;
     }
 
-    /* ══════════════════════════════
-       HEADER
-    ══════════════════════════════ */
+    /* HEADER */
     .header {
       position: sticky;
       top: 0;
@@ -56,7 +51,6 @@
       background: var(--coklat-gelap);
       border-bottom: 1px solid rgba(201,151,58,0.25);
     }
-
     .header-inner {
       display: flex;
       align-items: center;
@@ -65,13 +59,11 @@
       max-width: 820px;
       margin: 0 auto;
     }
-
     .back-btn {
       display: flex;
       align-items: center;
       justify-content: center;
-      width: 34px;
-      height: 34px;
+      width: 34px; height: 34px;
       border-radius: 50%;
       background: rgba(201,151,58,0.15);
       border: 1px solid rgba(201,151,58,0.3);
@@ -79,19 +71,13 @@
       flex-shrink: 0;
       transition: all 0.2s;
     }
-    .back-btn:hover {
-      background: rgba(201,151,58,0.3);
-      border-color: var(--emas);
-    }
-
+    .back-btn:hover { background: rgba(201,151,58,0.3); border-color: var(--emas); }
     .header-title { flex: 1; }
     .header-title h1 {
       font-family: 'Cormorant Garamond', serif;
-      font-size: 18px;
-      font-weight: 600;
+      font-size: 18px; font-weight: 600;
       color: var(--emas-muda);
-      line-height: 1.1;
-      letter-spacing: 0.5px;
+      line-height: 1.1; letter-spacing: 0.5px;
     }
     .header-title span {
       font-size: 10px;
@@ -101,9 +87,7 @@
       font-weight: 300;
     }
 
-    /* ══════════════════════════════
-       HERO
-    ══════════════════════════════ */
+    /* HERO */
     .hero {
       position: relative;
       background: var(--coklat-gelap);
@@ -111,89 +95,48 @@
       text-align: center;
       overflow: hidden;
     }
-
-    /* Decorative rings */
-    .hero::before,
-    .hero::after {
+    .hero::before, .hero::after {
       content: '';
       position: absolute;
       border-radius: 50%;
       border: 1px solid rgba(201,151,58,0.12);
       pointer-events: none;
     }
-    .hero::before {
-      width: 400px; height: 400px;
-      top: -180px; left: 50%;
-      transform: translateX(-50%);
-    }
-    .hero::after {
-      width: 600px; height: 600px;
-      top: -280px; left: 50%;
-      transform: translateX(-50%);
-    }
-
+    .hero::before { width: 400px; height: 400px; top: -180px; left: 50%; transform: translateX(-50%); }
+    .hero::after  { width: 600px; height: 600px; top: -280px; left: 50%; transform: translateX(-50%); }
     .hero-ornament {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 14px;
-      margin-bottom: 16px;
+      display: flex; align-items: center; justify-content: center;
+      gap: 14px; margin-bottom: 16px;
     }
-    .hero-ornament-line {
-      width: 48px;
-      height: 1px;
-      background: linear-gradient(90deg, transparent, var(--emas));
-    }
-    .hero-ornament-line.right {
-      background: linear-gradient(90deg, var(--emas), transparent);
-    }
-    .hero-ornament-diamond {
-      width: 6px; height: 6px;
-      background: var(--emas);
-      transform: rotate(45deg);
-    }
-
-    .hero-label {
-      font-size: 10px;
-      letter-spacing: 3px;
-      text-transform: uppercase;
-      color: var(--emas);
-      font-weight: 400;
-      margin-bottom: 10px;
-    }
-
+    .hero-ornament-line { width: 48px; height: 1px; background: linear-gradient(90deg, transparent, var(--emas)); }
+    .hero-ornament-line.right { background: linear-gradient(90deg, var(--emas), transparent); }
+    .hero-ornament-diamond { width: 6px; height: 6px; background: var(--emas); transform: rotate(45deg); }
+    .hero-label { font-size: 10px; letter-spacing: 3px; text-transform: uppercase; color: var(--emas); font-weight: 400; margin-bottom: 10px; }
     .hero h2 {
-      font-family: 'Cormorant Garamond', serif;
+      font-family: 'Inter', sans-serif;
       font-size: clamp(26px, 6vw, 38px);
-      font-weight: 300;
-      color: var(--putih);
-      line-height: 1.2;
-      letter-spacing: 1px;
-      margin-bottom: 8px;
+      font-weight: 300; color: var(--putih);
+      line-height: 1.2; letter-spacing: 1px; margin-bottom: 8px;
     }
-    .hero h2 em {
-      font-style: italic;
-      color: var(--emas-muda);
+    .hero h2 em { font-style: italic; color: var(--emas-muda); }
+    .hero-sub { font-size: 12px; color: rgba(232,201,168,0.4); letter-spacing: 2px; text-transform: uppercase; font-weight: 300; }
+    .hero-period {
+      display: inline-block;
+      margin-top: 10px;
+      padding: 4px 14px;
+      border: 1px solid rgba(201,151,58,0.35);
+      border-radius: 20px;
+      font-size: 11px;
+      color: var(--emas);
+      letter-spacing: 1.5px;
+      font-weight: 400;
     }
-
-    .hero-sub {
-      font-size: 12px;
-      color: rgba(232,201,168,0.4);
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      font-weight: 300;
-    }
-
     .hero-border-bottom {
-      position: absolute;
-      bottom: 0; left: 0; right: 0;
-      height: 3px;
+      position: absolute; bottom: 0; left: 0; right: 0; height: 3px;
       background: linear-gradient(90deg, transparent 0%, var(--emas) 30%, var(--emas-muda) 50%, var(--emas) 70%, transparent 100%);
     }
 
-    /* ══════════════════════════════
-       WRAPPER
-    ══════════════════════════════ */
+    /* WRAPPER */
     .wrapper {
       max-width: 820px;
       margin: 0 auto;
@@ -202,231 +145,148 @@
       z-index: 1;
     }
 
-    /* ══════════════════════════════
-       SECTION LABEL
-    ══════════════════════════════ */
+    /* SECTION LABEL */
     .section-label {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      margin-bottom: 20px;
+      display: flex; align-items: center; gap: 12px;
+      margin-bottom: 20px; margin-top: 32px;
     }
+    .section-label:first-child { margin-top: 0; }
     .section-label span {
-      font-size: 10px;
-      letter-spacing: 2.5px;
-      text-transform: uppercase;
-      color: var(--coklat-medium);
-      font-weight: 500;
-      white-space: nowrap;
+      font-size: 10px; letter-spacing: 2.5px;
+      text-transform: uppercase; color: var(--coklat-medium);
+      font-weight: 500; white-space: nowrap;
     }
     .section-label::after {
-      content: '';
-      flex: 1;
-      height: 1px;
+      content: ''; flex: 1; height: 1px;
       background: linear-gradient(90deg, var(--coklat-terang), transparent);
     }
 
-    /* ══════════════════════════════
-       DESKTOP TABLE
-    ══════════════════════════════ */
-    .tabel-wrap {
+    /* ── PIMPINAN CARDS (desktop & mobile) ── */
+    .pimpinan-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+      margin-bottom: 0;
+    }
+
+    .pimpinan-card {
       background: var(--putih);
-      border-radius: 16px;
-      overflow: hidden;
-      box-shadow:
-        0 1px 0 rgba(201,151,58,0.3),
-        0 8px 32px rgba(42,26,14,0.12),
-        0 2px 8px rgba(42,26,14,0.06);
+      border-radius: 14px;
       border: 1px solid rgba(196,136,90,0.2);
+      box-shadow: 0 1px 0 rgba(201,151,58,0.2), 0 4px 16px rgba(42,26,14,0.08);
+      display: flex;
+      align-items: stretch;
+      overflow: hidden;
+      transition: box-shadow 0.2s;
     }
-
-    table { width: 100%; border-collapse: collapse; }
-
-    thead tr {
-      background: linear-gradient(135deg, var(--coklat-tua) 0%, var(--coklat-gelap) 100%);
+    .pimpinan-card:hover {
+      box-shadow: 0 1px 0 rgba(201,151,58,0.35), 0 8px 24px rgba(42,26,14,0.13);
     }
-
-    th {
-      padding: 15px 22px;
-      text-align: left;
-      font-size: 10px;
-      font-weight: 500;
-      letter-spacing: 2.5px;
+    .pimpinan-accent {
+      width: 4px;
+      background: linear-gradient(180deg, var(--emas), var(--coklat-muda));
+      flex-shrink: 0;
+    }
+    .pimpinan-inner {
+      padding: 14px 18px;
+      flex: 1;
+    }
+    .pimpinan-jabatan {
+      font-size: 9.5px;
+      letter-spacing: 2px;
       text-transform: uppercase;
-      color: rgba(232,201,168,0.7);
-      font-family: 'Jost', sans-serif;
-    }
-    th:first-child { border-right: 1px solid rgba(201,151,58,0.15); }
-
-    td {
-      padding: 13px 22px;
-      font-size: 14px;
-      border-bottom: 1px solid var(--krem-gelap);
-      vertical-align: middle;
-      font-weight: 300;
-      line-height: 1.5;
-      transition: background 0.15s;
-    }
-
-    td.jabatan {
-      font-family: 'Jost', sans-serif;
+      color: var(--emas);
       font-weight: 500;
-      font-size: 12px;
-      letter-spacing: 0.5px;
-      color: var(--coklat-tua);
-      background: #faf4ec;
-      width: 36%;
-      border-right: 2px solid var(--coklat-terang);
-      vertical-align: middle;
+      margin-bottom: 6px;
     }
+    .pimpinan-nama {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 17px;
+      font-weight: 400;
+      color: var(--coklat-gelap);
+      line-height: 1.4;
+    }
+    .pimpinan-nama .dan { font-size: 12px; color: var(--teks-abu); font-family: 'Inter', sans-serif; font-weight: 300; display: block; margin: 2px 0; }
 
-    tbody tr:last-child td { border-bottom: none; }
-
-    tbody tr:hover td { background: #fdf6ee; }
-    tbody tr:hover td.jabatan { background: #f5e9d8; }
-
-    /* ══════════════════════════════
-       MOBILE CARDS
-    ══════════════════════════════ */
-    .kartu-list { display: none; }
+    /* ── BIDANG CARDS ── */
+    .bidang-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+    }
 
     .kartu {
       background: var(--putih);
-      border-radius: 16px;
+      border-radius: 14px;
       overflow: hidden;
+      box-shadow: 0 1px 0 rgba(201,151,58,0.2), 0 4px 16px rgba(42,26,14,0.08);
       border: 1px solid rgba(196,136,90,0.2);
-      box-shadow: 0 4px 20px rgba(42,26,14,0.08), 0 1px 4px rgba(42,26,14,0.04);
-      margin-bottom: 16px;
-      animation: fadeUp 0.4s cubic-bezier(0.22,1,0.36,1) both;
+      transition: box-shadow 0.2s;
     }
-
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(16px); }
-      to   { opacity: 1; transform: translateY(0); }
+    .kartu:hover {
+      box-shadow: 0 1px 0 rgba(201,151,58,0.35), 0 8px 24px rgba(42,26,14,0.13);
     }
-    .kartu:nth-child(1){animation-delay:0.06s}
-    .kartu:nth-child(2){animation-delay:0.12s}
-    .kartu:nth-child(3){animation-delay:0.18s}
-    .kartu:nth-child(4){animation-delay:0.24s}
-    .kartu:nth-child(5){animation-delay:0.30s}
-    .kartu:nth-child(6){animation-delay:0.36s}
-
     .kartu-header {
-      background: linear-gradient(135deg, var(--coklat-tua) 0%, #3d2410 100%);
-      padding: 14px 18px;
+      background: var(--coklat-gelap);
+      padding: 12px 16px;
       display: flex;
       align-items: center;
-      gap: 12px;
-      position: relative;
-      overflow: hidden;
+      gap: 10px;
     }
-    .kartu-header::after {
-      content: '';
-      position: absolute;
-      bottom: 0; left: 0; right: 0;
-      height: 2px;
-      background: linear-gradient(90deg, var(--emas), var(--emas-muda), var(--emas));
-    }
-
     .kartu-icon {
-      width: 32px; height: 32px;
+      width: 28px; height: 28px;
       border-radius: 8px;
-      background: rgba(201,151,58,0.2);
-      border: 1px solid rgba(201,151,58,0.35);
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      background: rgba(201,151,58,0.15);
+      border: 1px solid rgba(201,151,58,0.25);
+      display: flex; align-items: center; justify-content: center;
       flex-shrink: 0;
     }
-    .kartu-icon svg { display: block; }
-
     .kartu-header h3 {
-      font-family: 'Jost', sans-serif;
-      font-size: 13px;
-      font-weight: 500;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 15px; font-weight: 600;
       color: var(--emas-muda);
-      letter-spacing: 0.5px;
+      flex: 1; line-height: 1.3;
     }
-    .kartu-header .kartu-count {
-      margin-left: auto;
-      font-size: 10px;
-      color: rgba(232,201,168,0.4);
+    .kartu-count {
+      font-size: 9px;
+      color: rgba(232,201,168,0.45);
       letter-spacing: 1px;
-      font-weight: 300;
+      background: rgba(201,151,58,0.1);
+      border: 1px solid rgba(201,151,58,0.2);
+      border-radius: 10px;
+      padding: 2px 8px;
+      white-space: nowrap;
     }
-
-    .kartu-body { padding: 6px 0; }
-
-    .nama-row {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      padding: 11px 18px;
-      border-bottom: 1px solid var(--krem-gelap);
-      transition: background 0.15s;
-    }
-    .nama-row:last-child { border-bottom: none; }
-    .nama-row:active { background: #fdf0e0; }
-
+    .kartu-body { padding: 14px 16px; display: flex; flex-direction: column; gap: 8px; }
+    .nama-row { display: flex; align-items: flex-start; gap: 10px; }
     .nama-nomor {
-      width: 24px; height: 24px;
+      width: 22px; height: 22px;
       border-radius: 6px;
       background: var(--krem-gelap);
       color: var(--coklat-medium);
-      font-size: 10px;
-      font-weight: 600;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      font-size: 10px; font-weight: 600;
+      display: flex; align-items: center; justify-content: center;
       flex-shrink: 0;
-      font-family: 'Jost', sans-serif;
+      margin-top: 1px;
     }
+    .nama-teks { font-size: 13.5px; color: var(--teks); line-height: 1.45; font-weight: 300; }
 
-    .nama-teks {
-      font-size: 14px;
-      color: var(--teks);
-      line-height: 1.45;
-      font-weight: 300;
-    }
-
-    /* ══════════════════════════════
-       FOOTER
-    ══════════════════════════════ */
+    /* FOOTER */
     .page-footer {
-      text-align: center;
-      padding: 24px 18px;
-      position: relative;
-      z-index: 1;
+      text-align: center; padding: 24px 18px;
+      position: relative; z-index: 1;
     }
     .footer-ornament {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
-      margin-bottom: 12px;
+      display: flex; align-items: center; justify-content: center;
+      gap: 10px; margin-bottom: 12px;
     }
-    .footer-line {
-      width: 40px; height: 1px;
-      background: var(--coklat-terang);
-    }
-    .footer-dot {
-      width: 4px; height: 4px;
-      border-radius: 50%;
-      background: var(--coklat-muda);
-    }
-    .page-footer p {
-      font-size: 11px;
-      color: var(--teks-abu);
-      letter-spacing: 0.8px;
-      font-weight: 300;
-    }
+    .footer-line { width: 40px; height: 1px; background: var(--coklat-terang); }
+    .footer-dot { width: 4px; height: 4px; border-radius: 50%; background: var(--coklat-muda); }
+    .page-footer p { font-size: 11px; color: var(--teks-abu); letter-spacing: 0.8px; font-weight: 300; }
 
-    /* ══════════════════════════════
-       RESPONSIVE
-    ══════════════════════════════ */
+    /* RESPONSIVE */
     @media (max-width: 560px) {
-      .tabel-wrap { display: none; }
-      .kartu-list  { display: block; }
+      .bidang-grid { grid-template-columns: 1fr; }
       .hero { padding: 36px 16px 32px; }
       .wrapper { padding: 24px 14px 48px; }
     }
@@ -457,147 +317,166 @@
     <div class="hero-ornament-diamond"></div>
     <div class="hero-ornament-line right"></div>
   </div>
-  <h2>Pengurus <em>DPP</em><br>GKR Karawang</h2>
+  <h2>Susunan Pengurus <em>DPP</em><br>Kristus Raja Karawang</h2>
   <div class="hero-sub">Keuskupan Bandung</div>
+  <div class="hero-period">Tahun 2026 – 2031</div>
   <div class="hero-border-bottom"></div>
 </div>
 
 <div class="wrapper">
 
-  <div class="section-label">
-    <span>Daftar Anggota</span>
-  </div>
+  <!-- ══ PIMPINAN ══ -->
+  <div class="section-label"><span>Pimpinan</span></div>
+  <div class="pimpinan-grid">
 
-  <!-- ══ DESKTOP TABLE ══ -->
-  <div class="tabel-wrap">
-    <table>
-      <thead>
-        <tr>
-          <th>Jabatan</th>
-          <th>Nama</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr><td class="jabatan">Bendahara 3</td><td>Himawan Adriyanto</td></tr>
-        <tr><td class="jabatan" rowspan="2">Kord. Bid. Liturgi</td><td>Agus Cahyono Guntoro Dominicus</td></tr>
-        <tr><td>Yulius Krisna Perdana Nugroho Putra</td></tr>
-        <tr><td class="jabatan" rowspan="3">Kord. Bid. Pewartaan</td><td>Benedictus Eko Budianwan</td></tr>
-        <tr><td>Risatuli Manulang</td></tr>
-        <tr><td>Cornelius Tony Kustanto</td></tr>
-        <tr><td class="jabatan" rowspan="2">Kord. Bid. Persaudaraan</td><td>Eusabius Tay</td></tr>
-        <tr><td>Matius Daryono</td></tr>
-        <tr><td class="jabatan" rowspan="6">Kord. Bid. Pelayanan</td><td>Roni Teresius Raja Ratinem</td></tr>
-        <tr><td>Lamtogu Victoryanus Simatupang</td></tr>
-        <tr><td>Albertus Sigit Prawoto</td></tr>
-        <tr><td>Petrus Suryanto</td></tr>
-        <tr><td>Christiana Tin Wiratna Lukita</td></tr>
-        <tr><td>Santi Febriasari</td></tr>
-        <tr><td class="jabatan" rowspan="4">Kord. Bid. Umum</td><td>Dionisius Frederick Supra</td></tr>
-        <tr><td>Menara Emanuela Sembiring</td></tr>
-        <tr><td>Gregorius Noerul Priyana</td></tr>
-        <tr><td>Brigitha Agnes Sri Wahyuni</td></tr>
-      </tbody>
-    </table>
-  </div>
-
-  <!-- ══ MOBILE CARDS ══ -->
-  <div class="kartu-list">
-
-    <div class="kartu">
-      <div class="kartu-header">
-        <div class="kartu-icon">
-          <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="#c9973a" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
-        </div>
-        <h3>Bendahara 3</h3>
-        <span class="kartu-count">1 orang</span>
+    <div class="pimpinan-card">
+      <div class="pimpinan-accent"></div>
+      <div class="pimpinan-inner">
+        <div class="pimpinan-jabatan">Ketua Umum DPP</div>
+        <div class="pimpinan-nama">Josphat Judho Pramono, OSC</div>
       </div>
-      <div class="kartu-body">
-        <div class="nama-row">
-          <div class="nama-nomor">1</div>
-          <div class="nama-teks">Himawan Adriyanto</div>
+    </div>
+
+    <div class="pimpinan-card">
+      <div class="pimpinan-accent"></div>
+      <div class="pimpinan-inner">
+        <div class="pimpinan-jabatan">Ketua DPP</div>
+        <div class="pimpinan-nama">
+          Setevanus Budi Saptono, OSC
+          <span class="dan">&amp;</span>
+          Agustinus Made, OSC
         </div>
       </div>
     </div>
 
+    <div class="pimpinan-card">
+      <div class="pimpinan-accent"></div>
+      <div class="pimpinan-inner">
+        <div class="pimpinan-jabatan">Wakil Ketua DPP</div>
+        <div class="pimpinan-nama">
+          Alfonsus Margani
+          <span class="dan">&amp;</span>
+          Robet Robertus Sagala
+        </div>
+      </div>
+    </div>
+
+    <div class="pimpinan-card">
+      <div class="pimpinan-accent"></div>
+      <div class="pimpinan-inner">
+        <div class="pimpinan-jabatan">Sekretaris</div>
+        <div class="pimpinan-nama">
+          Henrikus Jatining Wahyu Argo
+          <span class="dan">&amp;</span>
+          Agustinus Neky Dian Fridaus
+        </div>
+      </div>
+    </div>
+
+    <div class="pimpinan-card">
+      <div class="pimpinan-accent"></div>
+      <div class="pimpinan-inner">
+        <div class="pimpinan-jabatan">Bendahara</div>
+        <div class="pimpinan-nama">
+          Veronika Yuyu Yuningsih
+          <span class="dan">&amp;</span>
+          Maria Emiliana Winarni
+          <span class="dan">&amp;</span>
+          Himawan Adriyanto
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ══ BIDANG ══ -->
+  <div class="section-label" style="margin-top:32px"><span>Koordinator Bidang</span></div>
+  <div class="bidang-grid">
+
+    <!-- Liturgia -->
     <div class="kartu">
       <div class="kartu-header">
         <div class="kartu-icon">
           <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="#c9973a" stroke-width="2"><path d="M18 3a3 3 0 0 0-3 3v12a3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3H6a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3V6a3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3h12a3 3 0 0 0 3-3 3 3 0 0 0-3-3z"/></svg>
         </div>
-        <h3>Kord. Bid. Liturgi</h3>
+        <h3>Bid. Liturgia</h3>
         <span class="kartu-count">2 orang</span>
       </div>
       <div class="kartu-body">
-        <div class="nama-row"><div class="nama-nomor">1</div><div class="nama-teks">Agus Cahyono Guntoro Dominicus</div></div>
-        <div class="nama-row"><div class="nama-nomor">2</div><div class="nama-teks">Yulius Krisna Perdana Nugroho Putra</div></div>
+        <div class="nama-row"><div class="nama-nomor">1</div><div class="nama-teks">Dominicus Agus Cahyono Guntoro</div></div>
+        <div class="nama-row"><div class="nama-nomor">2</div><div class="nama-teks">Yulius Krisna Perdana N. P.</div></div>
       </div>
     </div>
 
+    <!-- Pewartaan / Kerygma -->
     <div class="kartu">
       <div class="kartu-header">
         <div class="kartu-icon">
           <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="#c9973a" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
         </div>
-        <h3>Kord. Bid. Pewartaan</h3>
-        <span class="kartu-count">3 orang</span>
+        <h3>Bid. Pewartaan / Kerygma</h3>
+        <span class="kartu-count">2 orang</span>
       </div>
       <div class="kartu-body">
-        <div class="nama-row"><div class="nama-nomor">1</div><div class="nama-teks">Benedictus Eko Budianwan</div></div>
-        <div class="nama-row"><div class="nama-nomor">2</div><div class="nama-teks">Risatuli Manulang</div></div>
-        <div class="nama-row"><div class="nama-nomor">3</div><div class="nama-teks">Cornelius Tony Kustanto</div></div>
+        <div class="nama-row"><div class="nama-nomor">1</div><div class="nama-teks">Benedictus Eko Budiawan</div></div>
+        <div class="nama-row"><div class="nama-nomor">2</div><div class="nama-teks">Ristauli Manulang</div></div>
       </div>
     </div>
 
+    <!-- Persaudaraan / Koinonia -->
     <div class="kartu">
       <div class="kartu-header">
         <div class="kartu-icon">
           <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="#c9973a" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
         </div>
-        <h3>Kord. Bid. Persaudaraan</h3>
+        <h3>Bid. Persaudaraan / Koinonia</h3>
         <span class="kartu-count">2 orang</span>
       </div>
       <div class="kartu-body">
-        <div class="nama-row"><div class="nama-nomor">1</div><div class="nama-teks">Eusabius Tay</div></div>
-        <div class="nama-row"><div class="nama-nomor">2</div><div class="nama-teks">Matius Daryono</div></div>
+        <div class="nama-row"><div class="nama-nomor">1</div><div class="nama-teks">Cornelius Tony Kustanto</div></div>
+        <div class="nama-row"><div class="nama-nomor">2</div><div class="nama-teks">Eusabius Tay</div></div>
       </div>
     </div>
 
+    <!-- Pelayanan / Diakonia -->
     <div class="kartu">
       <div class="kartu-header">
         <div class="kartu-icon">
           <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="#c9973a" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
         </div>
-        <h3>Kord. Bid. Pelayanan</h3>
-        <span class="kartu-count">6 orang</span>
+        <h3>Bid. Pelayanan / Diakonia</h3>
+        <span class="kartu-count">2 orang</span>
       </div>
       <div class="kartu-body">
-        <div class="nama-row"><div class="nama-nomor">1</div><div class="nama-teks">Roni Teresius Raja Ratinem</div></div>
-        <div class="nama-row"><div class="nama-nomor">2</div><div class="nama-teks">Lamtogu Victoryanus Simatupang</div></div>
-        <div class="nama-row"><div class="nama-nomor">3</div><div class="nama-teks">Albertus Sigit Prawoto</div></div>
-        <div class="nama-row"><div class="nama-nomor">4</div><div class="nama-teks">Petrus Suryanto</div></div>
-        <div class="nama-row"><div class="nama-nomor">5</div><div class="nama-teks">Christiana Tin Wiratna Lukita</div></div>
-        <div class="nama-row"><div class="nama-nomor">6</div><div class="nama-teks">Santi Febriasari</div></div>
+        <div class="nama-row"><div class="nama-nomor">1</div><div class="nama-teks">Matius Daryono</div></div>
+        <div class="nama-row"><div class="nama-nomor">2</div><div class="nama-teks">Roni Teresius Raja Ratinem</div></div>
       </div>
     </div>
 
-    <div class="kartu">
+    <!-- Bidang Umum — full width -->
+    <div class="kartu" style="grid-column: 1 / -1;">
       <div class="kartu-header">
         <div class="kartu-icon">
           <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="#c9973a" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
         </div>
-        <h3>Kord. Bid. Umum</h3>
-        <span class="kartu-count">4 orang</span>
+        <h3>Bidang Umum</h3>
+        <span class="kartu-count">8 orang</span>
       </div>
-      <div class="kartu-body">
-        <div class="nama-row"><div class="nama-nomor">1</div><div class="nama-teks">Dionisius Frederick Supra</div></div>
-        <div class="nama-row"><div class="nama-nomor">2</div><div class="nama-teks">Menara Emanuela Sembiring</div></div>
-        <div class="nama-row"><div class="nama-nomor">3</div><div class="nama-teks">Gregorius Noerul Priyana</div></div>
-        <div class="nama-row"><div class="nama-nomor">4</div><div class="nama-teks">Brigitha Agnes Sri Wahyuni</div></div>
+      <div class="kartu-body" style="display:grid; grid-template-columns: repeat(2,1fr); gap: 8px 16px;">
+        <div class="nama-row"><div class="nama-nomor">1</div><div class="nama-teks">Lamtogu Victoriyanus Simatupang</div></div>
+        <div class="nama-row"><div class="nama-nomor">2</div><div class="nama-teks">Albertus Sigit Prawoto</div></div>
+        <div class="nama-row"><div class="nama-nomor">3</div><div class="nama-teks">Petrus Suryanto</div></div>
+        <div class="nama-row"><div class="nama-nomor">4</div><div class="nama-teks">Christiana Tin Wiratna Lukita</div></div>
+        <div class="nama-row"><div class="nama-nomor">5</div><div class="nama-teks">Santi Febriasari</div></div>
+        <div class="nama-row"><div class="nama-nomor">6</div><div class="nama-teks">Dionisius Frederick Supra</div></div>
+        <div class="nama-row"><div class="nama-nomor">7</div><div class="nama-teks">Menara Emanula Sembiring</div></div>
+        <div class="nama-row"><div class="nama-nomor">8</div><div class="nama-teks">Gregorius Noerul Priyana</div></div>
+        <div class="nama-row" style="grid-column:1/-1;"><div class="nama-nomor">9</div><div class="nama-teks">Brigitha Agnes Sri Wahyuni</div></div>
       </div>
     </div>
 
-  </div><!-- end kartu-list -->
-</div><!-- end wrapper -->
+  </div>
+</div>
 
 <div class="page-footer">
   <div class="footer-ornament">
