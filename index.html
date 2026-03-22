@@ -437,10 +437,10 @@
         <span class="dot" onclick="currentSlide(2)"></span>
         <span class="dot" onclick="currentSlide(3)"></span>
         <span class="dot" onclick="currentSlide(4)"></span>
-        <span class="dot" onclick="currentSlide(1)"></span>
-        <span class="dot" onclick="currentSlide(2)"></span>
-        <span class="dot" onclick="currentSlide(3)"></span>
-        <span class="dot" onclick="currentSlide(4)"></span>
+        <span class="dot" onclick="currentSlide(5)"></span>
+        <span class="dot" onclick="currentSlide(6)"></span>
+        <span class="dot" onclick="currentSlide(7)"></span>
+        <span class="dot" onclick="currentSlide(8)"></span>
       </div>
     </section>
 
@@ -716,7 +716,7 @@
           <span class="pastoral-tanggal">23 Nov 2025</span>
         </div>
         <h4>HPS &amp; Pesta Nama Paroki Kristus Raja Karawang</h4>
-        <p>Umat Paroki Kristus Raja merayakan Hari Pelindung Selingkungan (HPS) dan Pesta Nama dengan penuh sukacita dan iman.</p>
+        <p>Umat Paroki Kristus Raja merayakan Hari Pangan Sedunia (HPS) dan Pesta Nama dengan penuh sukacita dan iman.</p>
         <span class="pastoral-baca-link">Baca Selengkapnya</span>
       </div>
     </a>
@@ -943,7 +943,7 @@
         <div class="ep-section-label">Preview Kartu</div>
         <div class="ep-live-card" id="artLiveCard">
           <div class="ep-live-img" id="artLiveImg">
-            <div class="ep-live-placeholder">🖼️</div>
+            <div class="ep-live-placeholder">Tambahkan foto</div>
           </div>
           <div class="ep-live-info">
             <div class="ep-live-kat" id="artLiveKat">Kategori</div>
@@ -1038,7 +1038,7 @@
         <div class="ep-section-label">Preview Kartu</div>
         <div class="ep-live-card" id="pasLiveCard">
           <div class="ep-live-img" id="pasLiveImg">
-            <div class="ep-live-placeholder">🖼️</div>
+            <div class="ep-live-placeholder">Tambahkan</div>
           </div>
           <div class="ep-live-info">
             <div class="ep-live-kat" id="pasLiveKat">Kategori</div>
@@ -1579,11 +1579,11 @@ reveals.forEach(el => revealObs.observe(el));
   function getMusim() {
     // Masa Natal: 25 Des s/d Pembaptisan Tuhan
     if ((M === 11 && D >= 25) || sameDay(todayD, new Date(Y, 11, 25))) {
-      return { musim: 'Natal', warna: '#d4af37', desc: 'Masa Natal: merayakan inkarnasi Putra Allah.', warnaNama: 'Putih' };
+      return { musim: 'Natal', warna: '#99732d', desc: 'Masa Natal: merayakan inkarnasi Putra Allah.', warnaNama: 'Putih' };
     }
     // Awal tahun masih dalam Natal (1 Jan – Pembaptisan Tuhan)
     if (onOrAfter(todayD, new Date(Y, 0, 1)) && before(todayD, addDays(pembaptisanTuhan, 1))) {
-      return { musim: 'Natal', warna: '#d4af37', desc: 'Masa Natal: merayakan inkarnasi Putra Allah.', warnaNama: 'Putih' };
+      return { musim: 'Natal', warna: '#9e590b', desc: 'Masa Natal: merayakan inkarnasi Putra Allah.', warnaNama: 'Putih' };
     }
     // Adven (dari Adven 1 sampai 24 Des, termasuk dari tahun lalu)
     if (onOrAfter(todayD, adven1ThisYear) && before(todayD, new Date(Y, 11, 25))) {

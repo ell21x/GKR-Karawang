@@ -2710,3 +2710,4 @@ Jika Minggu tambahkan Bacaan II sebelum Injil. Warna: Hijau/Ungu/Putih/Merah/Mer
     loadBacaanLiturgi();
   }
 })();
+m
