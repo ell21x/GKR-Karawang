@@ -2295,7 +2295,7 @@ function renderPastoralCard(d, animate) {
       </div>
       <h4>${d.judul}</h4>
       <p>${d.desc}</p>
-      <span class="pastoral-baca-link">Baca →</span>
+      <span class="pastoral-baca-link">Baca Selengkapnya</span>
     </div>`;
 
   wrap.appendChild(a);
