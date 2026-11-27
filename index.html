@@ -347,6 +347,49 @@
       margin-right: 8px;
       opacity: 0.6;
     }
+
+    /* ═══════════════════════════════════════════
+       Kegiatan Pastoral — dipindah ke kolom utama,
+       tepat di bawah Pengumuman (info umat)
+    ═══════════════════════════════════════════ */
+    .main-content .pastoral-artikel-section {
+      max-width: 100%;
+      margin: 0 0 24px;
+      padding: 30px 20px;
+      background: #fff8f0;
+      border-radius: 16px;
+      scroll-margin-top: 100px;
+    }
+
+    .main-content .pastoral-header {
+      margin-bottom: 26px;
+    }
+
+    .main-content .pastoral-judul {
+      font-size: clamp(24px, 3.4vw, 34px);
+    }
+
+    .main-content .pastoral-sub {
+      max-width: 100%;
+      font-size: 14px;
+    }
+
+    .main-content .pastoral-artikel-section .sorotan-bar {
+      margin-bottom: 18px;
+    }
+
+    /* Kolom utama lebih sempit dari layar penuh — hindari kartu terlalu kecil */
+    @media (max-width: 900px) {
+      .main-content .pastoral-grid {
+        grid-template-columns: 1fr !important;
+      }
+    }
+
+    @media (max-width: 580px) {
+      .main-content .pastoral-artikel-section {
+        padding: 22px 14px;
+      }
+    }
   </style>
 
 </head>
@@ -451,6 +494,97 @@
         <span class="dot" onclick="currentSlide(7)"></span>
        
       </div>
+    </section>
+
+        <!-- KEGIATAN PASTORAL — ARTIKEL STYLE -->
+    <section class="pastoral-artikel-section" id="kegiatan">
+      <div class="pastoral-header">
+        <div class="pastoral-kap">Dokumentasi &amp; Warta</div>
+        <h2 class="pastoral-judul">Kegiatan Pastoral</h2>
+        <div class="pastoral-divider"></div>
+        <p class="pastoral-sub">Liputan kegiatan rohani, pelayanan, dan momen istimewa umat Paroki Kristus Raja Karawang.</p>
+      </div>
+
+      <!-- Sorotan bar seperti referensi -->
+      <div class="sorotan-bar">
+        <span class="sorotan-label">Sorotan Kegiatan</span>
+      </div>
+
+      <!-- Grid semua kegiatan pastoral -->
+      <div class="pastoral-grid-wrap">
+        <div class="pastoral-grid" id="pastoralGrid">
+
+        <!-- HPS & Pesta Nama (dipindah ke sini) -->
+        <a href="lakegiatan2.html" class="pastoral-card pastoral-card-featured">
+          <div class="pastoral-card-img">
+            <img src="lhps4.jpg" alt="HPS & Pesta Nama">
+          </div>
+          <div class="pastoral-card-info">
+            <div class="pastoral-meta-row">
+              <span class="pastoral-kategori">Liturgi &amp; Perayaan</span>
+              <span class="pastoral-dot-sep">·</span>
+              <span class="pastoral-tanggal">23 Nov 2025</span>
+            </div>
+            <h4>HPS &amp; Pesta Nama Paroki Kristus Raja Karawang</h4>
+            <p>Umat Paroki Kristus Raja merayakan Hari Pangan Sedunia (HPS) dan Pesta Nama dengan penuh sukacita dan iman.</p>
+            <span class="pastoral-baca-link">Baca Selengkapnya</span>
+          </div>
+        </a>
+
+        <a href="kegiatan4.html" class="pastoral-card">
+          <div class="pastoral-card-img">
+            <img src="FOKUSPAS.jpeg" alt="Fokus Pastoral">
+          </div>
+          <div class="pastoral-card-info">
+            <div class="pastoral-meta-row">
+              <span class="pastoral-kategori">Program Paroki</span>
+              <span class="pastoral-dot-sep">·</span>
+              <span class="pastoral-tanggal">12 Feb 2026</span>
+            </div>
+            <h4>Fokus Pastoral 2026–2030</h4>
+            <p>Program pastoral lima tahun ke depan menuju Gereja yang semakin misioner dan pelayanan yang menyentuh seluruh lapisan umat.</p>
+            <span class="pastoral-baca-link">Baca Selengkapnya</span>
+          </div>
+        </a>
+
+        <a href="kegiatan5.html" class="pastoral-card">
+          <div class="pastoral-card-img">
+            <img src="pelkam.jpeg" alt="Pelatihan Kamera">
+          </div>
+          <div class="pastoral-card-info">
+            <div class="pastoral-meta-row">
+              <span class="pastoral-kategori">Komsos GKR</span>
+              <span class="pastoral-dot-sep">·</span>
+              <span class="pastoral-tanggal">28 Feb 2026</span>
+            </div>
+            <h4>Pelatihan Kamera Komsos GKR Karawang</h4>
+            <p>Tim Komsos Paroki mengadakan pelatihan fotografi dan videografi untuk mendukung peliputan kegiatan gerejawi secara profesional.</p>
+            <span class="pastoral-baca-link">Baca Selengkapnya</span>
+          </div>
+        </a>
+
+         <a href="artikelpdpkk.html" class="pastoral-card">
+          <div class="pastoral-card-img">
+            <img src="artpdpkk.jpeg" alt="PDPKK GKR ">
+          </div>
+          <div class="pastoral-card-info">
+            <div class="pastoral-meta-row">
+              <span class="pastoral-kategori">Komsos GKR</span>
+              <span class="pastoral-dot-sep">·</span>
+              <span class="pastoral-tanggal">28 Feb 2026</span>
+            </div>
+            <h4>Berjalan dalam Terang Menuju Rumah Bapa di Surga: PDPKK GKR Karawang Dikuatkan dalam Iman</h4>
+            <p>Sebanyak kurang lebih 48 umat mengikuti Persekutuan Doa Pembaruan Karismatik Katolik (PDPKK) Gereja Kristus Raja Karawang pada Jumat, 20 November 2026. Mengangkat tema “Berjalan dalam Terang Menuju ke Rumah Bapa di Surga”, pewartaan dr. Yohanes mengajak umat untuk tetap teguh dalam iman, menjadikan Firman Tuhan sebagai pelita kehidupan, dan terus berjalan bersama Yesus menuju rumah Bapa di surga.</p>
+            <span class="pastoral-baca-link">Baca Selengkapnya</span>
+          </div>
+        </a>
+        
+      </div><!-- end pastoral-grid -->
+      <div class="pastoral-scroll-hint" id="pastoralScrollHint">
+        <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+        scroll untuk lihat lebih
+      </div>
+      </div><!-- end pastoral-grid-wrap -->
     </section>
 
     <!-- Filosofi Logo -->
@@ -694,97 +828,6 @@
   </button>
   <img src="jadwalsekretariat.jpg" alt="Jadwal Sekretariat">
 </div>
-
-<!-- KEGIATAN PASTORAL — ARTIKEL STYLE -->
-<section class="pastoral-artikel-section" id="kegiatan">
-  <div class="pastoral-header">
-    <div class="pastoral-kap">Dokumentasi &amp; Warta</div>
-    <h2 class="pastoral-judul">Kegiatan Pastoral</h2>
-    <div class="pastoral-divider"></div>
-    <p class="pastoral-sub">Liputan kegiatan rohani, pelayanan, dan momen istimewa umat Paroki Kristus Raja Karawang.</p>
-  </div>
-
-  <!-- Sorotan bar seperti referensi -->
-  <div class="sorotan-bar">
-    <span class="sorotan-label">Sorotan Kegiatan</span>
-  </div>
-
-  <!-- Grid semua kegiatan pastoral -->
-  <div class="pastoral-grid-wrap">
-    <div class="pastoral-grid" id="pastoralGrid">
-
-    <!-- HPS & Pesta Nama (dipindah ke sini) -->
-    <a href="lakegiatan2.html" class="pastoral-card pastoral-card-featured">
-      <div class="pastoral-card-img">
-        <img src="lhps4.jpg" alt="HPS & Pesta Nama">
-      </div>
-      <div class="pastoral-card-info">
-        <div class="pastoral-meta-row">
-          <span class="pastoral-kategori">Liturgi &amp; Perayaan</span>
-          <span class="pastoral-dot-sep">·</span>
-          <span class="pastoral-tanggal">23 Nov 2025</span>
-        </div>
-        <h4>HPS &amp; Pesta Nama Paroki Kristus Raja Karawang</h4>
-        <p>Umat Paroki Kristus Raja merayakan Hari Pangan Sedunia (HPS) dan Pesta Nama dengan penuh sukacita dan iman.</p>
-        <span class="pastoral-baca-link">Baca Selengkapnya</span>
-      </div>
-    </a>
-
-    <a href="kegiatan4.html" class="pastoral-card">
-      <div class="pastoral-card-img">
-        <img src="FOKUSPAS.jpeg" alt="Fokus Pastoral">
-      </div>
-      <div class="pastoral-card-info">
-        <div class="pastoral-meta-row">
-          <span class="pastoral-kategori">Program Paroki</span>
-          <span class="pastoral-dot-sep">·</span>
-          <span class="pastoral-tanggal">12 Feb 2026</span>
-        </div>
-        <h4>Fokus Pastoral 2026–2030</h4>
-        <p>Program pastoral lima tahun ke depan menuju Gereja yang semakin misioner dan pelayanan yang menyentuh seluruh lapisan umat.</p>
-        <span class="pastoral-baca-link">Baca Selengkapnya</span>
-      </div>
-    </a>
-
-    <a href="kegiatan5.html" class="pastoral-card">
-      <div class="pastoral-card-img">
-        <img src="pelkam.jpeg" alt="Pelatihan Kamera">
-      </div>
-      <div class="pastoral-card-info">
-        <div class="pastoral-meta-row">
-          <span class="pastoral-kategori">Komsos GKR</span>
-          <span class="pastoral-dot-sep">·</span>
-          <span class="pastoral-tanggal">28 Feb 2026</span>
-        </div>
-        <h4>Pelatihan Kamera Komsos GKR Karawang</h4>
-        <p>Tim Komsos Paroki mengadakan pelatihan fotografi dan videografi untuk mendukung peliputan kegiatan gerejawi secara profesional.</p>
-        <span class="pastoral-baca-link">Baca Selengkapnya</span>
-      </div>
-    </a>
-
-     <a href="artikelpdpkk.html" class="pastoral-card">
-      <div class="pastoral-card-img">
-        <img src="artpdpkk.jpeg" alt="PDPKK GKR ">
-      </div>
-      <div class="pastoral-card-info">
-        <div class="pastoral-meta-row">
-          <span class="pastoral-kategori">Komsos GKR</span>
-          <span class="pastoral-dot-sep">·</span>
-          <span class="pastoral-tanggal">28 Feb 2026</span>
-        </div>
-        <h4>Berjalan dalam Terang Menuju Rumah Bapa di Surga: PDPKK GKR Karawang Dikuatkan dalam Iman</h4>
-        <p>Sebanyak kurang lebih 48 umat mengikuti Persekutuan Doa Pembaruan Karismatik Katolik (PDPKK) Gereja Kristus Raja Karawang pada Jumat, 20 November 2026. Mengangkat tema “Berjalan dalam Terang Menuju ke Rumah Bapa di Surga”, pewartaan dr. Yohanes mengajak umat untuk tetap teguh dalam iman, menjadikan Firman Tuhan sebagai pelita kehidupan, dan terus berjalan bersama Yesus menuju rumah Bapa di surga.</p>
-        <span class="pastoral-baca-link">Baca Selengkapnya</span>
-      </div>
-    </a>
-    
-  </div><!-- end pastoral-grid -->
-  <div class="pastoral-scroll-hint" id="pastoralScrollHint">
-    <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
-    scroll untuk lihat lebih
-  </div>
-  </div><!-- end pastoral-grid-wrap -->
-</section>
 
 <!-- Lokasi -->
 <section class="lokasi" id="lokasi">
